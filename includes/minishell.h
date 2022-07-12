@@ -1,11 +1,12 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<unistd.h>
-#include<readline/readline.h>
-#include<readline/history.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <unistd.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 # define BHRED "\e[1;91m"
 # define BHGRN "\e[1;92m"
