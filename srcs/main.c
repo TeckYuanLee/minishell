@@ -46,6 +46,6 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	
-	start_minishell(envp);
 	print_header();
+	start_minishell(envp);
 }
