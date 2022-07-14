@@ -4,9 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <termios.h>
 #include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include "../libft/includes/libft.h"
 
 # define BHRED "\e[1;91m"
 # define BHGRN "\e[1;92m"
@@ -17,5 +19,17 @@
 # define BHWHT "\e[1;97m"
 # define SPC   "                                "
 
+typedef enum e_err
+{
+	NO_ERROR,
+	MALLOC_FAIL,
+	INPUT_ERR,
+	KEY_ERR,
+	NO_VALUE,
+	NO_KEY,
+	SYNTAX_ERR,
+	EMPTY,
+	DEFAULT_ERR
+}		t_err;
 
 #endif

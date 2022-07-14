@@ -21,6 +21,7 @@ $(NAME): 	$(OBJ)
 				@ar rcs $(NAME) $(OBJ)
 
 obj/%.o:	srcs/%.c
+				@mkdir -p obj
 				@gcc $(FLAGS) -c $< -o $@ -Iincludes ##libft.h get_next_line.h
 
 clean:

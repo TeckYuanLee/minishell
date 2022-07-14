@@ -4,8 +4,8 @@ CFLAGS = -Wall -Wextra -Werror -I/usr/local/opt/readline/include -Iincludes#-fsa
 LDFLAGS = -L/usr/include -L/usr/local/opt/readline/lib -lreadline
 ARFLAGS	= 	rcs
 
-#LIBFT_PATH = libft/
-#LIBFT = libft/libft.a
+LIBFT_PATH = libft/
+LIBFT = libft/libft.a
 
 SRCS	=	$(wildcard srcs/*.c)
 OBJS	=	$(SRCS:srcs/%.c=obj/%.o)
