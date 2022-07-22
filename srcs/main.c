@@ -69,6 +69,8 @@ void	start_minishell(char **envp)
 	int		need_reset;
 	struct termios	saved;
 	struct termios	termios_p;
+	t_envi			envi;
+	t_curr_input	curr_input;
 	
 	(void)envp;
 	while (1)
@@ -78,6 +80,7 @@ void	start_minishell(char **envp)
 		need_reset = 1;
 		set_term_settings(termios_p);
 		line = readline("wtf$ ");
+		lexer(line, &curr_input, &envi);
 		if (need_reset)
         	tcsetattr(STDIN_FILENO, TCSANOW, &saved);
 		add_history(line);
