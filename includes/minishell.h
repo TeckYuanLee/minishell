@@ -127,30 +127,25 @@ typedef struct s_envi
 t_err	syntax_err_lexer(char token);
 t_err	lexer(char *line, t_curr_input *input, t_envi *info);
 t_err	tokenize(char *input, int *i, t_token_list **list);
-t_err	redir_in_token(const char *input, int *i, t_token_list **list);
-t_err	redir_out_token(const char *input, int *i, t_token_list **list);
-t_err	pipe_token(char *input, int *i, t_token_list **list);
-t_err	dollar_token(const char *line, int *i, t_token_list **list);
-t_err	quote_token(const char *line, int *i, t_token_list **list);
-t_err	dquote_token(const char *line, int *i, t_token_list **list);
-t_err	word_token(const char *input, int *i, t_token_list **list);
-t_err	space_token(const char *line, int *i, t_token_list **list);
+t_err	l_angles(char *input, int *i, t_token_list **list);
+t_err	pipes(char *input, int *i, t_token_list **list);
+t_err	quotes(char *input, int *i, t_token_list **list);
+t_err	words(char *input, int *i, t_token_list **list);
+t_err	spaces(char *input, int *i, t_token_list **list);
 
 t_token_list	*create_token(t_token_type type, char *data);
-t_err	add_new_token_to_list(t_token_list **head, \
-		t_token_type type, char *data);
-t_err	dquote_dollar_token(const char *dquote, int *j, t_token_list **list);
+t_err	add_new_token(t_token_list **head, t_token_type type, char *data);
 t_err	exitcode_token(const char *dquote, int *j, t_token_list **list);
 t_err	add_literal_dollar(t_token_list **list);
 
 char	*save_word(const char *input);
+t_err	dquote_dollar_token(const char *dquote, int *j, t_token_list **list);
 t_err	put_dquote_token(const char *dquote, t_token_list **list, int j);
 t_err	expand_dquote(const char *dquote, t_token_list **list);
-t_err	save_dquote(const char *line, char **dquote);
-t_err	save_quote(const char *line, char **quote);
+t_err	save_quote(const char *line, char **quote, char *input);
 
 void	add_to_tokenlist(t_token_list **head, t_token_list *new);
-t_bool	char_is_allowed(int c, char *not_allowed);
+t_bool	allowed_char(int c, char *not_allowed);
 t_err	get_env_key(const char *str, char **return_key);
 
 #endif

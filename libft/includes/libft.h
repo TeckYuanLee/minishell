@@ -42,6 +42,7 @@ int			ft_isalpha(int a);
 int			ft_isascii(int a);
 int			ft_isdigit(int a);
 int			ft_isprint(int a);
+int			ft_isspace(int c);
 
 char		*ft_itoa(int n);
 char		*ft_itoa_long(long n);

@@ -27,12 +27,12 @@ t_err	exitcode_token(const char *dquote, int *j, t_token_list **list)
 	question = ft_strdup("?");
 	if (!question)
 		return (MALLOC_FAIL);
-	if (add_new_token_to_list(list, TOK_DOLLAR, NULL) == MALLOC_FAIL)
+	if (add_new_token(list, TOK_DOLLAR, NULL) == MALLOC_FAIL)
 	{
 		free(question);
 		return (MALLOC_FAIL);
 	}
-	if (add_new_token_to_list(list, TOK_WORD, question) == MALLOC_FAIL)
+	if (add_new_token(list, TOK_WORD, question) == MALLOC_FAIL)
 	{
 		free(question);
 		return (MALLOC_FAIL);
@@ -40,36 +40,7 @@ t_err	exitcode_token(const char *dquote, int *j, t_token_list **list)
 	return (NO_ERROR);
 }
 
-t_err	dquote_dollar_token(const char *dquote, int *j, t_token_list **list)
-{
-	char	*key;
-
-	*j = *j + 1;
-	if (dquote[*j] == '\0' || isspace(dquote[*j]))
-		return (add_literal_dollar(list));
-	else if (ft_isdigit(dquote[*j]))
-	{
-		*j = *j + 1;
-		return (NO_ERROR);
-	}
-	else if (dquote[*j] == '?')
-	{
-		*j = *j + 1;
-		return (exitcode_token(dquote, j, list) == MALLOC_FAIL);
-	}
-	if (get_env_key(&dquote[*j], &key) == MALLOC_FAIL)
-		return (MALLOC_FAIL);
-	if (key)
-	{
-		add_new_token_to_list(list, TOK_DOLLAR, NULL);
-		add_new_token_to_list(list, TOK_WORD, key);
-		*j = *j + ft_strlen(key);
-	}
-	return (NO_ERROR);
-}
-
-t_err	add_new_token_to_list(t_token_list **head, \
-		t_token_type type, char *data)
+t_err	add_new_token(t_token_list **head, t_token_type type, char *data)
 {
 	t_token_list	*new;
 
@@ -90,8 +61,7 @@ t_token_list	*create_token(t_token_type type, char *data)
 	{
 		new_token->type = type;
 		new_token->data = data;
-		new_token->id = id;
-		id++;
+		new_token->id = id++;
 	}
 	return (new_token);
 }
