@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quotes.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/25 09:25:09 by telee             #+#    #+#             */
+/*   Updated: 2022/07/25 09:25:09 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_err	save_quote(const char *line, char **quote, char *input)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	if (*input == '\'')
@@ -24,7 +36,7 @@ t_err	save_quote(const char *line, char **quote, char *input)
 	return (NO_ERROR);
 }
 
-t_err	expand_dquote(const char *dquote, t_token_list **list)
+t_err	expand_dquote(const char *dquote, t_token **list)
 {
 	int		j;
 
@@ -37,14 +49,14 @@ t_err	expand_dquote(const char *dquote, t_token_list **list)
 			if (put_dquote_token(dquote, list, j) == MALLOC_FAIL)
 				return (MALLOC_FAIL);
 		if (dquote[j] == '$')
-			if (dquote_dollar_token(dquote, &j, list) == MALLOC_FAIL)
+			if (d_quote_dollars(dquote, &j, list) == MALLOC_FAIL)
 				return (MALLOC_FAIL);
 		dquote += j;
 	}
 	return (NO_ERROR);
 }
 
-t_err	put_dquote_token(const char *dquote, t_token_list **list, int j)
+t_err	put_dquote_token(const char *dquote, t_token **list, int j)
 {
 	char	*word;
 
@@ -59,13 +71,13 @@ t_err	put_dquote_token(const char *dquote, t_token_list **list, int j)
 	return (NO_ERROR);
 }
 
-t_err	dquote_dollar_token(const char *dquote, int *j, t_token_list **list)
+t_err	d_quote_dollars(const char *dquote, int *j, t_token **list)
 {
 	char	*key;
 
 	(*j)++;
 	if (dquote[*j] == '\0' || ft_isspace(dquote[*j]))
-		return (add_literal_dollar(list));
+		return (add_dollar_sign(list));
 	else if (ft_isdigit(dquote[*j]))
 		return ((*j)++ || NO_ERROR);
 	else if (dquote[*j] == '?')
@@ -81,6 +93,7 @@ t_err	dquote_dollar_token(const char *dquote, int *j, t_token_list **list)
 	return (NO_ERROR);
 }
 
+//	copy word literal
 char	*save_word(const char *input)
 {
 	char	*word;

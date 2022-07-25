@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
+/*   Updated: 2022/07/25 10:18:06 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <termios.h>
-#include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "../libft/includes/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <signal.h>
+# include <termios.h>
+# include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "../libft/includes/libft.h"
 
 # define BHRED "\e[1;91m"
 # define BHGRN "\e[1;92m"
@@ -83,20 +95,20 @@ typedef struct s_node
 	char			**arg;
 }		t_node;
 
-typedef struct s_token_list
+typedef struct s_token
 {
-	int					id;
-	t_token_type		type;
-	t_bool				is_parsed;
-	char				*data;
-	struct s_token_list	*next;
-	struct s_token_list	*prev;
-}		t_token_list;
+	int				id;
+	t_token_type	type;
+	t_bool			is_parsed;
+	char			*data;
+	struct s_token	*next;
+	struct s_token	*prev;
+}		t_token;
 
 typedef struct s_curr_input
 {
-	t_token_list	*lexer;
-	t_tree			*tree;
+	t_token	*lexer;
+	t_tree	*tree;
 }		t_curr_input;
 
 typedef struct s_executor
@@ -123,28 +135,27 @@ typedef struct s_envi
 	t_tree			**loc_tree_ptr;
 }		t_envi;
 
-
 t_err	syntax_err_lexer(char token);
 t_err	lexer(char *line, t_curr_input *input, t_envi *info);
-t_err	tokenize(char *input, int *i, t_token_list **list);
-t_err	l_angles(char *input, int *i, t_token_list **list);
-t_err	pipes(char *input, int *i, t_token_list **list);
-t_err	quotes(char *input, int *i, t_token_list **list);
-t_err	words(char *input, int *i, t_token_list **list);
-t_err	spaces(char *input, int *i, t_token_list **list);
+t_err	tokenize(char *input, int *i, t_token **list);
+t_err	lnr_angles(char *input, int *i, t_token **list);
+t_err	pipes_dollars(char *input, int *i, t_token **list);
+t_err	quotes(char *input, int *i, t_token **list);
+t_err	words(char *input, int *i, t_token **list);
+t_err	spaces(char *input, int *i, t_token **list);
 
-t_token_list	*create_token(t_token_type type, char *data);
-t_err	add_new_token(t_token_list **head, t_token_type type, char *data);
-t_err	exitcode_token(const char *dquote, int *j, t_token_list **list);
-t_err	add_literal_dollar(t_token_list **list);
+t_token	*create_token(t_token_type type, char *data);
+t_err	add_new_token(t_token **head, t_token_type type, char *data);
+t_err	exitcode_token(const char *dquote, int *j, t_token **list);
+t_err	add_dollar_sign(t_token **list);
 
 char	*save_word(const char *input);
-t_err	dquote_dollar_token(const char *dquote, int *j, t_token_list **list);
-t_err	put_dquote_token(const char *dquote, t_token_list **list, int j);
-t_err	expand_dquote(const char *dquote, t_token_list **list);
+t_err	d_quote_dollars(const char *dquote, int *j, t_token **list);
+t_err	put_dquote_token(const char *dquote, t_token **list, int j);
+t_err	expand_dquote(const char *dquote, t_token **list);
 t_err	save_quote(const char *line, char **quote, char *input);
 
-void	add_to_tokenlist(t_token_list **head, t_token_list *new);
+void	add_to_tokenlist(t_token **head, t_token *new);
 t_bool	allowed_char(int c, char *not_allowed);
 t_err	get_env_key(const char *str, char **return_key);
 

@@ -1,6 +1,6 @@
 NAME	=	minishell
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I/usr/local/opt/readline/include -Iincludes#-fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror -I/usr/local/opt/readline/include -Iincludes #-fsanitize=address -g3
 LDFLAGS = -L/usr/include -L/usr/local/opt/readline/lib -lreadline
 ARFLAGS	= 	rcs
 

@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokens.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/25 09:24:45 by telee             #+#    #+#             */
+/*   Updated: 2022/07/25 09:24:45 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-t_err	spaces(char *input, int *i, t_token_list **list)
+//	check for spaces in readline
+t_err	spaces(char *input, int *i, t_token **list)
 {
-	t_token_list	*new_token;
-	int				j;
+	t_token	*new_token;
+	int		j;
 
 	j = 0;
 	while (ft_isspace(input[j]))
@@ -12,14 +25,15 @@ t_err	spaces(char *input, int *i, t_token_list **list)
 	if (!new_token)
 		return (MALLOC_FAIL);
 	add_to_tokenlist(list, new_token);
-	*i = *i + j;
+	*i += j;
 	return (NO_ERROR);
 }
 
-t_err	words(char *input, int *i, t_token_list **list)
+//	check for words and save them for parser
+t_err	words(char *input, int *i, t_token **list)
 {
-	t_token_list	*new_token;
-	char			*word;
+	t_token	*new_token;
+	char	*word;
 
 	word = save_word(input);
 	if (!word)
@@ -31,15 +45,16 @@ t_err	words(char *input, int *i, t_token_list **list)
 		return (MALLOC_FAIL);
 	}
 	add_to_tokenlist(list, new_token);
-	*i = *i + ft_strlen(new_token->data);
+	*i += ft_strlen(new_token->data);
 	return (NO_ERROR);
 }
 
-t_err	quotes(char *input, int *i, t_token_list **list)
+//	check for single and double quotes in readline
+t_err	quotes(char *input, int *i, t_token **list)
 {
-	t_token_list	*new_token;
-	char			*quote;
-	t_err			err;
+	t_token	*new_token;
+	char	*quote;
+	t_err	err;
 
 	err = save_quote(input + 1, &quote, input);
 	if (err != NO_ERROR)
@@ -62,11 +77,13 @@ t_err	quotes(char *input, int *i, t_token_list **list)
 	return (NO_ERROR);
 }
 
-t_err	pipes_dollars(char *input, int *i, t_token_list **list)
+//	check for pipes and dollars in readline
+t_err	pipes_dollars(char *input, int *i, t_token **list)
 {
-	t_token_list	*new_token;
+	t_token	*new_token;
 
 	(*i)++;
+	new_token = NULL;
 	if (*input == '|')
 	{
 		if (input[1] == '|')
@@ -76,7 +93,7 @@ t_err	pipes_dollars(char *input, int *i, t_token_list **list)
 	else if (*input == '$')
 	{
 		if (input[1] == '\0' || ft_isspace(input[1]))
-			return (add_literal_dollar(list));
+			return (add_dollar_sign(list));
 		if (ft_isdigit(input[1]))
 			return ((*i)++ | NO_ERROR);
 		if (input[1] == '?')
@@ -90,9 +107,10 @@ t_err	pipes_dollars(char *input, int *i, t_token_list **list)
 	return (NO_ERROR);
 }
 
-t_err	lnr_angles(char *input, int *i, t_token_list **list)
+//	check for left and right angular brackets in readline
+t_err	lnr_angles(char *input, int *i, t_token **list)
 {
-	t_token_list	*new_token;
+	t_token	*new_token;
 
 	if (*input == '<' && input[1] == '<')
 	{
@@ -114,52 +132,4 @@ t_err	lnr_angles(char *input, int *i, t_token_list **list)
 	if (!new_token || !*list)
 		return (MALLOC_FAIL);
 	return (NO_ERROR);
-}
-
-t_err	tokenize(char *input, int *i, t_token_list **list)
-{
-	if (*input == '<' || *input == '>')
-		return (lnr_angles(input, i, list));
-	else if (*input == '|' || *input == '$')
-		return (pipes_dollars(input, i, list));
-	else if (*input == '\'' || *input == '"')
-		return (quotes(input, i, list));
-	else
-		return (words(input, i, list));
-}
-
-t_err	lexer(char *line, t_curr_input *input, t_envi *info)
-{
-	t_token_list	**list;
-	int				i;
-	t_err			err;
-
-	(void)info;
-	i = 0;
-	list = &input->lexer;
-	while (line[i])
-	{
-		if (ft_isspace(line[i]))
-			spaces(&line[i], &i, list);
-		else if (!allowed_char(line[i], "\\;~{}[()^%#&"))
-			return (syntax_err_lexer(line[i]));
-		else
-		{
-			err = tokenize(&line[i], &i, list);
-			if (err != NO_ERROR)
-				return (err);
-		}
-	}
-	return (NO_ERROR);
-}
-
-t_err	syntax_err_lexer(char token)
-{
-	ft_putstr_fd("minishell: syntax error unexpected token '", 2);
-	if (token == (char)DOUBLE_PIPE)
-		ft_putstr_fd("||", 2);
-	else
-		ft_putchar_fd(token, 2);
-	ft_putstr_fd("' (unsupported)\n", 2);
-	return (SYNTAX_ERR);
 }
