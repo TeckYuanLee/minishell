@@ -151,8 +151,8 @@ t_err	add_dollar_sign(t_token **list);
 
 char	*save_word(const char *input);
 t_err	d_quote_dollars(const char *dquote, int *j, t_token **list);
-t_err	put_dquote_token(const char *dquote, t_token **list, int j);
-t_err	expand_dquote(const char *dquote, t_token **list);
+t_err	put_d_quote_token(const char *dquote, t_token **list, int j);
+t_err	expand_d_quote(const char *dquote, t_token **list);
 t_err	save_quote(const char *line, char **quote, char *input);
 
 void	add_to_tokenlist(t_token **head, t_token *new);

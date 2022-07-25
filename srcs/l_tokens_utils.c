@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+//	get env key
 t_err	get_env_key(const char *str, char **return_key)
 {
 	int		i;
@@ -29,6 +30,7 @@ t_err	get_env_key(const char *str, char **return_key)
 	return (NO_ERROR);
 }
 
+//	check if the char is allowed
 t_bool	allowed_char(int c, char *not_allowed)
 {
 	if (ft_strchr(not_allowed, c))
@@ -36,6 +38,7 @@ t_bool	allowed_char(int c, char *not_allowed)
 	return (TRUE);
 }
 
+//	add created token into the tokenlist
 void	add_to_tokenlist(t_token **head, t_token *new)
 {
 	t_token	*node;
@@ -46,20 +49,14 @@ void	add_to_tokenlist(t_token **head, t_token *new)
 	else
 	{
 		node = *head;
-		// printf("yes\n");
-		// printf("current:%s\n", node->data);
-		// printf("next:%s\n", node->next->data);
 		while (node->next)
-		{
-			// printf("moved\n");
-			// printf("%s\n", node->data);
 			node = node->next;
-		}
 		new->prev = node;
 		node->next = new;
 	}
 }
 
+//	to store $?
 t_err	exitcode_token(const char *dquote, int *j, t_token **list)
 {
 	char	*question;

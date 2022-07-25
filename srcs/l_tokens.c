@@ -59,11 +59,11 @@ t_err	quotes(char *input, int *i, t_token **list)
 	err = save_quote(input + 1, &quote, input);
 	if (err != NO_ERROR)
 		return (err);
-	*i = *i + ft_strlen(quote) + 2;
+	*i += ft_strlen(quote) + 2;
 	if (*input == '"')
 	{
 		if (ft_strchr(quote, '$'))
-			return (expand_dquote(quote, list));
+			return (expand_d_quote(quote, list));
 		new_token = create_token(TOK_DQUOTE, quote);
 	}
 	else

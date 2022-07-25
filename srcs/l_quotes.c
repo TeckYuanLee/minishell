@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+//	save quotes for parser use
 t_err	save_quote(const char *line, char **quote, char *input)
 {
 	int	i;
@@ -36,7 +37,8 @@ t_err	save_quote(const char *line, char **quote, char *input)
 	return (NO_ERROR);
 }
 
-t_err	expand_dquote(const char *dquote, t_token **list)
+//	expand double quote when there is a dollar sign
+t_err	expand_d_quote(const char *dquote, t_token **list)
 {
 	int		j;
 
@@ -46,7 +48,7 @@ t_err	expand_dquote(const char *dquote, t_token **list)
 		while (dquote[j] && dquote[j] != '$')
 			j++;
 		if (j > 0)
-			if (put_dquote_token(dquote, list, j) == MALLOC_FAIL)
+			if (put_d_quote_token(dquote, list, j) == MALLOC_FAIL)
 				return (MALLOC_FAIL);
 		if (dquote[j] == '$')
 			if (d_quote_dollars(dquote, &j, list) == MALLOC_FAIL)
@@ -56,7 +58,8 @@ t_err	expand_dquote(const char *dquote, t_token **list)
 	return (NO_ERROR);
 }
 
-t_err	put_dquote_token(const char *dquote, t_token **list, int j)
+//	extract words within double quote and store in tokenlist
+t_err	put_d_quote_token(const char *dquote, t_token **list, int j)
 {
 	char	*word;
 
@@ -71,6 +74,7 @@ t_err	put_dquote_token(const char *dquote, t_token **list, int j)
 	return (NO_ERROR);
 }
 
+//	handle dollar sign during double quote
 t_err	d_quote_dollars(const char *dquote, int *j, t_token **list)
 {
 	char	*key;
@@ -78,9 +82,9 @@ t_err	d_quote_dollars(const char *dquote, int *j, t_token **list)
 	(*j)++;
 	if (dquote[*j] == '\0' || ft_isspace(dquote[*j]))
 		return (add_dollar_sign(list));
-	else if (ft_isdigit(dquote[*j]))
+	if (ft_isdigit(dquote[*j]))
 		return ((*j)++ || NO_ERROR);
-	else if (dquote[*j] == '?')
+	if (dquote[*j] == '?')
 		return (exitcode_token(dquote, ++j, list) == MALLOC_FAIL);
 	if (get_env_key(&dquote[*j], &key) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
