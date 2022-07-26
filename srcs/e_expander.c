@@ -1,46 +1,42 @@
-#include "minishell"
+#include "minishell.h"
 
-t_err	rm_token_type(t_token_list **list, t_envi *info, t_token_type type)
+//	remove token types
+t_err	rm_token_type(t_token **list, t_token_type type)
 {
-	t_token_list	*node;
-	t_token_list	*temp;
+	t_token	*node;
+	t_token	*temp;
 
-	(void)info;
 	node = *list;
-	while (node)
+	while (node && node->type == type)
 	{
 		temp = node->next;
-		if (node->type == type)
-		{
-			if (node->prev)
-				cut_token(node);
-			else
-				cut_head_token(list);
-		}
+		if (node->prev)
+			cut_token(node);
+		else
+			cut_head_token(list);
 		node = temp;
 	}
 	return (NO_ERROR);
 }
 
-t_err	word_join(t_token_list **list, t_envi *info, t_token_type type)
+//	join words for current token and next token(s)
+t_err	word_join(t_token **list)
 {
-	t_err			rv;
-	t_token_list	*node;
+	t_err	err;
+	t_token	*node;
 
-	(void)info;
-	(void)type;
 	node = *list;
 	if (!node)
-		return (printf("[word_join] Empty token_list?\n"));
+		return (EMPTY);
 	while (node->next)
 	{
 		if (node->type == TOK_WORD && node->next->type == TOK_WORD)
 		{
 			if (node->prev == NULL)
-				rv = join_head_token(list, TOK_WORD);
+				err = join_head_token(list, TOK_WORD);
 			else
-				rv = join_token(node, TOK_WORD);
-			if (rv == MALLOC_FAIL)
+				err = join_token(node, TOK_WORD);
+			if (err == MALLOC_FAIL)
 				return (MALLOC_FAIL);
 			node = *list;
 		}
@@ -50,14 +46,14 @@ t_err	word_join(t_token_list **list, t_envi *info, t_token_type type)
 	return (NO_ERROR);
 }
 
-t_err	expand_dollars(t_token_list **list, t_envi *info, t_token_type type)
+//	search list for $ and words, expand this combination
+t_err	expand_dollars(t_token **list, t_envi *info)
 {
-	char			*key;
-	t_token_list	*node;
-	t_token_list	*temp;
-	t_err			rv;
+	char	*key;
+	t_token	*node;
+	t_token	*temp;
+	t_err	err;
 
-	(void)type;
 	key = NULL;
 	node = *list;
 	while (node)
@@ -66,10 +62,10 @@ t_err	expand_dollars(t_token_list **list, t_envi *info, t_token_type type)
 		{
 			temp = node->next->next;
 			if (node->prev)
-				rv = prep_expand_d(&node, info, key);
+				err = prep_expand_d(&node, info, key);
 			else
-				rv = prep_expand_d(list, info, key);
-			if (rv == MALLOC_FAIL)
+				err = prep_expand_d(list, info, key);
+			if (err == MALLOC_FAIL)
 				return (MALLOC_FAIL);
 			node = temp;
 		}
@@ -79,12 +75,11 @@ t_err	expand_dollars(t_token_list **list, t_envi *info, t_token_type type)
 	return (NO_ERROR);
 }
 
-t_err	quotes_to_words(t_token_list **list, t_envi *info, t_token_type type)
+//	change token type from quotes to words
+t_err	quotes_to_words(t_token **list)
 {
-	t_token_list	*node;
+	t_token	*node;
 
-	(void)info;
-	(void)type;
 	node = *list;
 	if (!node)
 		return (EMPTY);
@@ -97,12 +92,12 @@ t_err	quotes_to_words(t_token_list **list, t_envi *info, t_token_type type)
 	return (NO_ERROR);
 }
 
-t_err	rm_double_tokens(t_token_list **list, t_envi *info, t_token_type type)
+//	remove duplicated tokens
+t_err	rm_double_tokens(t_token **list, t_token_type type)
 {
-	t_token_list	*node;
-	t_token_list	*temp;
+	t_token	*node;
+	t_token	*temp;
 
-	(void)info;
 	node = *list;
 	if (!node)
 		return (EMPTY);
@@ -121,31 +116,24 @@ t_err	rm_double_tokens(t_token_list **list, t_envi *info, t_token_type type)
 	return (NO_ERROR);
 }
 
+//	expand tokens
 t_err	expander(char *line, t_curr_input *input, t_envi *info)
 {
-	int							i;
-	t_err						rv;
-	t_token_list				**list;
-	static t_expander_funptr	expander_funptr[4] = {
-	[0] = rm_double_tokens,
-	[1] = quotes_to_words,
-	[2] = expand_dollars,
-	[3] = word_join
-	};
+	t_err	err;
+	t_token	**list;
 
 	(void)line;
-	i = 0;
-	rv = NO_ERROR;
 	list = &input->lexer;
-	while (rv == NO_ERROR && i < 4)
-	{
-		if (!*list)
-			return (EMPTY);
-		rv = expander_funptr[i](list, info, TOK_DOLLAR);
-		i++;
-	}
-	if (rv != NO_ERROR)
-		return (rv);
-	rm_token_type(list, info, TOK_SPACE);
-	return (NO_ERROR);
+	if (!*list)
+		return (EMPTY);
+	err = rm_double_tokens(list, TOK_DOLLAR);
+	if (err == NO_ERROR)
+		err = quotes_to_words(list);
+	if (err == NO_ERROR)
+		err = expand_dollars(list, info);
+	if (err == NO_ERROR)
+		err = word_join(list);
+	if (err == NO_ERROR)
+		return (rm_token_type(list, TOK_SPACE));
+	return (err);
 }

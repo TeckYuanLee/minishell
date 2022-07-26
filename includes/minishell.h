@@ -159,4 +159,11 @@ void	add_to_tokenlist(t_token **head, t_token *new);
 t_bool	allowed_char(int c, char *not_allowed);
 t_err	get_env_key(const char *str, char **return_key);
 
+t_err	expander(char *line, t_curr_input *input, t_envi *info);
+t_err	rm_double_tokens(t_token **list, t_token_type type);
+t_err	quotes_to_words(t_token **list);
+t_err	expand_dollars(t_token **list, t_envi *info);
+t_err	word_join(t_token **list);
+t_err	rm_token_type(t_token **list, t_token_type type);
+
 #endif

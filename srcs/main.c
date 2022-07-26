@@ -74,6 +74,7 @@ void	start_minishell(char **envp)
 		set_term_settings(&termios_p);
 		line = readline("wtf$ ");
 		lexer(line, &curr_input, &envi);
+		expander(line, &curr_input, &envi);
 		tcsetattr(STDIN_FILENO, TCSANOW, &saved);
 		add_history(line);
 		if (!strcmp(line, "exit"))
