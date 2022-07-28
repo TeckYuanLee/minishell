@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-//	check next branch for pipe else return end of list
+//	check next branch for pipe else return null list
 t_token	*next_branch(t_token *list)
 {
 	if (!list)
@@ -36,6 +36,7 @@ t_err	cmd_pass(t_token *list, t_tree **root)
 	return (NO_ERROR);
 }
 
+//	create node for redir signs
 t_err	redir_pass(t_token *list, t_tree **root)
 {
 	char	**split;
@@ -64,7 +65,7 @@ t_err	redir_pass(t_token *list, t_tree **root)
 	return (NO_ERROR);
 }
 
-//	
+//	check if a root node exists
 t_err	root_pass(t_token *list, t_tree **root)
 {
 	(void)list;

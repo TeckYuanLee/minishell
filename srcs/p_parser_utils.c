@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	copy data and store in 2d array if not parsed
 char	**create_cmd_split(t_token *list, int word_count)
 {
 	int		i;
@@ -26,6 +27,7 @@ char	**create_cmd_split(t_token *list, int word_count)
 	return (split);
 }
 
+//	copy data and store in 2d array
 char	**make_split(t_token *list, int word_amount)
 {
 	char	**split;
@@ -35,8 +37,8 @@ char	**make_split(t_token *list, int word_amount)
 	split = ft_calloc(word_amount + 1, sizeof(char *));
 	if (!split)
 		return (NULL);
-	i = 0;
-	while (i < word_amount)
+	i = -1;
+	while (++i < word_amount)
 	{
 		split[i] = ft_strdup(list->data);
 		if (!split[i])
@@ -45,11 +47,11 @@ char	**make_split(t_token *list, int word_amount)
 			return (NULL);
 		}
 		list = list->next;
-		i++;
 	}
 	return (split);
 }
 
+//	add root node for pipe / no pipe node
 t_err	add_tree_node(t_nodetype type, t_tree **tree, char **data)
 {	
 	if (type == PIPE || type == NO_PIPE)
@@ -57,13 +59,14 @@ t_err	add_tree_node(t_nodetype type, t_tree **tree, char **data)
 		if (!data)
 			add_root_node(type, tree);
 		else
-			printf(RED "PIPE/NO_PIPE node should not have data!!\n" RESET);
+			printf(BHRED "PIPE/NO_PIPE node should not have data!!\n" BHWHT);
 	}
 	else
 		add_leaf_node(type, data, *tree);
 	return (NO_ERROR);
 }
 
+//	print syntax error
 t_err	syntax_err(t_token_type type)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
@@ -80,6 +83,7 @@ t_err	syntax_err(t_token_type type)
 	return (SYNTAX_ERR);
 }
 
+//	retrieve token type in string format
 char	*get_token_str(t_token_type type)
 {
 	static char	*strings[12] = {
