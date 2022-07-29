@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	handle in and out redirection
 int	ft_redirs_loop(t_tree *tree, t_executor *exec, t_envi *envi)
 {
 	if (tree->type == REDIR_IN)
@@ -25,6 +26,7 @@ int	ft_redirs_loop(t_tree *tree, t_executor *exec, t_envi *envi)
 	return (0);
 }
 
+//	free env variables
 void	free_envi(t_envi *envi)
 {
 	clean_tree(envi->loc_tree_ptr);
@@ -35,6 +37,7 @@ void	free_envi(t_envi *envi)
 	close(1);
 }
 
+//	file inwards redirection error
 int	ft_redir_in_error(t_tree *tree, t_envi *envi)
 {
 	ft_putstr_fd("minishell: ", 2);
@@ -45,6 +48,7 @@ int	ft_redir_in_error(t_tree *tree, t_envi *envi)
 	return (-1);
 }
 
+//	lnr angles usage error message
 int	ft_redir_error(t_tree *tree, int fd, t_envi *envi)
 {
 	close(fd);
@@ -56,6 +60,7 @@ int	ft_redir_error(t_tree *tree, int fd, t_envi *envi)
 	return (-1);
 }
 
+//	function execution error message
 int	ft_error_exec(int code, int *fd, t_envi *envi)
 {
 	if (fd != 0)

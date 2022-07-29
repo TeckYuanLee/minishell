@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	get path from env
 char	*get_path_env(char *temp)
 {
 	char	*path;
@@ -11,6 +12,7 @@ char	*get_path_env(char *temp)
 	return (path);
 }
 
+//	print env error message
 int	env_error_msg( t_envi *envi)
 {
 	(void)envi;
@@ -20,6 +22,7 @@ int	env_error_msg( t_envi *envi)
 	exit (1);
 }
 
+//	print all env values retrieved by minishell
 int	ms_env(char **argv, t_envi *envi)
 {
 	t_ms_envp	*ms_envp;
@@ -39,6 +42,7 @@ int	ms_env(char **argv, t_envi *envi)
 	return (0);
 }
 
+//	get pwd from env
 char	*ft_get_pwd_env(char *temp)
 {
 	char	*cwd;
@@ -50,6 +54,7 @@ char	*ft_get_pwd_env(char *temp)
 	return (cwd);
 }
 
+//	look for pwd from list of envp
 char	*ft_get_pwd(char **envp)
 {
 	int		i;
@@ -78,6 +83,7 @@ char	*ft_get_pwd(char **envp)
 	return (NULL);
 }
 
+//	check for the char 'n'
 int	ft_check_n(char *str)
 {
 	int	i;
@@ -92,6 +98,7 @@ int	ft_check_n(char *str)
 	return (0);
 }
 
+//	echo readline
 int	ft_print_echo(t_tree *tree, int i, int err)
 {
 	int	j;
@@ -109,6 +116,7 @@ int	ft_print_echo(t_tree *tree, int i, int err)
 	return (err);
 }
 
+//	check if there is '-n' for echo
 int	ft_handle_echo(t_tree *tree, int i, int check, int err)
 {
 	int	ret;
@@ -117,10 +125,9 @@ int	ft_handle_echo(t_tree *tree, int i, int check, int err)
 	while (tree->data[i] && !(ft_strncmp(tree->data[i], "-n", 2)) && err == 0)
 	{
 		check++;
-		ret = ft_check_n(tree->data[i]);
+		ret = ft_check_n(tree->data[i++]);
 		if (ret)
 			break ;
-		i++;
 	}
 	err = ft_print_echo(tree, i, err);
 	if (err == -1)

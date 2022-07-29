@@ -1,16 +1,26 @@
 #include "minishell.h"
 
+//	handle heredoc function
+void	ft_handle_heredoc(t_executor *exec, t_envi *envi)
+{
+	envi->exitcode = ft_wait_on_children(exec, envi);
+	ft_close_fd(exec->fd_out);
+	ft_close_fd(exec->fd_in);
+}
+
+//	close fd in and out
 void	ft_close_all(t_executor *exec)
 {
 	ft_close_fd(exec->fd_out);
 	ft_close_fd(exec->fd_in);
 }
 
+//	simply get next node
 t_tree	*get_next_node(t_tree *tree)
 {
 	if (!tree)
 	{
-		printf(RED "Empty forrest?!?!?\n");
+		printf(BHRED "Empty forrest?!?!?\n");
 		return (NULL);
 	}
 	if (tree->left_node)
@@ -20,6 +30,7 @@ t_tree	*get_next_node(t_tree *tree)
 	return (tree);
 }
 
+//	simply copy fd out into fd in
 int	ft_copy_fd(t_executor *exec)
 {
 	exec->fd_in[0] = exec->fd_out[0];
@@ -27,6 +38,7 @@ int	ft_copy_fd(t_executor *exec)
 	return (0);
 }
 
+//	handle heredoc for pipe when execute index == 0
 int	ft_handle_loop_two(t_envi *envi, t_executor *exec, t_tree *tree)
 {
 	int	i;
@@ -46,6 +58,7 @@ int	ft_handle_loop_two(t_envi *envi, t_executor *exec, t_tree *tree)
 	return (0);
 }
 
+//	handle heredoc for pipe and nopipe
 int	ft_handle_loop(t_envi *envi, t_executor *exec, t_tree *tree)
 {
 	int	i;
@@ -74,6 +87,7 @@ int	ft_handle_loop(t_envi *envi, t_executor *exec, t_tree *tree)
 	return (0);
 }
 
+//	wait for children process to finish
 int	ft_wait_on_children(t_executor *exec, t_envi *envi)
 {
 	int	status;
@@ -94,10 +108,10 @@ int	ft_wait_on_children(t_executor *exec, t_envi *envi)
 	}
 	if (signal_found || exec->builtin_check == 1)
 		return (envi->exitcode);
-	else
-		return (WEXITSTATUS(status));
+	return (WEXITSTATUS(status));
 }
 
+//	start tree roots when type is nopipe
 int	ft_nopipe_start(t_envi *envi, t_tree *tree, t_executor *exec)
 {
 	pid_t	pid;
@@ -121,6 +135,7 @@ int	ft_nopipe_start(t_envi *envi, t_tree *tree, t_executor *exec)
 	return (0);
 }
 
+//	handle loops and building tree roots
 int	ft_handle_tree(t_envi *envi, t_tree *tree, t_executor *exec)
 {
 	int	i;

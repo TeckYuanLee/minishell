@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	when builtin command is at the end of readline
 int	ft_check_builtin_end(t_tree *tree, t_envi *envi, int i)
 {
 	if (!ft_strncmp(tree->data[0], "env", 4))
@@ -15,6 +16,7 @@ int	ft_check_builtin_end(t_tree *tree, t_envi *envi, int i)
 	return (i);
 }
 
+//	check for 'export' command
 void	ft_check_export(t_tree *tree, t_envi *envi)
 {
 	int	exit_code;
@@ -32,6 +34,7 @@ void	ft_check_export(t_tree *tree, t_envi *envi)
 	}
 }
 
+//	execute pwd command
 int	ft_pwd_builtin(t_envi *envi)
 {
 	char	*pwd;
@@ -46,6 +49,7 @@ int	ft_pwd_builtin(t_envi *envi)
 	return (1);
 }
 
+//	execute echo command
 int	ft_builtin_echo(t_envi *envi, t_tree *tree)
 {
 	int	i;
@@ -66,6 +70,7 @@ int	ft_builtin_echo(t_envi *envi, t_tree *tree)
 	return (1);
 }
 
+//	check for builtin commands
 int	ft_check_builtin(t_tree *tree, t_envi *envi)
 {
 	int	i;

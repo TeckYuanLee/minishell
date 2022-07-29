@@ -135,6 +135,12 @@ typedef struct s_envi
 	t_tree			**loc_tree_ptr;
 }		t_envi;
 
+typedef struct s_hard_strings
+{
+	char	*pwd;
+	char	*oldpwd;
+}			t_hard_strings;
+
 t_err	syntax_err_lexer(char token);
 t_err	lexer(char *line, t_curr_input *input, t_envi *info);
 t_err	tokenize(char *input, int *i, t_token **list);

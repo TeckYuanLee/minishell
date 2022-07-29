@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	
 void	ft_helper_pipe_inbetween(t_tree *tree, t_envi *envi, t_executor *exec)
 {
 	while (tree->left_node)
@@ -26,6 +27,7 @@ void	ft_helper_pipe_inbetween(t_tree *tree, t_envi *envi, t_executor *exec)
 	}
 }
 
+//	when pipe is in the middle of readline
 int	ft_pipe_inbetween(t_envi *envi, t_tree *tree, t_executor *exec)
 {
 	pid_t	pid;
@@ -51,6 +53,7 @@ int	ft_pipe_inbetween(t_envi *envi, t_tree *tree, t_executor *exec)
 	return (0);
 }
 
+//	check for child process's builtin
 int	ft_check_builtin_child(t_tree *tree, t_envi *envi, t_executor *exec)
 {
 	int	i;
@@ -78,6 +81,7 @@ int	ft_check_builtin_child(t_tree *tree, t_envi *envi, t_executor *exec)
 		return (i);
 }
 
+//	WIFSIGNALED & WTERMSIG
 int	ft_pipe_start_util(t_tree *tree, pid_t pid)
 {
 	int	status;
@@ -92,6 +96,7 @@ int	ft_pipe_start_util(t_tree *tree, pid_t pid)
 	return (0);
 }
 
+//	do pipe command, builtin, and get path
 void	ft_helper_pipe_start(t_tree *tree, t_envi *envi, t_executor *exec)
 {
 	while (tree->left_node)
@@ -120,6 +125,7 @@ void	ft_helper_pipe_start(t_tree *tree, t_envi *envi, t_executor *exec)
 	}
 }
 
+//	start the pipe command
 int	ft_pipe_start(t_envi *envi, t_tree *tree, t_executor *exec)
 {
 	pid_t	pid;
