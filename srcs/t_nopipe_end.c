@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	close the nopipe instructions
 void	ft_helper_nopipe_end(t_tree *tree, t_envi *envi, t_executor *exec)
 {
 	if (!tree->data[0] || !ft_strncmp(tree->data[0], "", 1))
@@ -16,6 +17,7 @@ void	ft_helper_nopipe_end(t_tree *tree, t_envi *envi, t_executor *exec)
 	ft_get_paths(envi, tree->data);
 }
 
+//	wait for signal at end of nopipe instructions
 int	ft_nopipe_end_util(t_tree *tree, pid_t pid, int status)
 {
 	if (tree->left_node && tree->left_node->type == HERE_DOC)
@@ -27,6 +29,7 @@ int	ft_nopipe_end_util(t_tree *tree, pid_t pid, int status)
 	return (0);
 }
 
+//	child process of nopipe
 void	ft_nopipe_child(t_tree *tree, t_envi *envi, t_executor *exec)
 {
 	while (tree->left_node)
@@ -38,6 +41,7 @@ void	ft_nopipe_child(t_tree *tree, t_envi *envi, t_executor *exec)
 		ft_helper_nopipe_end(tree, envi, exec);
 }
 
+//	heredoc exists in previous node
 int	prev_heredoc_exists(t_tree *tree)
 {
 	if (!tree)
@@ -50,6 +54,7 @@ int	prev_heredoc_exists(t_tree *tree)
 	return (1);
 }
 
+//	process the end of nopipe instructions
 int	ft_nopipe_end(t_tree *tree, t_envi *envi, t_executor *exec)
 {
 	pid_t	pid;

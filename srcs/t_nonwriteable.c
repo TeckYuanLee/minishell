@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	handle exit command
 int	ft_exit(t_tree *tree, t_envi *envi, t_executor *exec)
 {
 	int	i;
@@ -19,6 +20,7 @@ int	ft_exit(t_tree *tree, t_envi *envi, t_executor *exec)
 	return (envi->exitcode);
 }
 
+//	handle unset command
 int	ms_unset(char **argv, t_envi *envi)
 {
 	int	i;
@@ -45,6 +47,7 @@ int	ms_unset(char **argv, t_envi *envi)
 	return (exitcode);
 }
 
+//	handle cd command
 t_err	ms_cd(char **argv, t_envi *envi)
 {
 	if (!argv)
@@ -62,6 +65,7 @@ t_err	ms_cd(char **argv, t_envi *envi)
 	return (NO_ERROR);
 }
 
+//	handle export command
 int	ms_export(char **argv, t_envi *envi)
 {
 	int		i;
@@ -90,6 +94,7 @@ int	ms_export(char **argv, t_envi *envi)
 	return (exitcode);
 }
 
+//	check for export, cd, unset, exit
 int	ft_start_builtin(t_tree *tree, t_envi *envi, t_executor *exec)
 {
 	if (!ft_strncmp(tree->data[0], "export", 7) && tree->data[1])
@@ -115,6 +120,7 @@ int	ft_start_builtin(t_tree *tree, t_envi *envi, t_executor *exec)
 	return (0);
 }
 
+//	if command and no data to write, return
 int	ft_check_nonwriteable(t_tree *tree, t_envi *envi, t_executor *exec)
 {
 	exec->builtin_check = 0;
@@ -132,6 +138,7 @@ int	ft_check_nonwriteable(t_tree *tree, t_envi *envi, t_executor *exec)
 	return (0);
 }
 
+//	restore sigint and sigquit to default
 void	restore_signals(void)
 {
 	struct sigaction	sig;
@@ -142,6 +149,7 @@ void	restore_signals(void)
 	sigaction(SIGQUIT, &sig, NULL);
 }
 
+//	process sigint and sigquit
 void	process_signal(int sig, int *exitcode, int fd[2])
 {
 	if (sig == SIGINT)

@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	if key doesn't exist, add to envp, else update value
 t_err	add_value_to_envp(t_ms_envp **ms_envp, char *key, char *value)
 {
 	if (!key_exists(key, *ms_envp))
@@ -16,6 +17,7 @@ t_err	add_value_to_envp(t_ms_envp **ms_envp, char *key, char *value)
 	return (NO_ERROR);
 }
 
+//	join old value with value
 t_err	get_plusis_value(char *value, char *key, t_ms_envp *ms_envp, \
 		char **joined)
 {
@@ -24,11 +26,7 @@ t_err	get_plusis_value(char *value, char *key, t_ms_envp *ms_envp, \
 
 	temp = NULL;
 	if (get_env_value(ms_envp, key, &old_value) == MALLOC_FAIL)
-	{
-		free(key);
-		free(value);
-		return (MALLOC_FAIL);
-	}
+		return (MALLOC_FAIL | free(key) | free(value));
 	if (old_value && value)
 	{
 		temp = ft_strjoin(old_value, value);
@@ -43,6 +41,7 @@ t_err	get_plusis_value(char *value, char *key, t_ms_envp *ms_envp, \
 	return (NO_ERROR);
 }
 
+//	extract the value of envp
 char	*point_to_value(char *str)
 {
 	str = ft_strchr(str, '=');
@@ -51,6 +50,7 @@ char	*point_to_value(char *str)
 	return (str);
 }
 
+//	extract value and add to list of envp
 t_err	parse_and_add_to_envp(char *str, t_ms_envp **ms_envp, char *key)
 {
 	char	*value;
@@ -60,10 +60,7 @@ t_err	parse_and_add_to_envp(char *str, t_ms_envp **ms_envp, char *key)
 	{
 		value = ft_strdup(point_to_value(str));
 		if (!value)
-		{
-			free(key);
-			return (MALLOC_FAIL);
-		}
+			return (MALLOC_FAIL | free(key));
 	}
 	if (str[ft_strlen(key)] == '+')
 		if (get_plusis_value(value, key, *ms_envp, &value) == MALLOC_FAIL)
@@ -73,6 +70,7 @@ t_err	parse_and_add_to_envp(char *str, t_ms_envp **ms_envp, char *key)
 	return (NO_ERROR);
 }
 
+//	print error message for export command
 int	export_error_msg(char *str)
 {
 	if (str[0] == '-' && str[1] != '\0')
@@ -89,6 +87,7 @@ int	export_error_msg(char *str)
 	return (1);
 }
 
+//	identify if it is an export key
 int	is_export_key(char *key)
 {
 	size_t	i;
@@ -105,6 +104,7 @@ int	is_export_key(char *key)
 	return (0);
 }
 
+//	copy str to return key
 t_err	export_get_env_key(const char *str, char **return_key)
 {
 	int		i;
@@ -124,6 +124,7 @@ t_err	export_get_env_key(const char *str, char **return_key)
 	return (NO_ERROR);
 }
 
+//	check if export is ready
 t_err	single_export(t_ms_envp *ms_envp)
 {
 	int	arr_len;
@@ -136,13 +137,8 @@ t_err	single_export(t_ms_envp *ms_envp)
 	if (!arr)
 		return (MALLOC_FAIL);
 	while (not_ready(arr, arr_len))
-	{
 		if (print_smallest_and_mark_arr(ms_envp, arr, arr_len) == MALLOC_FAIL)
-		{
-			free(arr);
-			return (MALLOC_FAIL);
-		}
-	}
+			return (MALLOC_FAIL | free(arr));
 	free(arr);
 	return (0);
 }

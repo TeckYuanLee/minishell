@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	exit requires numeric argument
 void	ft_exit_numeric(t_tree *tree, t_envi *envi, t_executor *exec)
 {
 	ft_putstr_fd("exit\n", 2);
@@ -11,20 +12,19 @@ void	ft_exit_numeric(t_tree *tree, t_envi *envi, t_executor *exec)
 	exit(envi->exitcode);
 }
 
+//	check for alphabets or single quotes
 int	ft_check_isalpha(char *str)
 {
 	int	i;
 
-	i = 0;
-	while (str[i])
-	{
+	i = -1;
+	while (str[++i])
 		if (ft_isalpha(str[i]) || str[i] == 39)
 			return (1);
-		i++;
-	}
 	return (0);
 }
 
+//	check for + and - signs
 int	ft_check_minus_plus(char *str)
 {
 	int	i;
@@ -43,6 +43,7 @@ int	ft_check_minus_plus(char *str)
 	return (check);
 }
 
+//	check if exit has multiple arguments
 void	ft_exit_multi_arg(t_tree *tree, t_envi *envi, int i, t_executor *exec)
 {
 	int	check;
@@ -62,6 +63,7 @@ void	ft_exit_multi_arg(t_tree *tree, t_envi *envi, int i, t_executor *exec)
 	}
 }
 
+//	free envi
 void	ft_exit_free(t_tree *tree, t_executor *exec, t_envi *envi)
 {
 	(void)tree;

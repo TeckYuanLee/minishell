@@ -83,7 +83,7 @@ t_err	d_quote_dollars(const char *dquote, int *j, t_token **list)
 	if (dquote[*j] == '\0' || ft_isspace(dquote[*j]))
 		return (add_dollar_sign(list));
 	if (ft_isdigit(dquote[*j]))
-		return ((*j)++ || NO_ERROR);
+		return ((*j)++ | NO_ERROR);
 	if (dquote[*j] == '?')
 		return (exitcode_token(dquote, ++j, list) == MALLOC_FAIL);
 	if (get_env_key(&dquote[*j], &key) == MALLOC_FAIL)

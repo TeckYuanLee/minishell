@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	skip whitespaces
 static int	ft_skip(const char *str, int i)
 {
 	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || \
@@ -10,6 +11,7 @@ static int	ft_skip(const char *str, int i)
 	return (i);
 }
 
+//	handle one argument exit with plus sign
 void	ft_exit_one_arg_plus(t_tree *tree, t_envi *envi, t_executor *exec)
 {
 	envi->exitcode = (ft_atoi_exit(tree->data[1]) % 256);
@@ -18,6 +20,7 @@ void	ft_exit_one_arg_plus(t_tree *tree, t_envi *envi, t_executor *exec)
 	exit(envi->exitcode);
 }
 
+//	long long atoi for exit command
 long long	ft_atoi_exit(const char *str)
 {
 	long long	value;
@@ -37,6 +40,7 @@ long long	ft_atoi_exit(const char *str)
 	return (value * sign);
 }
 
+//	check for + sign
 int	ft_isplus(char *str)
 {
 	if (str[0] == '+')
@@ -44,6 +48,7 @@ int	ft_isplus(char *str)
 	return (0);
 }
 
+//	exit if data is long long max, else if range greater long long max
 void	ft_exit_one_range(t_tree *tree, t_envi *envi, t_executor *exec)
 {
 	unsigned long long	range;
@@ -55,20 +60,19 @@ void	ft_exit_one_range(t_tree *tree, t_envi *envi, t_executor *exec)
 		ft_exit_numeric(tree, envi, exec);
 }
 
+//	check for digits within the string
 int	ft_check_isdigit(char *str)
 {
 	int	i;
 
-	i = 0;
-	while (str[i])
-	{
+	i = -1;
+	while (str[++i])
 		if (ft_isdigit(str[i]))
 			return (1);
-		i++;
-	}
 	return (0);
 }
 
+//	handle exit with only one argument
 void	ft_exit_one_arg(t_tree *tree, t_envi *envi, int i, t_executor *exec)
 {
 	int	check;

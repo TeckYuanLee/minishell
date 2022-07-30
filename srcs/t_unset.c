@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	initialize pwd strings
 t_hard_strings	init_strings(void)
 {
 	t_hard_strings	strings;
@@ -15,6 +16,7 @@ t_hard_strings	init_strings(void)
 	return (strings);
 }
 
+//	copy path contents to parse path
 int	add_path_chunk(char parse_path[512], char *path)
 {
 	int	i;
@@ -24,20 +26,14 @@ int	add_path_chunk(char parse_path[512], char *path)
 	j = 0;
 	while (i < 1024 && parse_path[i])
 		i++;
-	if (i != 0 && parse_path[i - 1] != '/')
-	{
-		parse_path[i] = '/';
-		i++;
-	}
+	if (i && parse_path[i - 1] != '/')
+		parse_path[i++] = '/';
 	while (path[j] && path[j] != '/')
-	{
-		parse_path[i] = path[j];
-		i++;
-		j++;
-	}
+		parse_path[i++] = path[j++];
 	return (j);
 }
 
+//	remove parse path contents
 void	remove_dir(char parse_path[512])
 {
 	int	i;
@@ -46,21 +42,19 @@ void	remove_dir(char parse_path[512])
 	while (i < 255 && parse_path[i])
 		i++;
 	while (parse_path[i] != '/')
-	{
-		parse_path[i] = '\0';
-		i--;
-	}
+		parse_path[i--] = '\0';
 	parse_path[i] = '\0';
 }
 
+//	if key is different, copy, else remove key
 void	copy_or_rm(t_ms_envp **envp, char *key, t_ms_envp **new_envp)
 {
 	int	i;
 	int	j;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	while ((*envp)[i].key)
+	while ((*envp)[++i].key)
 	{
 		if (ft_strncmp((*envp)[i].key, key, ft_strlen(key) + 1))
 		{
@@ -73,10 +67,10 @@ void	copy_or_rm(t_ms_envp **envp, char *key, t_ms_envp **new_envp)
 			free((*envp)[i].key);
 			free((*envp)[i].value);
 		}
-		i++;
 	}
 }
 
+//	copy or remove key from env
 t_err	rm_from_envp(char *key, t_ms_envp **envp)
 {
 	t_ms_envp	*new_envp;
@@ -94,6 +88,7 @@ t_err	rm_from_envp(char *key, t_ms_envp **envp)
 	return (NO_ERROR);
 }
 
+//	print error message for unset
 int	unset_error_msg(char *str)
 {
 	if (str[0] == '-' && str[1] != '\0')
@@ -110,6 +105,7 @@ int	unset_error_msg(char *str)
 	return (1);
 }
 
+//	check for unset key
 int	is_unset_key(char *key)
 {
 	size_t	i;

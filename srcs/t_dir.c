@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	execute directory if it exists
 int	ft_is_dir(char **envp, char **arg, t_envi *envi, char **paths)
 {
 	struct stat	f;
@@ -25,6 +26,7 @@ int	ft_is_dir(char **envp, char **arg, t_envi *envi, char **paths)
 	return (0);
 }
 
+//	check if directory or file
 void	ft_dir_exit(char **arg, t_envi *envi, char **paths)
 {
 	ft_putstr_fd("minishell: ", 2);
@@ -35,20 +37,19 @@ void	ft_dir_exit(char **arg, t_envi *envi, char **paths)
 	exit(126);
 }
 
+//	look for alphabets
 int	ft_parse_dir_loop(char *str)
 {
 	int	i;
 
-	i = 0;
-	while (str[i])
-	{
+	i = -1;
+	while (str[++i])
 		if (ft_isalpha(str[i]))
 			return (0);
-		i++;
-	}
 	return (1);
 }
 
+//	error message for command not found
 void	ft_cmd_exit(char **arg, t_envi *envi, char **paths)
 {
 	(void)paths;
@@ -59,19 +60,15 @@ void	ft_cmd_exit(char **arg, t_envi *envi, char **paths)
 	exit(127);
 }
 
+//	free all paths
 void	*ft_free_paths(char **first, char **second, char *third)
 {
 	int	i;
 
 	i = 0;
 	if (first[i])
-	{
 		while (first[i])
-		{
-			free(first[i]);
-			i++;
-		}
-	}
+			free(first[i++]);
 	free (first);
 	first = NULL;
 	if (third)
@@ -81,6 +78,7 @@ void	*ft_free_paths(char **first, char **second, char *third)
 	return (NULL);
 }
 
+//	execute command
 int	ft_exec_cmd(char *path, char **envp, char **arg, t_envi *envi)
 {
 	if (execve(path, arg, envp) < 0)
@@ -88,6 +86,7 @@ int	ft_exec_cmd(char *path, char **envp, char **arg, t_envi *envi)
 	return (0);
 }
 
+//	check if have permission to execute
 int	ft_check_access(char *path, char **envp, char **arg, t_envi *envi)
 {
 	int	check;
@@ -104,6 +103,7 @@ int	ft_check_access(char *path, char **envp, char **arg, t_envi *envi)
 	return (check);
 }
 
+//	return information on file status
 char	*ft_search_bins(char **exec_paths)
 {
 	struct stat	stat;
@@ -119,6 +119,7 @@ char	*ft_search_bins(char **exec_paths)
 	return (NULL);
 }
 
+//	make edits to the paths
 char	**ft_edit_paths(char **paths, char **arg, int i)
 {
 	char	**exec_paths;

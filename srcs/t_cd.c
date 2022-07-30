@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	replace values of both old and new pwd
 t_err	update_both_pwds(t_envi *envi, char *curr_pwd, char *new_pwd)
 {
 	t_hard_strings	strings;
@@ -13,10 +14,8 @@ t_err	update_both_pwds(t_envi *envi, char *curr_pwd, char *new_pwd)
 		free(strings.pwd);
 	}
 	else
-	{
 		if (add_to_ms_envp(strings.pwd, new_pwd, &envi->ms_envp) == MALLOC_FAIL)
 			return (MALLOC_FAIL);
-	}
 	if (key_exists("OLDPWD", envi->ms_envp))
 	{
 		replace_value(strings.oldpwd, curr_pwd, envi->ms_envp);
@@ -28,6 +27,7 @@ t_err	update_both_pwds(t_envi *envi, char *curr_pwd, char *new_pwd)
 	return (NO_ERROR);
 }
 
+//	combine old pwd with path
 char	*parse_path(char *path, char *old_pwd)
 {
 	int			i;
@@ -50,11 +50,12 @@ char	*parse_path(char *path, char *old_pwd)
 		else if (ft_isprint(path[i]))
 			i += add_path_chunk(parse_path, &path[i]);
 		else
-			printf(RED "[parse_path] something rly wrong..." RESET);
+			printf(BHRED "[parse_path] something rly wrong..." BHWHT);
 	}
 	return (ft_strdup(parse_path));
 }
 
+//	update old pwd with current pwd
 t_err	only_update_oldpwd(t_envi *envi, char *curr_pwd)
 {
 	char	*key;
@@ -68,6 +69,7 @@ t_err	only_update_oldpwd(t_envi *envi, char *curr_pwd)
 	return (add_to_ms_envp(key, curr_pwd, &envi->ms_envp));
 }
 
+//	join two strings together
 int	add_string2(char *perror_str, char *string2, int rv)
 {
 	char	*temp;
@@ -86,6 +88,7 @@ int	add_string2(char *perror_str, char *string2, int rv)
 	return (rv);
 }
 
+//	update current pwd and new pwd values
 t_err	update_pwd_oldpwd(char *path, t_envi *envi)
 {
 	char	*new_pwd;
@@ -108,6 +111,7 @@ t_err	update_pwd_oldpwd(char *path, t_envi *envi)
 	return (NO_ERROR);
 }
 
+//	execute perror
 int	ms_perror(char *perror_str, char *string, char *string2, int rv)
 {
 	char	*temp;

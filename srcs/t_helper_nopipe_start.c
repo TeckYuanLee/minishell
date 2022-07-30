@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	check for dir input commands
 int	ft_parse_dir(char **envp, char **arg, t_envi *envi, char **paths)
 {
 	if (!ft_strncmp(arg[0], ".", 2))
@@ -25,6 +26,7 @@ int	ft_parse_dir(char **envp, char **arg, t_envi *envi, char **paths)
 	return (0);
 }
 
+//	check access and execute command
 int	ft_acces_and_exec(t_envi *envi, char **arg, char **paths)
 {
 	char	**exec_paths;
@@ -52,6 +54,7 @@ int	ft_acces_and_exec(t_envi *envi, char **arg, char **paths)
 	return (0);
 }
 
+//	find path from env
 char	*find_path_env(char **envp, t_envi *envi)
 {
 	int		i;
@@ -76,6 +79,7 @@ char	*find_path_env(char **envp, t_envi *envi)
 	return (NULL);
 }
 
+//	get path from env then access and execute
 int	ft_get_paths(t_envi *envi, char **arg)
 {
 	char	*path;
@@ -96,6 +100,7 @@ int	ft_get_paths(t_envi *envi, char **arg)
 	return (0);
 }
 
+//	start of nopipe instructions
 void	ft_helper_nopipe_start(t_tree *tree, t_envi *envi)
 {
 	if (!tree->data[0] || !ft_strncmp(tree->data[0], "", 1))
