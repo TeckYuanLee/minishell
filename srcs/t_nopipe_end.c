@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 //	close the nopipe instructions
-void	ft_helper_nopipe_end(t_tree *tree, t_envi *envi, t_executor *exec)
+void	ft_helper_nopipe_end(t_tree *tree, t_env *envi, t_exec *exec)
 {
 	if (!tree->data[0] || !ft_strncmp(tree->data[0], "", 1))
 	{
@@ -30,7 +30,7 @@ int	ft_nopipe_end_util(t_tree *tree, pid_t pid, int status)
 }
 
 //	child process of nopipe
-void	ft_nopipe_child(t_tree *tree, t_envi *envi, t_executor *exec)
+void	ft_nopipe_child(t_tree *tree, t_env *envi, t_exec *exec)
 {
 	while (tree->left_node)
 	{
@@ -46,7 +46,7 @@ int	prev_heredoc_exists(t_tree *tree)
 {
 	if (!tree)
 		return (0);
-	tree = tree->prev_node;
+	tree = tree->up_node;
 	while (tree && tree->type != HERE_DOC)
 		tree = tree->left_node;
 	if (!tree)
@@ -55,7 +55,7 @@ int	prev_heredoc_exists(t_tree *tree)
 }
 
 //	process the end of nopipe instructions
-int	ft_nopipe_end(t_tree *tree, t_envi *envi, t_executor *exec)
+int	ft_nopipe_end(t_tree *tree, t_env *envi, t_exec *exec)
 {
 	pid_t	pid;
 	int		status;

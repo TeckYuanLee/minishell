@@ -1,19 +1,23 @@
 #include "minishell.h"
 
 //	remove token types
-t_err	rm_token_type(t_token **list, t_token_type type)
+t_err	rm_token_type(t_token **list, t_token_t type)
 {
 	t_token	*node;
 	t_token	*temp;
 
 	node = *list;
-	while (node && node->type == type)
+	// printf("%d\n", node->type);
+	while (node)
 	{
 		temp = node->next;
-		if (node->prev)
-			cut_token(node);
-		else
-			cut_head_token(list);
+		if (node->type == type)
+		{
+			if (node->prev)
+				cut_token(node);
+			else
+				cut_head_token(list);
+		}
 		node = temp;
 	}
 	return (NO_ERROR);
@@ -47,7 +51,7 @@ t_err	word_join(t_token **list)
 }
 
 //	search list for $ and words, expand this combination
-t_err	expand_dollars(t_token **list, t_envi *info)
+t_err	expand_dollars(t_token **list, t_env *info)
 {
 	char	*key;
 	t_token	*node;
@@ -93,7 +97,7 @@ t_err	quotes_to_words(t_token **list)
 }
 
 //	remove duplicated tokens
-t_err	rm_double_tokens(t_token **list, t_token_type type)
+t_err	rm_double_tokens(t_token **list, t_token_t type)
 {
 	t_token	*node;
 	t_token	*temp;
@@ -117,7 +121,7 @@ t_err	rm_double_tokens(t_token **list, t_token_type type)
 }
 
 //	expand tokens
-t_err	expander(char *line, t_curr_input *input, t_envi *info)
+t_err	expander(char *line, t_input *input, t_env *info)
 {
 	t_err	err;
 	t_token	**list;
@@ -133,7 +137,14 @@ t_err	expander(char *line, t_curr_input *input, t_envi *info)
 		err = expand_dollars(list, info);
 	if (err == NO_ERROR)
 		err = word_join(list);
+	// while (*list)
+	// {
+	// 	printf("expander %d  %s  \n", (*list)->type, (*list)->data);
+	// 	*list = (*list)->next;
+	// }
+	// list = &input->lexer;
 	if (err == NO_ERROR)
 		return (rm_token_type(list, TOK_SPACE));
+	// printf("Yesss\n");
 	return (err);
 }

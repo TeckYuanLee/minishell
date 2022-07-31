@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 //	handle exit command
-int	ft_exit(t_tree *tree, t_envi *envi, t_executor *exec)
+int	ft_exit(t_tree *tree, t_env *envi, t_exec *exec)
 {
 	int	i;
 
@@ -21,13 +21,13 @@ int	ft_exit(t_tree *tree, t_envi *envi, t_executor *exec)
 }
 
 //	handle unset command
-int	ms_unset(char **argv, t_envi *envi)
+int	ms_unset(char **argv, t_env *envi)
 {
 	int	i;
 	int	exitcode;
 
 	if (!argv)
-		return (printf(RED "[ms_unset] NULL-pointing argv..\n" RESET));
+		return (printf(BHRED "[ms_unset] NULL-pointing argv..\n" BHWHT));
 	if (!argv[1])
 		return (0);
 	exitcode = 0;
@@ -48,12 +48,12 @@ int	ms_unset(char **argv, t_envi *envi)
 }
 
 //	handle cd command
-t_err	ms_cd(char **argv, t_envi *envi)
+t_err	ms_cd(char **argv, t_env *envi)
 {
 	if (!argv)
-		return (printf(RED "[ms_cd] NULL-pointing argv..\n" RESET));
+		return (printf(BHRED "[ms_cd] NULL-pointing argv..\n" BHWHT));
 	if (!*argv)
-		return (printf(RED "[ms_cd] empty argv..\n" RESET));
+		return (printf(BHRED "[ms_cd] empty argv..\n" BHWHT));
 	if (!argv[1])
 		return (0);
 	if (chdir(argv[1]))
@@ -66,7 +66,7 @@ t_err	ms_cd(char **argv, t_envi *envi)
 }
 
 //	handle export command
-int	ms_export(char **argv, t_envi *envi)
+int	ms_export(char **argv, t_env *envi)
 {
 	int		i;
 	char	*key;
@@ -95,7 +95,7 @@ int	ms_export(char **argv, t_envi *envi)
 }
 
 //	check for export, cd, unset, exit
-int	ft_start_builtin(t_tree *tree, t_envi *envi, t_executor *exec)
+int	ft_start_builtin(t_tree *tree, t_env *envi, t_exec *exec)
 {
 	if (!ft_strncmp(tree->data[0], "export", 7) && tree->data[1])
 	{
@@ -121,7 +121,7 @@ int	ft_start_builtin(t_tree *tree, t_envi *envi, t_executor *exec)
 }
 
 //	if command and no data to write, return
-int	ft_check_nonwriteable(t_tree *tree, t_envi *envi, t_executor *exec)
+int	ft_check_nonwriteable(t_tree *tree, t_env *envi, t_exec *exec)
 {
 	exec->builtin_check = 0;
 	while (tree)

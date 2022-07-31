@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 //	execute directory if it exists
-int	ft_is_dir(char **envp, char **arg, t_envi *envi, char **paths)
+int	ft_is_dir(char **envp, char **arg, t_env *envi, char **paths)
 {
 	struct stat	f;
 	int			flag;
@@ -19,7 +19,7 @@ int	ft_is_dir(char **envp, char **arg, t_envi *envi, char **paths)
 	}
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(arg[0], 2);
-	ft_putstr_fd(": no such file or directory\n", 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
 	ft_free_paths(paths, NULL, NULL);
 	free_envi(envi);
 	exit(127);
@@ -27,11 +27,11 @@ int	ft_is_dir(char **envp, char **arg, t_envi *envi, char **paths)
 }
 
 //	check if directory or file
-void	ft_dir_exit(char **arg, t_envi *envi, char **paths)
+void	ft_dir_exit(char **arg, t_env *envi, char **paths)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(arg[0], 2);
-	ft_putstr_fd(": is a directory\n", 2);
+	ft_putstr_fd(": Is a directory\n", 2);
 	free_envi(envi);
 	ft_free_paths(paths, NULL, NULL);
 	exit(126);
@@ -50,7 +50,7 @@ int	ft_parse_dir_loop(char *str)
 }
 
 //	error message for command not found
-void	ft_cmd_exit(char **arg, t_envi *envi, char **paths)
+void	ft_cmd_exit(char **arg, t_env *envi, char **paths)
 {
 	(void)paths;
 	ft_putstr_fd("minishell: ", 2);
@@ -79,7 +79,7 @@ void	*ft_free_paths(char **first, char **second, char *third)
 }
 
 //	execute command
-int	ft_exec_cmd(char *path, char **envp, char **arg, t_envi *envi)
+int	ft_exec_cmd(char *path, char **envp, char **arg, t_env *envi)
 {
 	if (execve(path, arg, envp) < 0)
 		ft_error_exec(4, 0, envi);
@@ -87,7 +87,7 @@ int	ft_exec_cmd(char *path, char **envp, char **arg, t_envi *envi)
 }
 
 //	check if have permission to execute
-int	ft_check_access(char *path, char **envp, char **arg, t_envi *envi)
+int	ft_check_access(char *path, char **envp, char **arg, t_env *envi)
 {
 	int	check;
 

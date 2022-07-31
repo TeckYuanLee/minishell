@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 //	handle heredoc function
-void	ft_handle_heredoc(t_executor *exec, t_envi *envi)
+void	ft_handle_heredoc(t_exec *exec, t_env *envi)
 {
 	envi->exitcode = ft_wait_on_children(exec, envi);
 	ft_close_fd(exec->fd_out);
@@ -9,7 +9,7 @@ void	ft_handle_heredoc(t_executor *exec, t_envi *envi)
 }
 
 //	close fd in and out
-void	ft_close_all(t_executor *exec)
+void	ft_close_all(t_exec *exec)
 {
 	ft_close_fd(exec->fd_out);
 	ft_close_fd(exec->fd_in);
@@ -30,8 +30,15 @@ t_tree	*get_next_node(t_tree *tree)
 	return (tree);
 }
 
+int	ft_close_fd(int fd[2])
+{
+	close(fd[0]);
+	close(fd[1]);
+	return (0);
+}
+
 //	simply copy fd out into fd in
-int	ft_copy_fd(t_executor *exec)
+int	ft_copy_fd(t_exec *exec)
 {
 	exec->fd_in[0] = exec->fd_out[0];
 	exec->fd_in[1] = exec->fd_out[1];
@@ -39,7 +46,7 @@ int	ft_copy_fd(t_executor *exec)
 }
 
 //	handle heredoc for pipe when execute index == 0
-int	ft_handle_loop_two(t_envi *envi, t_executor *exec, t_tree *tree)
+int	ft_handle_loop_two(t_env *envi, t_exec *exec, t_tree *tree)
 {
 	int	i;
 
@@ -59,7 +66,7 @@ int	ft_handle_loop_two(t_envi *envi, t_executor *exec, t_tree *tree)
 }
 
 //	handle heredoc for pipe and nopipe
-int	ft_handle_loop(t_envi *envi, t_executor *exec, t_tree *tree)
+int	ft_handle_loop(t_env *envi, t_exec *exec, t_tree *tree)
 {
 	int	i;
 
@@ -88,7 +95,7 @@ int	ft_handle_loop(t_envi *envi, t_executor *exec, t_tree *tree)
 }
 
 //	wait for children process to finish
-int	ft_wait_on_children(t_executor *exec, t_envi *envi)
+int	ft_wait_on_children(t_exec *exec, t_env *envi)
 {
 	int	status;
 	int	signal_found;
@@ -112,7 +119,7 @@ int	ft_wait_on_children(t_executor *exec, t_envi *envi)
 }
 
 //	start tree roots when type is nopipe
-int	ft_nopipe_start(t_envi *envi, t_tree *tree, t_executor *exec)
+int	ft_nopipe_start(t_env *envi, t_tree *tree, t_exec *exec)
 {
 	pid_t	pid;
 
@@ -136,7 +143,7 @@ int	ft_nopipe_start(t_envi *envi, t_tree *tree, t_executor *exec)
 }
 
 //	handle loops and building tree roots
-int	ft_handle_tree(t_envi *envi, t_tree *tree, t_executor *exec)
+int	ft_handle_tree(t_env *envi, t_tree *tree, t_exec *exec)
 {
 	int	i;
 

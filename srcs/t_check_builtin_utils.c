@@ -13,7 +13,7 @@ char	*get_path_env(char *temp)
 }
 
 //	print env error message
-int	env_error_msg( t_envi *envi)
+int	env_error_msg( t_env *envi)
 {
 	(void)envi;
 	ft_putstr_fd("minishell: env", 2);
@@ -23,9 +23,9 @@ int	env_error_msg( t_envi *envi)
 }
 
 //	print all env values retrieved by minishell
-int	ms_env(char **argv, t_envi *envi)
+int	ms_env(char **argv, t_env *envi)
 {
-	t_ms_envp	*ms_envp;
+	t_item	*ms_envp;
 
 	if (argv[1])
 	{
@@ -125,14 +125,16 @@ int	ft_handle_echo(t_tree *tree, int i, int check, int err)
 	while (tree->data[i] && !(ft_strncmp(tree->data[i], "-n", 2)) && err == 0)
 	{
 		check++;
-		ret = ft_check_n(tree->data[i++]);
+		ret = ft_check_n(tree->data[i]);
 		if (ret)
 			break ;
+		i++;
 	}
 	err = ft_print_echo(tree, i, err);
 	if (err == -1)
 		return (err);
 	if (!check)
 		err = write(STDOUT_FILENO, "\n", 1);
+	// printf("yo\n");
 	return (err);
 }

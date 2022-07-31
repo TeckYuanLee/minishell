@@ -1,5 +1,22 @@
 #include "minishell.h"
 
+void	ft_free_split(char ***split)
+{
+	int	i;
+
+	i = 0;
+	if (!*split)
+		return ;
+	while ((*split)[i])
+	{
+		free((*split)[i]);
+		(*split)[i] = NULL;
+		i++;
+	}
+	free(*split);
+	*split = NULL;
+}
+
 //  save current term settings
 void	save_term_settings(struct termios *termios_p)
 {
@@ -7,7 +24,7 @@ void	save_term_settings(struct termios *termios_p)
 }
 
 //  
-t_err	set_shlvl(t_envi *envi)
+t_err	set_shlvl(t_env *envi)
 {
 	int		lvl;
 	char	*key;
@@ -34,7 +51,7 @@ t_err	set_shlvl(t_envi *envi)
 }
 
 //  combine key values from envp with variables
-t_err	ms_envp_to_var(t_ms_envp *ms_envp, char ***var)
+t_err	ms_envp_to_var(t_item *ms_envp, char ***var)
 {
 	int	i;
 	int	j;
@@ -63,15 +80,15 @@ t_err	ms_envp_to_var(t_ms_envp *ms_envp, char ***var)
 }
 
 //  initialize variables in envi
-t_err	init_var(char **envp, t_envi *envi)
+t_err	init_var(char **envp, t_env *envi)
 {
 	int	i;
 
 	i = 0;
-	ft_bzero(envi, sizeof(t_envi));
+	ft_bzero(envi, sizeof(t_env));
 	while (envp[i])
 		i++;
-	envi->ms_envp = ft_calloc(i + 2, sizeof(t_ms_envp));
+	envi->ms_envp = ft_calloc(i + 2, sizeof(t_item));
 	if (!envi->ms_envp)
 		return (MALLOC_FAIL);
 	i = 0;
@@ -86,7 +103,7 @@ t_err	init_var(char **envp, t_envi *envi)
 }
 
 //  initialize minishell
-t_err	ms_init(char **envp, t_envi *envi)
+t_err	ms_init(char **envp, t_env *envi)
 {
 	if (init_var(envp, envi) == MALLOC_FAIL)
 		return (MALLOC_FAIL);

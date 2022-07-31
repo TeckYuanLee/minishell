@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 //  expand $ and words
-t_err	expand_d(t_token **head, t_envi *info, char *key, char *data)
+t_err	expand_d(t_token **head, t_env *info, char *key, char *data)
 {
 	char    *value;
 
@@ -25,7 +25,7 @@ t_err	expand_d(t_token **head, t_envi *info, char *key, char *data)
 }
 
 //  preparation to expand $ and words
-t_err	prep_expand_d(t_token **head, t_envi *info, char *key)
+t_err	prep_expand_d(t_token **head, t_env *info, char *key)
 {
 	t_token	*next;
 	char	*data;
@@ -42,7 +42,7 @@ t_err	prep_expand_d(t_token **head, t_envi *info, char *key)
 }
 
 //  create new token with first and second token
-t_err	join_head_token(t_token **list, t_token_type resulting_type)
+t_err	join_head_token(t_token **list, t_token_t resulting_type)
 {
 	t_token	*new_token;
 	char	*new_data;
@@ -66,7 +66,7 @@ t_err	join_head_token(t_token **list, t_token_type resulting_type)
 }
 
 //  create new token with current and next token
-t_err	join_token(t_token *list, t_token_type resulting_type)
+t_err	join_token(t_token *list, t_token_t resulting_type)
 {
 	t_token	*new_token;
 	char	*new_data;

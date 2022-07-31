@@ -95,7 +95,7 @@ t_err	redir_syntax_pass(t_token *list)
 		else if (list->type == TOK_WORD)
 			(void)list;
 		else
-			printf(BHRED "[redir_syntax_pass Wrong tok_type?: %s\n" \
+			printf(BHRED "[redir_syntax_pass] Wrong tok_type?: %s\n" \
 				BHWHT, get_token_str(list->type));
 		list = list->next;
 	}
@@ -121,7 +121,7 @@ t_err	pipe_syntax_pass(t_token *list)
 }
 
 //	check tokens if they are used correctly
-t_err	parser(char *line, t_curr_input *input, t_envi *info)
+t_err	parser(char *line, t_input *input, t_env *info)
 {
 	t_token	*list;
 	t_tree	**root;
@@ -134,6 +134,12 @@ t_err	parser(char *line, t_curr_input *input, t_envi *info)
 		return (printf(BHRED "[parser] Empty t_token\n" BHWHT));
 	if (pipe_syntax_pass(list) != NO_ERROR)
 		return (SYNTAX_ERR);
+	// while (list)
+	// {
+	// 	printf("%d  %s  \n", list->type, list->data);
+	// 	list = list->next;
+	// }
+	// list = input->lexer;
 	while (list)
 	{	
 		if (redir_syntax_pass(list) != NO_ERROR)
@@ -141,6 +147,7 @@ t_err	parser(char *line, t_curr_input *input, t_envi *info)
 		root_pass(list, root);
 		redir_pass(list, root);
 		cmd_pass(list, root);
+		// printf("yes?\n");
 		list = next_branch(list);
 		if (list && list->type == TOK_PIPE)
 			list = list->next;

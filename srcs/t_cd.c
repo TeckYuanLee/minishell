@@ -1,9 +1,9 @@
 #include "minishell.h"
 
 //	replace values of both old and new pwd
-t_err	update_both_pwds(t_envi *envi, char *curr_pwd, char *new_pwd)
+t_err	update_both_pwds(t_env *envi, char *curr_pwd, char *new_pwd)
 {
-	t_hard_strings	strings;
+	t_pwdstr	strings;
 
 	strings = init_strings();
 	if (!strings.pwd)
@@ -56,7 +56,7 @@ char	*parse_path(char *path, char *old_pwd)
 }
 
 //	update old pwd with current pwd
-t_err	only_update_oldpwd(t_envi *envi, char *curr_pwd)
+t_err	only_update_oldpwd(t_env *envi, char *curr_pwd)
 {
 	char	*key;
 
@@ -89,7 +89,7 @@ int	add_string2(char *perror_str, char *string2, int rv)
 }
 
 //	update current pwd and new pwd values
-t_err	update_pwd_oldpwd(char *path, t_envi *envi)
+t_err	update_pwd_oldpwd(char *path, t_env *envi)
 {
 	char	*new_pwd;
 	char	*curr_pwd;

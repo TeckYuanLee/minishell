@@ -1,10 +1,18 @@
 #include "minishell.h"
 
+void	ft_free_str(char **str)
+{
+	if (!*str)
+		return ;
+	free(*str);
+	*str = NULL;
+}
+
 //  delete the current token
 void	del_token(t_token *list)
 {
 	if (!list)
-		return (printf(BHRED "[del_token] (Null) token!!\n" BHWHT));
+		return ((void)printf(BHRED "[del_token] (Null) token!!\n" BHWHT));
 	ft_free_str(&list->data);
 	free (list);
 }

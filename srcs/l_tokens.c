@@ -97,7 +97,10 @@ t_err	pipes_dollars(char *input, int *i, t_token **list)
 		if (ft_isdigit(input[1]))
 			return ((*i)++ | NO_ERROR);
 		if (input[1] == '?')
-			return (exitcode_token(input, ++i, list));
+		{
+			(*i)++;
+			return (exitcode_token(input, i, list));
+		}
 		new_token = create_token(TOK_DOLLAR, NULL);
 	}
 	if (new_token)

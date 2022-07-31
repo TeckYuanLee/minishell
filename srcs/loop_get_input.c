@@ -1,13 +1,13 @@
 #include "minishell.h"
 
 //  free envp
-void	free_envp(t_ms_envp *ms_envp)
+void	free_envp(t_item *ms_envp)
 {
 	int			i;
 
 	if (!ms_envp)
 	{
-		printf(RED "[free_envp] ms_envp == NULL ?!??\n" BHWHT);
+		printf(BHRED "[free_envp] ms_envp == NULL ?!??\n" BHWHT);
 		return ;
 	}
 	i = 0;
@@ -21,7 +21,7 @@ void	free_envp(t_ms_envp *ms_envp)
 }
 
 //  exit signal
-int	ft_exit_sig(t_envi *envi)
+int	ft_exit_sig(t_env *envi)
 {
 	restore_term_settings(&envi->termios_p);
 	rl_replace_line("exit", 0);
@@ -54,7 +54,7 @@ void	set_term_settings(void)
 }
 
 //  get input from readline
-t_err	get_input(t_envi *envi, char **input_ptr)
+t_err	get_input(t_env *envi, char **input_ptr)
 {
 	char	*temp;
 

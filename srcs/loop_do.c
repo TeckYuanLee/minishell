@@ -1,18 +1,18 @@
 #include "minishell.h"
 
 //  free envi parent
-void	free_envi_parent(t_envi *envi)
+void	free_envi_parent(t_env *envi)
 {
 	clean_tree(envi->loc_tree_ptr);
 	free(envi->exec);
 }
 
 //  initialize executor
-t_executor	*ft_init_exec(void)
+t_exec	*ft_init_exec(void)
 {	
-	t_executor	*new;
+	t_exec	*new;
 
-	new = ft_calloc(sizeof(t_executor), 1);
+	new = ft_calloc(sizeof(t_exec), 1);
 	if (!new)
 		return (NULL);
 	new->index = 0;
@@ -21,7 +21,7 @@ t_executor	*ft_init_exec(void)
 }
 
 //  start building tree
-void	ft_start_tree(t_envi *envi, t_tree **tree)
+void	ft_start_tree(t_env *envi, t_tree **tree)
 {
 	int	i;
 
@@ -108,6 +108,19 @@ void	new_prompt(int sig)
 	rl_redisplay();
 }
 
+void	init_here_doc_signals(void)
+{
+	struct sigaction	sig_slash;
+	struct sigaction	sig_c;
+
+	ft_bzero(&sig_slash, sizeof(struct sigaction));
+	ft_bzero(&sig_c, sizeof(struct sigaction));
+	sig_slash.sa_handler = SIG_IGN;
+	sig_c.sa_handler = SIG_DFL;
+	sigaction(SIGQUIT, &sig_slash, NULL);
+	sigaction(SIGINT, &sig_c, NULL);
+}
+
 //  initialize signals
 void	init_signals(void)
 {
@@ -123,7 +136,7 @@ void	init_signals(void)
 }
 
 //  keep programm running
-int	do_loop(t_curr_input *curr_input, t_envi *envi)
+int	do_loop(t_input *curr_input, t_env *envi)
 {
 	char	*input;
 	t_err	rv;

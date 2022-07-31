@@ -1,17 +1,17 @@
 #include "minishell.h"
 
 //  add keys and values into envp
-t_err	add_to_ms_envp(char *key, char *value, t_ms_envp **head)
+t_err	add_to_ms_envp(char *key, char *value, t_item **head)
 {
-	t_ms_envp	*envp;
-	t_ms_envp	*new_envp;
+	t_item	*envp;
+	t_item	*new_envp;
 	int			i;
 
 	i = 0;
 	envp = *head;
 	while ((&envp[i])->key)
 		i++;
-	new_envp = ft_calloc(i + 2, sizeof(t_ms_envp));
+	new_envp = ft_calloc(i + 2, sizeof(t_item));
 	if (!new_envp)
 		return (MALLOC_FAIL);
 	i = 0;
@@ -29,7 +29,7 @@ t_err	add_to_ms_envp(char *key, char *value, t_ms_envp **head)
 }
 
 //  replace env value
-t_err	replace_value(char *key, char *value, t_ms_envp *envp)
+t_err	replace_value(char *key, char *value, t_item *envp)
 {
 	int	i;
 
@@ -48,26 +48,8 @@ t_err	replace_value(char *key, char *value, t_ms_envp *envp)
 	return (NO_ERROR);
 }
 
-//  get env key
-t_err	get_env_key(const char *str, char **return_key)
-{
-	int		i;
-
-	*return_key = NULL;
-	i = 0;
-	if (ft_isdigit(*str))
-		return (KEY_ERR);
-	while (char_is_allowed(str[i], "$()<>'/\\;=.\0") && !ft_isspace(str[i]))
-		i++;
-	*return_key = ft_calloc(i + 1, 1);
-	if (!*return_key)
-		return (MALLOC_FAIL);
-	ft_strlcpy(*return_key, str, i + 1);
-	return (NO_ERROR);
-}
-
 //  get env value
-t_err	get_env_value(t_ms_envp *envp, char *key, char **value_ptr)
+t_err	get_env_value(t_item *envp, char *key, char **value_ptr)
 {
 	int		i;
 
@@ -96,7 +78,7 @@ t_err	get_env_value(t_ms_envp *envp, char *key, char **value_ptr)
 }
 
 //  join env key and value
-t_err	combine_key_value(t_ms_envp *ms_envp, char **var)
+t_err	combine_key_value(t_item *ms_envp, char **var)
 {
 	char	*intermediate;
 	char	*combined;
@@ -120,7 +102,7 @@ t_err	combine_key_value(t_ms_envp *ms_envp, char **var)
 }
 
 //  add 'oldpwd' to envp key
-t_err	add_empty_oldpwd(t_ms_envp *ms_envp)
+t_err	add_empty_oldpwd(t_item *ms_envp)
 {
 	ms_envp->key = ft_strdup("OLDPWD");
 	if (!ms_envp->key)
@@ -129,7 +111,7 @@ t_err	add_empty_oldpwd(t_ms_envp *ms_envp)
 }
 
 //  check if key of envp exists
-t_bool	key_exists(char *key, t_ms_envp *ms_envp)
+t_bool	key_exists(char *key, t_item *ms_envp)
 {
 	int	key_len;
 
@@ -146,7 +128,7 @@ t_bool	key_exists(char *key, t_ms_envp *ms_envp)
 }
 
 //  copy from env key and value to envp
-t_err	copy_to_ms_envp(char *str, t_ms_envp *custom_envp)
+t_err	copy_to_ms_envp(char *str, t_item *custom_envp)
 {
 	char	*key;
 	char	*value;

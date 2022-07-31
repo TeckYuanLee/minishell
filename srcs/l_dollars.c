@@ -32,7 +32,7 @@ t_err	add_dollar_sign(t_token	**list)
 }
 
 //	add new token to the tokenlist
-t_err	add_new_token(t_token	**head, t_token_type type, char *data)
+t_err	add_new_token(t_token	**head, t_token_t type, char *data)
 {
 	t_token	*new;
 
@@ -44,7 +44,7 @@ t_err	add_new_token(t_token	**head, t_token_type type, char *data)
 }
 
 //	create and add a new token
-t_token	*create_token(t_token_type type, char *data)
+t_token	*create_token(t_token_t type, char *data)
 {
 	static int	id = 0;
 	t_token		*new_token;

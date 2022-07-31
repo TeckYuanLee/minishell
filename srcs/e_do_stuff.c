@@ -5,7 +5,10 @@ void	create_full_string(char **str, char *data, int len)
 {
 	(*str)[0] = '$';
 	while (len >= 0)
-		(*str)[len + 1] = data[len--];
+	{
+		(*str)[len + 1] = data[len];
+		len--;
+	}
 }
 
 //  create the remaining part of the token

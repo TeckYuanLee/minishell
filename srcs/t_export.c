@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 //	if key doesn't exist, add to envp, else update value
-t_err	add_value_to_envp(t_ms_envp **ms_envp, char *key, char *value)
+t_err	add_value_to_envp(t_item **ms_envp, char *key, char *value)
 {
 	if (!key_exists(key, *ms_envp))
 	{
@@ -18,7 +18,7 @@ t_err	add_value_to_envp(t_ms_envp **ms_envp, char *key, char *value)
 }
 
 //	join old value with value
-t_err	get_plusis_value(char *value, char *key, t_ms_envp *ms_envp, \
+t_err	get_plusis_value(char *value, char *key, t_item *ms_envp, \
 		char **joined)
 {
 	char	*old_value;
@@ -26,7 +26,11 @@ t_err	get_plusis_value(char *value, char *key, t_ms_envp *ms_envp, \
 
 	temp = NULL;
 	if (get_env_value(ms_envp, key, &old_value) == MALLOC_FAIL)
-		return (MALLOC_FAIL | free(key) | free(value));
+	{
+		free(key);
+		free(value);
+		return (MALLOC_FAIL);
+	}
 	if (old_value && value)
 	{
 		temp = ft_strjoin(old_value, value);
@@ -51,7 +55,7 @@ char	*point_to_value(char *str)
 }
 
 //	extract value and add to list of envp
-t_err	parse_and_add_to_envp(char *str, t_ms_envp **ms_envp, char *key)
+t_err	parse_and_add_to_envp(char *str, t_item **ms_envp, char *key)
 {
 	char	*value;
 
@@ -60,7 +64,10 @@ t_err	parse_and_add_to_envp(char *str, t_ms_envp **ms_envp, char *key)
 	{
 		value = ft_strdup(point_to_value(str));
 		if (!value)
-			return (MALLOC_FAIL | free(key));
+		{
+			free(key);
+			return (MALLOC_FAIL);
+		}
 	}
 	if (str[ft_strlen(key)] == '+')
 		if (get_plusis_value(value, key, *ms_envp, &value) == MALLOC_FAIL)
@@ -97,7 +104,7 @@ int	is_export_key(char *key)
 		return (0);
 	if (ft_isdigit(key[0]) || key[0] == '-')
 		return (0);
-	while (key[i] && char_is_allowed(key[i], "'=\"-#+^~.|&@!;()<>*\\"))
+	while (key[i] && allowed_char(key[i], "'=\"-#+^~.|&@!;()<>*\\"))
 		i++;
 	if (ft_strlen(key) == i)
 		return (1);
@@ -113,7 +120,7 @@ t_err	export_get_env_key(const char *str, char **return_key)
 	i = 0;
 	if (ft_isdigit(*str))
 		return (KEY_ERR);
-	while (char_is_allowed(str[i], "=+\0") && !ft_isspace(str[i]))
+	while (allowed_char(str[i], "=+\0") && !ft_isspace(str[i]))
 		i++;
 	if (str[i] == '+' && str[i + 1] != '=')
 		return (KEY_ERR);
@@ -125,20 +132,25 @@ t_err	export_get_env_key(const char *str, char **return_key)
 }
 
 //	check if export is ready
-t_err	single_export(t_ms_envp *ms_envp)
+t_err	single_export(t_item *ms_envp)
 {
 	int	arr_len;
 	int	*arr;
 
 	arr_len = get_ms_envp_len(ms_envp);
 	if (!ms_envp)
-		return (printf(RED "[single_export] ms_envp pointing to (null)..\n"));
+		return (printf(BHRED "[single_export] ms_envp pointing to (null)..\n"));
 	arr = ft_calloc(arr_len, sizeof(int));
 	if (!arr)
 		return (MALLOC_FAIL);
 	while (not_ready(arr, arr_len))
+	{
 		if (print_smallest_and_mark_arr(ms_envp, arr, arr_len) == MALLOC_FAIL)
-			return (MALLOC_FAIL | free(arr));
+		{
+			free(arr);
+			return (MALLOC_FAIL);
+		}
+	}
 	free(arr);
 	return (0);
 }

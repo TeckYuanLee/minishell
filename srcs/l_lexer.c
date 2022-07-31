@@ -37,7 +37,7 @@ t_err	syntax_err_lexer(char token)
 }
 
 //	do lexer
-t_err	lexer(char *line, t_curr_input *input, t_envi *info)
+t_err	lexer(char *line, t_input *input, t_env *info)
 {
 	t_token	**list;
 	int		i;
@@ -65,27 +65,20 @@ t_err	lexer(char *line, t_curr_input *input, t_envi *info)
 }
 
 //	process input into lexer, expander, parser
-t_err	process_input(char *line, t_curr_input *input, t_envi *info)
+t_err	process_input(char *line, t_input *input, t_env *info)
 {
-	int						i;
-	t_err					err;
-	static t_proc_input_ptr	proc_funptr[3] = {
-	[0] = lexer,
-	[1] = expander,
-	[2] = parser
-	};
+	t_err	err;
 
-	i = 0;
-	while (i < 3)
+	err = lexer(line, input, info);
+	if (err == NO_ERROR)
+		err = expander(line, input, info);
+	if (err == NO_ERROR)
+		err = parser(line, input, info);
+	if (err != NO_ERROR)
 	{
-		err = proc_funptr[i](line, input, info);
-		if (err != NO_ERROR)
-		{
-			if (err == SYNTAX_ERR)
-				info->exitcode = 258;
-			return (err);
-		}
-		i++;
+		if (err == SYNTAX_ERR)
+			info->exitcode = 258;
+		return (err);
 	}
 	clean_lexer(&input->lexer);
 	return (NO_ERROR);

@@ -12,7 +12,7 @@ static int	ft_skip(const char *str, int i)
 }
 
 //	handle one argument exit with plus sign
-void	ft_exit_one_arg_plus(t_tree *tree, t_envi *envi, t_executor *exec)
+void	ft_exit_one_arg_plus(t_tree *tree, t_env *envi, t_exec *exec)
 {
 	envi->exitcode = (ft_atoi_exit(tree->data[1]) % 256);
 	ft_putstr_fd("exit\n", 2);
@@ -49,7 +49,7 @@ int	ft_isplus(char *str)
 }
 
 //	exit if data is long long max, else if range greater long long max
-void	ft_exit_one_range(t_tree *tree, t_envi *envi, t_executor *exec)
+void	ft_exit_one_range(t_tree *tree, t_env *envi, t_exec *exec)
 {
 	unsigned long long	range;
 
@@ -73,7 +73,7 @@ int	ft_check_isdigit(char *str)
 }
 
 //	handle exit with only one argument
-void	ft_exit_one_arg(t_tree *tree, t_envi *envi, int i, t_executor *exec)
+void	ft_exit_one_arg(t_tree *tree, t_env *envi, int i, t_exec *exec)
 {
 	int	check;
 

@@ -1,7 +1,29 @@
 #include "minishell.h"
 
+int	ft_check_builtin_add(t_tree *tree, t_env *envi, int i)
+{
+	if (!ft_strncmp(tree->data[0], "pwd", 4))
+		i = ft_pwd_builtin(envi);
+	else if (!ft_strncmp(tree->data[0], "export", 6))
+	{
+		envi->exitcode = ms_export(tree->data, envi);
+		i++;
+	}
+	else if (!ft_strncmp(tree->data[0], "unset", 6))
+	{
+		envi->exitcode = ms_unset(tree->data, envi);
+		i++;
+	}
+	else if (!ft_strncmp(tree->data[0], "env", 4))
+	{
+		envi->exitcode = ms_env(tree->data, envi);
+		i++;
+	}
+	return (i);
+}
+
 //	when builtin command is at the end of readline
-int	ft_check_builtin_end(t_tree *tree, t_envi *envi, int i)
+int	ft_check_builtin_end(t_tree *tree, t_env *envi, int i)
 {
 	if (!ft_strncmp(tree->data[0], "env", 4))
 	{
@@ -17,7 +39,7 @@ int	ft_check_builtin_end(t_tree *tree, t_envi *envi, int i)
 }
 
 //	check for 'export' command
-void	ft_check_export(t_tree *tree, t_envi *envi)
+void	ft_check_export(t_tree *tree, t_env *envi)
 {
 	int	exit_code;
 
@@ -35,7 +57,7 @@ void	ft_check_export(t_tree *tree, t_envi *envi)
 }
 
 //	execute pwd command
-int	ft_pwd_builtin(t_envi *envi)
+int	ft_pwd_builtin(t_env *envi)
 {
 	char	*pwd;
 
@@ -50,7 +72,7 @@ int	ft_pwd_builtin(t_envi *envi)
 }
 
 //	execute echo command
-int	ft_builtin_echo(t_envi *envi, t_tree *tree)
+int	ft_builtin_echo(t_env *envi, t_tree *tree)
 {
 	int	i;
 	int	check;
@@ -60,6 +82,7 @@ int	ft_builtin_echo(t_envi *envi, t_tree *tree)
 	check = 0;
 	err = 0;
 	err = ft_handle_echo(tree, i, check, err);
+	// printf("yo\n");
 	if (err == -1)
 	{
 		ft_putstr_fd("minishell: error in echo.\n", 2);
@@ -71,7 +94,7 @@ int	ft_builtin_echo(t_envi *envi, t_tree *tree)
 }
 
 //	check for builtin commands
-int	ft_check_builtin(t_tree *tree, t_envi *envi)
+int	ft_check_builtin(t_tree *tree, t_env *envi)
 {
 	int	i;
 

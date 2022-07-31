@@ -1,9 +1,9 @@
 #include "minishell.h"
 
 //	initialize pwd strings
-t_hard_strings	init_strings(void)
+t_pwdstr	init_strings(void)
 {
-	t_hard_strings	strings;
+	t_pwdstr	strings;
 
 	strings.oldpwd = ft_strdup("OLDPWD");
 	if (strings.oldpwd)
@@ -47,7 +47,7 @@ void	remove_dir(char parse_path[512])
 }
 
 //	if key is different, copy, else remove key
-void	copy_or_rm(t_ms_envp **envp, char *key, t_ms_envp **new_envp)
+void	copy_or_rm(t_item **envp, char *key, t_item **new_envp)
 {
 	int	i;
 	int	j;
@@ -71,15 +71,15 @@ void	copy_or_rm(t_ms_envp **envp, char *key, t_ms_envp **new_envp)
 }
 
 //	copy or remove key from env
-t_err	rm_from_envp(char *key, t_ms_envp **envp)
+t_err	rm_from_envp(char *key, t_item **envp)
 {
-	t_ms_envp	*new_envp;
+	t_item	*new_envp;
 	int			i;
 
 	i = 0;
 	while ((*envp)[i].key)
 		i++;
-	new_envp = ft_calloc(i + 1, sizeof(t_ms_envp));
+	new_envp = ft_calloc(i + 1, sizeof(t_item));
 	if (!new_envp)
 		return (MALLOC_FAIL);
 	copy_or_rm(envp, key, &new_envp);
@@ -115,7 +115,7 @@ int	is_unset_key(char *key)
 		return (0);
 	if (ft_isdigit(key[0]) || key[0] == '-')
 		return (0);
-	while (key[i] && char_is_allowed(key[i], "/\\;.+=-{}*#@!^~"))
+	while (key[i] && allowed_char(key[i], "/\\;.+=-{}*#@!^~"))
 		i++;
 	if (ft_strlen(key) == i)
 		return (1);

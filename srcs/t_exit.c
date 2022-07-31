@@ -1,10 +1,10 @@
 #include "minishell.h"
 
 //	exit requires numeric argument
-void	ft_exit_numeric(t_tree *tree, t_envi *envi, t_executor *exec)
+void	ft_exit_numeric(t_tree *tree, t_env *envi, t_exec *exec)
 {
-	ft_putstr_fd("exit\n", 2);
-	ft_putstr_fd("minishell: exit: ", 2);
+	// ft_putstr_fd("exit\n", 2);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(tree->data[1], 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
 	envi->exitcode = 255;
@@ -44,7 +44,7 @@ int	ft_check_minus_plus(char *str)
 }
 
 //	check if exit has multiple arguments
-void	ft_exit_multi_arg(t_tree *tree, t_envi *envi, int i, t_executor *exec)
+void	ft_exit_multi_arg(t_tree *tree, t_env *envi, int i, t_exec *exec)
 {
 	int	check;
 
@@ -57,14 +57,14 @@ void	ft_exit_multi_arg(t_tree *tree, t_envi *envi, int i, t_executor *exec)
 		else
 		{
 			ft_putstr_fd("exit\n", 2);
-			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+			ft_putstr_fd("minishell: too many arguments\n", 2);
 			envi->exitcode = 1;
 		}
 	}
 }
 
 //	free envi
-void	ft_exit_free(t_tree *tree, t_executor *exec, t_envi *envi)
+void	ft_exit_free(t_tree *tree, t_exec *exec, t_env *envi)
 {
 	(void)tree;
 	(void)exec;

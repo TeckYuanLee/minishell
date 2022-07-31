@@ -52,7 +52,7 @@ char	**make_split(t_token *list, int word_amount)
 }
 
 //	add root node for pipe / no pipe node
-t_err	add_tree_node(t_nodetype type, t_tree **tree, char **data)
+t_err	add_tree_node(t_node_t type, t_tree **tree, char **data)
 {	
 	if (type == PIPE || type == NO_PIPE)
 	{
@@ -67,7 +67,7 @@ t_err	add_tree_node(t_nodetype type, t_tree **tree, char **data)
 }
 
 //	print syntax error
-t_err	syntax_err(t_token_type type)
+t_err	syntax_err(t_token_t type)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
 	if (type == TOK_PIPE)
@@ -84,7 +84,7 @@ t_err	syntax_err(t_token_type type)
 }
 
 //	retrieve token type in string format
-char	*get_token_str(t_token_type type)
+char	*get_token_str(t_token_t type)
 {
 	static char	*strings[12] = {
 		"WORD",

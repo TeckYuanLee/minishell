@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 //	if keys are match, fill array
-void	mark_array(char *key, t_ms_envp *ms_envp, int *arr)
+void	mark_array(char *key, t_item *ms_envp, int *arr)
 {
 	int	i;
 
@@ -19,7 +19,7 @@ void	mark_array(char *key, t_ms_envp *ms_envp, int *arr)
 }
 
 //	
-void	print_key(char *key, t_ms_envp *ms_envp)
+void	print_key(char *key, t_item *ms_envp)
 {
 	while (ms_envp->key)
 	{
@@ -35,7 +35,7 @@ void	print_key(char *key, t_ms_envp *ms_envp)
 }
 
 //	check for the smallest key
-int	is_smallest_key(char *key, t_ms_envp *ms_envp, int *arr)
+int	is_smallest_key(char *key, t_item *ms_envp, int *arr)
 {
 	if (*(arr) == 1)
 		return (0);
@@ -45,7 +45,7 @@ int	is_smallest_key(char *key, t_ms_envp *ms_envp, int *arr)
 }
 
 //	look for first available key
-char	*first_available(t_ms_envp *ms_envp, int *arr, int arr_len)
+char	*first_available(t_item *ms_envp, int *arr, int arr_len)
 {
 	int	i;
 
@@ -57,7 +57,7 @@ char	*first_available(t_ms_envp *ms_envp, int *arr, int arr_len)
 }
 
 //	print first available envp and mark array
-t_err	print_smallest_and_mark_arr(t_ms_envp *ms_envp, int *arr, int arr_len)
+t_err	print_smallest_and_mark_arr(t_item *ms_envp, int *arr, int arr_len)
 {
 	int			i;
 	static char	*smallest_key = NULL;
@@ -97,7 +97,7 @@ int	not_ready(int *arr, int arr_len)
 }
 
 //	get length of envp
-int	get_ms_envp_len(t_ms_envp *ms_envp)
+int	get_ms_envp_len(t_item *ms_envp)
 {
 	int	i;
 

@@ -12,6 +12,15 @@ void	ft_free_partial_split(char ***split, int failed_i)
 	*split = NULL;
 }
 
+t_tree	*next_root_node(t_tree *tree)
+{
+	if (tree->type == PIPE || tree->type == NO_PIPE)
+		return (tree->right_node);
+	while (tree->up_node && tree->type != PIPE && tree->type != NO_PIPE)
+		tree = tree->up_node;
+	return (tree->right_node);
+}
+
 //	traverse right of pipe or no pipe, else traverse leftmost
 //	to search for pipe or no pipe
 t_tree	*last_root_node(t_tree *tree)
@@ -28,7 +37,7 @@ t_tree	*last_root_node(t_tree *tree)
 }
 
 //	create new branch id if token type is pipe, else leave id
-t_tree	*create_tree_node(t_nodetype type, char **data)
+t_tree	*create_tree_node(t_node_t type, char **data)
 {
 	static int	branch_id = 0;
 	static int	leave_id = 0;
@@ -52,7 +61,7 @@ t_tree	*create_tree_node(t_nodetype type, char **data)
 }
 
 //	create and insert new node at leftmost node
-t_err	add_leaf_node(t_nodetype type, char **data, t_tree *parent)
+t_err	add_leaf_node(t_node_t type, char **data, t_tree *parent)
 {
 	t_tree	*new_node;
 
@@ -71,12 +80,12 @@ t_err	add_leaf_node(t_nodetype type, char **data, t_tree *parent)
 			parent = parent->left_node;
 		parent->left_node = new_node;
 	}
-	new_node->prev_node = parent;
+	new_node->up_node = parent;
 	return (NO_ERROR);
 }
 
 //	add last root node before new node
-t_err	add_root_node(t_nodetype type, t_tree **head_tree)
+t_err	add_root_node(t_node_t type, t_tree **head_tree)
 {
 	t_tree	*node;
 	t_tree	*new_node;
@@ -91,7 +100,7 @@ t_err	add_root_node(t_nodetype type, t_tree **head_tree)
 		return (NO_ERROR);
 	}
 	node = last_root_node(node);
-	new_node->prev_node = node;
+	new_node->up_node = node;
 	node->right_node = new_node;
 	return (NO_ERROR);
 }
