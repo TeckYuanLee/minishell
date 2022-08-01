@@ -43,7 +43,7 @@ t_err	add_new_token(t_token	**head, t_token_t type, char *data)
 	return (NO_ERROR);
 }
 
-//	create and add a new token
+//	create and add a new token /////
 t_token	*create_token(t_token_t type, char *data)
 {
 	static int	id = 0;

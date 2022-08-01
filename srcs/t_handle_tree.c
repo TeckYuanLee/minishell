@@ -107,7 +107,7 @@ int	ft_wait_on_children(t_exec *exec, t_env *envi)
 		wait(&status);
 		if (WIFSIGNALED(status))
 		{
-			restore_term_settings(&envi->termios_p);
+			tcsetattr(2, TCSANOW, &envi->termios_p);
 			process_signal(WTERMSIG(status), &envi->exitcode, 0);
 			signal_found = 1;
 		}

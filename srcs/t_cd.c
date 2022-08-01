@@ -10,7 +10,7 @@ t_err	update_both_pwds(t_env *envi, char *curr_pwd, char *new_pwd)
 		return (MALLOC_FAIL);
 	if (key_exists("PWD", envi->ms_envp))
 	{
-		replace_value(strings.pwd, new_pwd, envi->ms_envp);
+		update_value(strings.pwd, new_pwd, envi->ms_envp);
 		free(strings.pwd);
 	}
 	else
@@ -18,7 +18,7 @@ t_err	update_both_pwds(t_env *envi, char *curr_pwd, char *new_pwd)
 			return (MALLOC_FAIL);
 	if (key_exists("OLDPWD", envi->ms_envp))
 	{
-		replace_value(strings.oldpwd, curr_pwd, envi->ms_envp);
+		update_value(strings.oldpwd, curr_pwd, envi->ms_envp);
 		free(strings.oldpwd);
 		return (NO_ERROR);
 	}
@@ -62,7 +62,7 @@ t_err	only_update_oldpwd(t_env *envi, char *curr_pwd)
 
 	key = NULL;
 	if (key_exists("OLDPWD", envi->ms_envp))
-		return ((t_err)replace_value("OLDPWD", curr_pwd, envi->ms_envp));
+		return ((t_err)update_value("OLDPWD", curr_pwd, envi->ms_envp));
 	key = ft_strdup("OLDPWD");
 	if (!key)
 		return (MALLOC_FAIL);

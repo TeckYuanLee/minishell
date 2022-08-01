@@ -12,7 +12,7 @@ t_err	add_value_to_envp(t_item **ms_envp, char *key, char *value)
 		}
 		return (NO_ERROR);
 	}
-	replace_value(key, value, *ms_envp);
+	update_value(key, value, *ms_envp);
 	free (key);
 	return (NO_ERROR);
 }

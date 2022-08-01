@@ -12,24 +12,6 @@
 
 #include "minishell.h"
 
-//	get env key
-t_err	get_env_key(const char *str, char **return_key)
-{
-	int		i;
-
-	*return_key = NULL;
-	i = 0;
-	if (ft_isdigit(*str))
-		return (KEY_ERR);
-	while (allowed_char(str[i], "$()<>'/\\;=.\0") && !ft_isspace(str[i]))
-		i++;
-	*return_key = ft_calloc(i + 1, 1);
-	if (!*return_key)
-		return (MALLOC_FAIL);
-	ft_strlcpy(*return_key, str, i + 1);
-	return (NO_ERROR);
-}
-
 //	check if the char is allowed
 t_bool	allowed_char(int c, char *not_allowed)
 {

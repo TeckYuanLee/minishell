@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-//	check for spaces in readline
+//	check for spaces in readline /////
 t_err	spaces(char *input, int *i, t_token **list)
 {
 	t_token	*new_token;

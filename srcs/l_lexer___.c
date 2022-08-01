@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   l_lexer.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:25:12 by telee             #+#    #+#             */
-/*   Updated: 2022/07/25 14:14:06 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/01 15:38:02 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//	tokenize symbols
+//	tokenize symbols /////
 t_err	tokenize(char *input, int *i, t_token **list)
 {
 	if (*input == '<' || *input == '>')
@@ -25,6 +25,7 @@ t_err	tokenize(char *input, int *i, t_token **list)
 		return (words(input, i, list));
 }
 
+//	disallowed char from lexer /////
 t_err	syntax_err_lexer(char token)
 {
 	ft_putstr_fd("minishell: syntax error unexpected token '", 2);
@@ -36,16 +37,14 @@ t_err	syntax_err_lexer(char token)
 	return (SYNTAX_ERR);
 }
 
-//	do lexer
-t_err	lexer(char *line, t_input *input, t_env *info)
+//	do lexer /////
+t_err	lexer(char *line, t_input *input)
 {
 	t_token	**list;
 	int		i;
 	t_err	err;
 
-	(void)info;
 	i = 0;
-	list = NULL;
 	input->lexer = NULL;
 	list = &input->lexer;
 	while (line[i])
@@ -61,25 +60,5 @@ t_err	lexer(char *line, t_input *input, t_env *info)
 				return (err);
 		}
 	}
-	return (NO_ERROR);
-}
-
-//	process input into lexer, expander, parser
-t_err	process_input(char *line, t_input *input, t_env *info)
-{
-	t_err	err;
-
-	err = lexer(line, input, info);
-	if (err == NO_ERROR)
-		err = expander(line, input, info);
-	if (err == NO_ERROR)
-		err = parser(line, input, info);
-	if (err != NO_ERROR)
-	{
-		if (err == SYNTAX_ERR)
-			info->exitcode = 258;
-		return (err);
-	}
-	clean_lexer(&input->lexer);
 	return (NO_ERROR);
 }

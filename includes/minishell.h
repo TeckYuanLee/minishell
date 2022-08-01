@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/07/25 10:18:06 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/01 14:58:31 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define BHCYN "\e[1;96m"
 # define BHWHT "\e[1;97m"
 # define SPC   "                                "
-# define PROMPT	"yo$ "
+# define PROMPT	"minisiao$ "
 
 # define DOUBLE_PIPE 2
 
@@ -160,32 +160,31 @@ t_exec	*ft_init_exec(void);
 void	free_envi_parent(t_env *envi);
 
 //	init.c
-t_err	ms_init(char **envp, t_env *envi);
+// t_err	ms_init(char **envp, t_env *envi);
 t_err	init_var(char **envp, t_env *envi);
 t_err	ms_envp_to_var(t_item *ms_envp, char ***var);
 t_err	set_shlvl(t_env *envi);
-void	save_term_settings(struct termios *termios_p);
+// void	save_term_settings(struct termios *termios_p);
 void	ft_free_split(char ***split);
 
 //	loop_get_input.c
 t_err	get_input(t_env *envi, char **input_ptr);
+t_err	process_input(char *line, t_input *input, t_env *info);
 void	set_term_settings(void);
-void	restore_term_settings(struct termios *termios_p);
+// void	restore_term_settings(struct termios *termios_p);
 int	ft_exit_sig(t_env *envi);
 void	free_envp(t_item *ms_envp);
 
 //	init_envp.c
 t_err	copy_to_ms_envp(char *str, t_item *custom_envp);
 t_bool	key_exists(char *key, t_item *ms_envp);
-t_err	add_empty_oldpwd(t_item *ms_envp);
 t_err	combine_key_value(t_item *ms_envp, char **var);
 t_err	get_env_value(t_item *envp, char *key, char **value_ptr);
-t_err	replace_value(char *key, char *value, t_item *envp);
+t_err	update_value(char *key, char *value, t_item *envp);
 t_err	add_to_ms_envp(char *key, char *value, t_item **head);
 
 //	l_lexer.c
-t_err	process_input(char *line, t_input *input, t_env *info);
-t_err	lexer(char *line, t_input *input, t_env *info);
+t_err	lexer(char *line, t_input *input);
 t_err	syntax_err_lexer(char token);
 t_err	tokenize(char *input, int *i, t_token **list);
 

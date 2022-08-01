@@ -20,10 +20,10 @@ void	free_envp(t_item *ms_envp)
 	free (ms_envp);
 }
 
-//  exit signal
+//  exit signal /////
 int	ft_exit_sig(t_env *envi)
 {
-	restore_term_settings(&envi->termios_p);
+	tcsetattr(2, TCSANOW, &envi->termios_p);
 	rl_replace_line("exit", 0);
 	rl_on_new_line();
 	rl_redisplay();
@@ -37,12 +37,12 @@ int	ft_exit_sig(t_env *envi)
 }
 
 //  restore terminal settings
-void	restore_term_settings(struct termios *termios_p)
-{
-	tcsetattr(2, TCSANOW, termios_p);
-}
+// void	restore_term_settings(struct termios *termios_p)
+// {
+// 	tcsetattr(2, TCSANOW, termios_p);
+// }
 
-//  change termios settings
+//  change termios settings /////
 void	set_term_settings(void)
 {
 	struct termios	termios_p;
@@ -53,7 +53,27 @@ void	set_term_settings(void)
 	tcsetattr(2, TCSANOW, &termios_p);
 }
 
-//  get input from readline
+//	process input into lexer, expander, parser /////
+t_err	process_input(char *line, t_input *input, t_env *info)
+{
+	t_err	err;
+
+	err = lexer(line, input);
+	if (err == NO_ERROR)
+		err = expander(line, input, info);
+	if (err == NO_ERROR)
+		err = parser(line, input, info);
+	if (err != NO_ERROR)
+	{
+		if (err == SYNTAX_ERR)
+			info->exitcode = 258;
+		return (err);
+	}
+	clean_lexer(&input->lexer);
+	return (NO_ERROR);
+}
+
+//  get input from readline after removing whitespace /////
 t_err	get_input(t_env *envi, char **input_ptr)
 {
 	char	*temp;
@@ -61,11 +81,11 @@ t_err	get_input(t_env *envi, char **input_ptr)
 	set_term_settings();
 	rl_replace_line("", 0);
 	*input_ptr = readline(BHYEL PROMPT BHWHT);
-	restore_term_settings(&envi->termios_p);
+	tcsetattr(2, TCSANOW, &envi->termios_p);
 	if (*input_ptr && (*input_ptr)[0])
 	{
 		temp = *input_ptr;
-		*input_ptr = ft_strtrim_white(*input_ptr);
+		*input_ptr = ft_strtrim_white(temp);
 		free(temp);
 		if (!*input_ptr)
 			return (MALLOC_FAIL);

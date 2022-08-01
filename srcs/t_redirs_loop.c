@@ -45,7 +45,7 @@ int	ft_redirs_loop_two(t_tree *tree, t_exec *exec, t_env *envi)
 	}
 	if (tree->type == HERE_DOC && tree->left_node->type != HERE_DOC)
 	{
-		restore_term_settings(&envi->termios_p);
+		tcsetattr(2, TCSANOW, &envi->termios_p);
 		set_term_settings();
 		init_here_doc_signals();
 		if (tree->up_node->type == PIPE && !prev_heredoc_exists(tree))

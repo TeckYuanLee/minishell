@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:25:01 by telee             #+#    #+#             */
-/*   Updated: 2022/07/25 10:28:04 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/01 10:17:09 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,14 +97,21 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_env			envi;
-	t_input	curr_input;
+	t_env	ms_env;
+	t_input	input;
 
 	(void)argc;
 	(void)argv;
 	rl_outstream = stderr;
-	if (ms_init(envp, &envi) == MALLOC_FAIL)
+	// if (ms_init(envp, &ms_env) == MALLOC_FAIL)
+	// 	return (MALLOC_FAIL);
+	if (init_var(envp, &ms_env) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
-	ft_bzero(&curr_input, sizeof(t_input));
-	return (do_loop(&curr_input, &envi));
+	if (ms_envp_to_var((&ms_env)->ms_envp, (&(&ms_env)->var)) == MALLOC_FAIL)
+		return (MALLOC_FAIL);
+	if (set_shlvl(&ms_env) == MALLOC_FAIL)
+		return (MALLOC_FAIL);
+	tcgetattr(2, (&(&ms_env)->termios_p));
+	ft_bzero(&input, sizeof(t_input));
+	return (do_loop(&input, &ms_env));
 }

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-//	free whatever malloc before the failed one
+//	free whatever malloc up to the failed one
 void	ft_free_partial_split(char ***split, int failed_i)
 {
 	int	i;

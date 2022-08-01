@@ -98,7 +98,7 @@ void	clean_lexer(t_token **list)
 	*list = NULL;
 }
 
-//  print newline
+//  print newline /////
 void	new_prompt(int sig)
 {
 	(void)sig;
@@ -121,44 +121,44 @@ void	init_here_doc_signals(void)
 	sigaction(SIGINT, &sig_c, NULL);
 }
 
-//  initialize signals
+//  initialize signals /////
 void	init_signals(void)
 {
 	struct sigaction	sig_c;
-	struct sigaction	sig_slash;
+	struct sigaction	sig_q;
 
 	ft_bzero(&sig_c, sizeof(struct sigaction));
-	ft_bzero(&sig_slash, sizeof(struct sigaction));
+	ft_bzero(&sig_q, sizeof(struct sigaction));
 	sig_c.sa_handler = new_prompt;
-	sig_slash.sa_handler = SIG_IGN;
+	sig_q.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &sig_c, NULL);
-	sigaction(SIGQUIT, &sig_slash, NULL);
+	sigaction(SIGQUIT, &sig_q, NULL);
 }
 
 //  keep programm running
-int	do_loop(t_input *curr_input, t_env *envi)
+int	do_loop(t_input *input, t_env *envi)
 {
-	char	*input;
-	t_err	rv;
+	char	*curr_input;
+	t_err	err;
 
 	while (1)
 	{
 		init_signals();
-		if (get_input(envi, &input) == MALLOC_FAIL)
+		if (get_input(envi, &curr_input) == MALLOC_FAIL)
 			return (-1);
-		if (!input)
+		if (!curr_input)
 			continue ;
-		rv = process_input(input, curr_input, envi);
-		free (input);
-		if (rv != NO_ERROR)
+		err = process_input(curr_input, input, envi);
+		free (curr_input);
+		if (err != NO_ERROR)
 		{
-			clean_tree(&curr_input->tree);
-			clean_lexer(&curr_input->lexer);
-			if (rv == MALLOC_FAIL)
+			clean_tree(&input->tree);
+			clean_lexer(&input->lexer);
+			if (err == MALLOC_FAIL)
 				exit (-1);
 			continue ;
 		}
 		ignore_signals();
-		ft_start_tree(envi, &curr_input->tree);
+		ft_start_tree(envi, &input->tree);
 	}
 }
