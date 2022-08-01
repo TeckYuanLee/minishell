@@ -77,25 +77,24 @@ t_err	quotes(char *input, int *i, t_token **list)
 	return (NO_ERROR);
 }
 
-//	check for pipes and dollars in readline
+//	check for pipes and dollars in readline /////
 t_err	pipes_dollars(char *input, int *i, t_token **list)
 {
 	t_token	*new_token;
 
 	(*i)++;
-	new_token = NULL;
 	if (*input == '|')
 	{
 		if (input[1] == '|')
 			return (syntax_err_lexer((char)DOUBLE_PIPE));
 		new_token = create_token(TOK_PIPE, NULL);
 	}
-	else if (*input == '$')
+	else
 	{
 		if (input[1] == '\0' || ft_isspace(input[1]))
 			return (add_dollar_sign(list));
 		if (ft_isdigit(input[1]))
-			return ((*i)++ | NO_ERROR);
+			return (NO_ERROR | (*i)++);
 		if (input[1] == '?')
 		{
 			(*i)++;
@@ -110,7 +109,7 @@ t_err	pipes_dollars(char *input, int *i, t_token **list)
 	return (NO_ERROR);
 }
 
-//	check for left and right angular brackets in readline
+//	check for left and right angular brackets in readline /////
 t_err	lnr_angles(char *input, int *i, t_token **list)
 {
 	t_token	*new_token;
