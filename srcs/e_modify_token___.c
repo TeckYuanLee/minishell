@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-//  expand $ and words
+//  expand $ and words /////
 t_err	expand_d(t_token **head, t_env *info, char *key, char *data)
 {
 	char    *value;
@@ -24,7 +24,7 @@ t_err	expand_d(t_token **head, t_env *info, char *key, char *data)
 	return (NO_ERROR);
 }
 
-//  preparation to expand $ and words
+//  preparation to expand $ and words /////
 t_err	prep_expand_d(t_token **head, t_env *info, char *key)
 {
 	t_token	*next;
@@ -41,7 +41,7 @@ t_err	prep_expand_d(t_token **head, t_env *info, char *key)
 	return (expand_d(head, info, key, data));
 }
 
-//  create new token with first and second token
+//  create new token with first and second token /////
 t_err	join_head_token(t_token **list, t_token_t resulting_type)
 {
 	t_token	*new_token;
@@ -65,7 +65,7 @@ t_err	join_head_token(t_token **list, t_token_t resulting_type)
 	return (NO_ERROR);
 }
 
-//  create new token with current and next token
+//  create new token with current and next token /////
 t_err	join_token(t_token *list, t_token_t resulting_type)
 {
 	t_token	*new_token;
@@ -90,7 +90,7 @@ t_err	join_token(t_token *list, t_token_t resulting_type)
 	return (NO_ERROR);
 }
 
-//  remove current token from list
+//  remove current token from list /////
 void	cut_token(t_token *list)
 {
 	if (!list)
@@ -103,7 +103,7 @@ void	cut_token(t_token *list)
 	del_token(list);
 }
 
-//  remove the first token on the list
+//  remove the first token on the list /////
 void	cut_head_token(t_token **head)
 {
 	t_token	*new_head;

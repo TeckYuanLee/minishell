@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-//	copy data and store in 2d array if not parsed
+//	create cmd and store in 2d array if not parsed /////
 char	**create_cmd_split(t_token *list, int word_count)
 {
 	int		i;
@@ -27,7 +27,7 @@ char	**create_cmd_split(t_token *list, int word_count)
 	return (split);
 }
 
-//	copy data and store in 2d array
+//	copy data and store in 2d array || essentially just strdup for redir_pass /////
 char	**make_split(t_token *list, int word_amount)
 {
 	char	**split;
@@ -51,7 +51,7 @@ char	**make_split(t_token *list, int word_amount)
 	return (split);
 }
 
-//	add root node for pipe / no pipe node
+//	add root node for pipe / no pipe node, else add leaf node /////
 t_err	add_tree_node(t_node_t type, t_tree **tree, char **data)
 {	
 	if (type == PIPE || type == NO_PIPE)
@@ -66,7 +66,7 @@ t_err	add_tree_node(t_node_t type, t_tree **tree, char **data)
 	return (NO_ERROR);
 }
 
-//	print syntax error
+//	print syntax error /////
 t_err	syntax_err(t_token_t type)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
@@ -83,7 +83,7 @@ t_err	syntax_err(t_token_t type)
 	return (SYNTAX_ERR);
 }
 
-//	retrieve token type in string format
+//	retrieve token type in string format /////
 char	*get_token_str(t_token_t type)
 {
 	static char	*strings[12] = {

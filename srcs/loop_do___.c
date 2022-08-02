@@ -1,13 +1,13 @@
 #include "minishell.h"
 
-//  free envi parent
+//  free envi parent /////
 void	free_envi_parent(t_env *envi)
 {
 	clean_tree(envi->loc_tree_ptr);
 	free(envi->exec);
 }
 
-//  initialize executor
+//  initialize executor /////
 t_exec	*ft_init_exec(void)
 {	
 	t_exec	*new;
@@ -20,7 +20,7 @@ t_exec	*ft_init_exec(void)
 	return (new);
 }
 
-//  start building tree
+//  start building tree /////
 void	ft_start_tree(t_env *envi, t_tree **tree)
 {
 	int	i;
@@ -36,7 +36,7 @@ void	ft_start_tree(t_env *envi, t_tree **tree)
 	free_envi_parent(envi);
 }
 
-//  ignore signals
+//  ignore signals /////
 void	ignore_signals(void)
 {
 	struct sigaction	sig;
@@ -47,7 +47,7 @@ void	ignore_signals(void)
 	sigaction(SIGQUIT, &sig, NULL);
 }
 
-//  clean rows
+//  clean rows /////
 static void	clean_leaves(t_tree *root_tree)
 {
 	t_tree	*next_leave;
@@ -61,7 +61,7 @@ static void	clean_leaves(t_tree *root_tree)
 	}
 }
 
-//  clean rows columns by columns
+//  clean rows columns by columns /////
 void	clean_tree(t_tree **head_tree)
 {
 	t_tree	*node;
@@ -79,7 +79,7 @@ void	clean_tree(t_tree **head_tree)
 	*head_tree = NULL;
 }
 
-//  free data from lexer
+//  free data from lexer /////
 void	clean_lexer(t_token **list)
 {
 	t_token	*node;
@@ -108,6 +108,7 @@ void	new_prompt(int sig)
 	rl_redisplay();
 }
 
+//	initialize heredoc signals /////
 void	init_here_doc_signals(void)
 {
 	struct sigaction	sig_slash;
@@ -135,7 +136,7 @@ void	init_signals(void)
 	sigaction(SIGQUIT, &sig_q, NULL);
 }
 
-//  keep programm running
+//  keep programm running /////
 int	do_loop(t_input *input, t_env *envi)
 {
 	char	*curr_input;

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-//	free whatever malloc up to the failed one
+//	free whatever malloc up to the failed one /////
 void	ft_free_partial_split(char ***split, int failed_i)
 {
 	int	i;
@@ -12,6 +12,7 @@ void	ft_free_partial_split(char ***split, int failed_i)
 	*split = NULL;
 }
 
+//	look for next root node /////
 t_tree	*next_root_node(t_tree *tree)
 {
 	if (tree->type == PIPE || tree->type == NO_PIPE)
@@ -22,7 +23,7 @@ t_tree	*next_root_node(t_tree *tree)
 }
 
 //	traverse right of pipe or no pipe, else traverse leftmost
-//	to search for pipe or no pipe
+//	to search for pipe or no pipe /////
 t_tree	*last_root_node(t_tree *tree)
 {
 	if (tree->type == PIPE || tree->type == NO_PIPE)
@@ -36,7 +37,7 @@ t_tree	*last_root_node(t_tree *tree)
 	return (last_root_node(tree));
 }
 
-//	create new branch id if token type is pipe, else leave id
+//	create new branch id if token type is pipe, else leave id /////
 t_tree	*create_tree_node(t_node_t type, char **data)
 {
 	static int	branch_id = 0;
@@ -60,7 +61,7 @@ t_tree	*create_tree_node(t_node_t type, char **data)
 	return (new_tree);
 }
 
-//	create and insert new node at leftmost node
+//	create and insert new node at leftmost node /////
 t_err	add_leaf_node(t_node_t type, char **data, t_tree *parent)
 {
 	t_tree	*new_node;
@@ -84,7 +85,7 @@ t_err	add_leaf_node(t_node_t type, char **data, t_tree *parent)
 	return (NO_ERROR);
 }
 
-//	add last root node before new node
+//	create root node // put new node after root node /////
 t_err	add_root_node(t_node_t type, t_tree **head_tree)
 {
 	t_tree	*node;

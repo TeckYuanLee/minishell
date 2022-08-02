@@ -17,8 +17,10 @@ t_err	tokenize(char *input, int *i, t_token **list)
 {
 	if (*input == '<' || *input == '>')
 		return (lnr_angles(input, i, list));
-	else if (*input == '|' || *input == '$')
-		return (pipes_dollars(input, i, list));
+	else if (*input == '|')
+		return (pipes(input, i, list));
+	else if (*input == '$')
+		return (dollars(input, i, list));
 	else if (*input == '\'' || *input == '"')
 		return (quotes(input, i, list));
 	else

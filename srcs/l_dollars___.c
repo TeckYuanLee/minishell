@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-//	treat single dollar as word token
+//	treat single dollar as word token /////
 t_err	add_dollar_sign(t_token	**list)
 {
 	char	*str;
@@ -31,7 +31,7 @@ t_err	add_dollar_sign(t_token	**list)
 	return (NO_ERROR);
 }
 
-//	add new token to the tokenlist
+//	create token and add to tokenlist /////
 t_err	add_new_token(t_token	**head, t_token_t type, char *data)
 {
 	t_token	*new;

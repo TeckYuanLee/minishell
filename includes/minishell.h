@@ -202,7 +202,8 @@ t_err	save_quote(const char *line, char **quote, char *input);
 
 //	l_tokens.c
 t_err	lnr_angles(char *input, int *i, t_token **list);
-t_err	pipes_dollars(char *input, int *i, t_token **list);
+t_err	pipes(char *input, int *i, t_token **list);
+t_err	dollars(char *input, int *i, t_token **list);
 t_err	quotes(char *input, int *i, t_token **list);
 t_err	words(char *input, int *i, t_token **list);
 t_err	spaces(char *input, int *i, t_token **list);
@@ -214,7 +215,7 @@ t_bool	allowed_char(int c, char *not_allowed);
 t_err	get_env_key(const char *str, char **return_key);
 
 //	e_expander.c
-t_err	expander(char *line, t_input *input, t_env *info);
+t_err	expander(t_input *input, t_env *info);
 t_err	rm_double_tokens(t_token **list, t_token_t type);
 t_err	quotes_to_words(t_token **list);
 t_err	expand_dollars(t_token **list, t_env *info);
@@ -246,7 +247,7 @@ void	del_token(t_token *list);
 void	ft_free_str(char **str);
 
 //	p_parser.c
-t_err	parser(char *line, t_input *input, t_env *info);
+t_err	parser(t_input *input);
 t_err	pipe_syntax_pass(t_token *list);
 t_err	redir_syntax_pass(t_token *list);
 t_err	root_pass(t_token *list, t_tree **root);

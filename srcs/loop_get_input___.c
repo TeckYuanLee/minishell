@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-//  free envp
+//  free envp /////
 void	free_envp(t_item *ms_envp)
 {
 	int			i;
@@ -60,9 +60,9 @@ t_err	process_input(char *line, t_input *input, t_env *info)
 
 	err = lexer(line, input);
 	if (err == NO_ERROR)
-		err = expander(line, input, info);
+		err = expander(input, info);
 	if (err == NO_ERROR)
-		err = parser(line, input, info);
+		err = parser(input);
 	if (err != NO_ERROR)
 	{
 		if (err == SYNTAX_ERR)

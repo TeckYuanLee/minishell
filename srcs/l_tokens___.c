@@ -29,7 +29,7 @@ t_err	spaces(char *input, int *i, t_token **list)
 	return (NO_ERROR);
 }
 
-//	check for words and save them for parser
+//	check for words and save them for parser /////
 t_err	words(char *input, int *i, t_token **list)
 {
 	t_token	*new_token;
@@ -49,7 +49,7 @@ t_err	words(char *input, int *i, t_token **list)
 	return (NO_ERROR);
 }
 
-//	check for single and double quotes in readline
+//	check for single and double quotes in readline /////
 t_err	quotes(char *input, int *i, t_token **list)
 {
 	t_token	*new_token;
@@ -77,31 +77,41 @@ t_err	quotes(char *input, int *i, t_token **list)
 	return (NO_ERROR);
 }
 
-//	check for pipes and dollars in readline /////
-t_err	pipes_dollars(char *input, int *i, t_token **list)
+//	check for dollars in readline /////
+t_err	dollars(char *input, int *i, t_token **list)
 {
 	t_token	*new_token;
 
 	(*i)++;
-	if (*input == '|')
+	if (input[1] == '\0' || ft_isspace(input[1]))
+		return (add_dollar_sign(list));
+	if (ft_isdigit(input[1]))
 	{
-		if (input[1] == '|')
-			return (syntax_err_lexer((char)DOUBLE_PIPE));
-		new_token = create_token(TOK_PIPE, NULL);
+		(*i)++;
+		return (NO_ERROR);
 	}
-	else
+	if (input[1] == '?')
 	{
-		if (input[1] == '\0' || ft_isspace(input[1]))
-			return (add_dollar_sign(list));
-		if (ft_isdigit(input[1]))
-			return (NO_ERROR | (*i)++);
-		if (input[1] == '?')
-		{
-			(*i)++;
-			return (exitcode_token(input, i, list));
-		}
-		new_token = create_token(TOK_DOLLAR, NULL);
+		(*i)++;
+		return (exitcode_token(input, i, list));
 	}
+	new_token = create_token(TOK_DOLLAR, NULL);
+	if (new_token)
+		add_to_tokenlist(list, new_token);
+	if (!new_token || !*list)
+		return (MALLOC_FAIL);
+	return (NO_ERROR);
+}
+
+//	check for pipes in readline /////
+t_err	pipes(char *input, int *i, t_token **list)
+{
+	t_token	*new_token;
+
+	(*i)++;
+	if (input[1] == '|')
+		return (syntax_err_lexer((char)DOUBLE_PIPE));
+	new_token = create_token(TOK_PIPE, NULL);
 	if (new_token)
 		add_to_tokenlist(list, new_token);
 	if (!new_token || !*list)

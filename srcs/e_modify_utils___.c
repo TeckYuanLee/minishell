@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	simply free string /////
 void	ft_free_str(char **str)
 {
 	if (!*str)
@@ -8,7 +9,7 @@ void	ft_free_str(char **str)
 	*str = NULL;
 }
 
-//  delete the current token
+//  delete the current token from list /////
 void	del_token(t_token *list)
 {
 	if (!list)
@@ -17,7 +18,7 @@ void	del_token(t_token *list)
 	free (list);
 }
 
-//  create new token with new string
+//  create new token with new string /////
 t_err	insert_full_string(t_token **head, char *key, char *data)
 {
 	int		len;
@@ -43,7 +44,7 @@ t_err	insert_full_string(t_token **head, char *key, char *data)
 	return (NO_ERROR);
 }
 
-//  insert new token before current token
+//  replace current token with new token: head or not /////
 t_err	insert_tokens(t_token **head, char *key, char *value, char *data)
 {
 	char	*data_dup;
@@ -60,7 +61,7 @@ t_err	insert_tokens(t_token **head, char *key, char *value, char *data)
 	return (err);
 }
 
-//  create remaining part of the token
+//  create remaining part of the token else remove token /////
 t_err	expand_d_tailbit(t_token **head, char *key, char *data)
 {
 	t_token	*var_token;

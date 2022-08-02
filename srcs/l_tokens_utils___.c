@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-//	check if the char is allowed
+//	check if the char is allowed /////
 t_bool	allowed_char(int c, char *not_allowed)
 {
 	if (ft_strchr(not_allowed, c))
@@ -20,7 +20,7 @@ t_bool	allowed_char(int c, char *not_allowed)
 	return (TRUE);
 }
 
-//	add created token into the tokenlist
+//	add created token to the tokenlist /////
 void	add_to_tokenlist(t_token **head, t_token *new)
 {
 	t_token	*node;
@@ -38,7 +38,7 @@ void	add_to_tokenlist(t_token **head, t_token *new)
 	}
 }
 
-//	to store $?
+//	handle '$?' /////
 t_err	exitcode_token(const char *dquote, int *j, t_token **list)
 {
 	char	*question;

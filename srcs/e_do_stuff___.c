@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-//  create new string
+//  create new string /////
 void	create_full_string(char **str, char *data, int len)
 {
 	(*str)[0] = '$';
@@ -11,7 +11,7 @@ void	create_full_string(char **str, char *data, int len)
 	}
 }
 
-//  create the remaining part of the token
+//  create the remaining part of the token /////
 t_token	*create_tailpart(char *key, char *data)
 {
 	char	*str;
@@ -22,7 +22,7 @@ t_token	*create_tailpart(char *key, char *data)
 	return (create_token(TOK_WORD, str));
 }
 
-//  create new token to replace current token
+//  create new token to replace current token /////
 t_err	do_normalstuff(t_token *list, char *key, char *value, char *data)
 {
 	t_token	*var_token;
@@ -48,7 +48,7 @@ t_err	do_normalstuff(t_token *list, char *key, char *value, char *data)
 	return (NO_ERROR);
 }
 
-//  create new token to replace first token
+//  create new token to replace head token /////
 t_err	do_headstuff(t_token **head, char *key, char *value, char *data)
 {
 	t_token	*var_token;
@@ -73,7 +73,7 @@ t_err	do_headstuff(t_token **head, char *key, char *value, char *data)
 	return (NO_ERROR);
 }
 
-//  replace current token with new token
+//  replace current token with new token /////
 void	replace_token(t_token *list, t_token *new)
 {
 	if (!list)
@@ -90,7 +90,7 @@ void	replace_token(t_token *list, t_token *new)
 	del_token(list);
 }
 
-//  replace first token with new token
+//  replace first token with new token /////
 void	replace_head_token(t_token **head, t_token *new)
 {
 	if (!*head)
@@ -106,7 +106,7 @@ void	replace_head_token(t_token **head, t_token *new)
 	*head = new;
 }
 
-//  insert new token after current token
+//  insert new token between current token and next token /////
 void	insert_token_after(t_token *list, t_token *new)
 {
 	if (!list)

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-//	check next branch for pipe else return null list
+//	check next branch for pipe else return null list /////
 t_token	*next_branch(t_token *list)
 {
 	if (!list)
@@ -14,7 +14,7 @@ t_token	*next_branch(t_token *list)
 	return (list);
 }
 
-//	check for word tokens
+//	check for word tokens and turn them into cmd /////
 t_err	cmd_pass(t_token *list, t_tree **root)
 {
 	t_token	*node;
@@ -36,7 +36,7 @@ t_err	cmd_pass(t_token *list, t_tree **root)
 	return (NO_ERROR);
 }
 
-//	create node for redir signs
+//	create node for redir signs /////
 t_err	redir_pass(t_token *list, t_tree **root)
 {
 	char	**split;
@@ -65,7 +65,7 @@ t_err	redir_pass(t_token *list, t_tree **root)
 	return (NO_ERROR);
 }
 
-//	check if a root node exists
+//	create a root node: PIPE or NOPIPE /////
 t_err	root_pass(t_token *list, t_tree **root)
 {
 	(void)list;
@@ -77,7 +77,7 @@ t_err	root_pass(t_token *list, t_tree **root)
 	return (NO_ERROR);
 }
 
-//	check if lnr angles is input correctly
+//	check if lnr angles is input correctly, break if there is pipe /////
 t_err	redir_syntax_pass(t_token *list)
 {
 	while (list)
@@ -102,7 +102,7 @@ t_err	redir_syntax_pass(t_token *list)
 	return (NO_ERROR);
 }
 
-//	check if pipe is input correctly
+//	check if pipe not start/end and no double pipe /////
 t_err	pipe_syntax_pass(t_token *list)
 {
 	while (list)
@@ -120,14 +120,12 @@ t_err	pipe_syntax_pass(t_token *list)
 	return (NO_ERROR);
 }
 
-//	check tokens if they are used correctly
-t_err	parser(char *line, t_input *input, t_env *info)
+//	check tokens if they are used correctly /////
+t_err	parser(t_input *input)
 {
 	t_token	*list;
 	t_tree	**root;
 
-	(void)line;
-	(void)info;
 	list = input->lexer;
 	root = &input->tree;
 	if (!list)
