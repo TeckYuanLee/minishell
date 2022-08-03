@@ -1,19 +1,5 @@
 #include "minishell.h"
 
-//	check next branch for pipe else return null list /////
-t_token	*next_branch(t_token *list)
-{
-	if (!list)
-		printf(BHRED "[next_branch] Empty t_token ?\n" BHWHT);
-	while (list)
-	{
-		list = list->next;
-		if (list && list->type == TOK_PIPE)
-			return (list);
-	}
-	return (list);
-}
-
 //	check for word tokens and turn them into cmd /////
 t_err	cmd_pass(t_token *list, t_tree **root)
 {
@@ -116,39 +102,6 @@ t_err	pipe_syntax_pass(t_token *list)
 				return (syntax_err(TOK_PIPE));
 		}
 		list = list->next;
-	}
-	return (NO_ERROR);
-}
-
-//	check tokens if they are used correctly /////
-t_err	parser(t_input *input)
-{
-	t_token	*list;
-	t_tree	**root;
-
-	list = input->lexer;
-	root = &input->tree;
-	if (!list)
-		return (printf(BHRED "[parser] Empty t_token\n" BHWHT));
-	if (pipe_syntax_pass(list) != NO_ERROR)
-		return (SYNTAX_ERR);
-	// while (list)
-	// {
-	// 	printf("%d  %s  \n", list->type, list->data);
-	// 	list = list->next;
-	// }
-	// list = input->lexer;
-	while (list)
-	{	
-		if (redir_syntax_pass(list) != NO_ERROR)
-			return (SYNTAX_ERR);
-		root_pass(list, root);
-		redir_pass(list, root);
-		cmd_pass(list, root);
-		// printf("yes?\n");
-		list = next_branch(list);
-		if (list && list->type == TOK_PIPE)
-			list = list->next;
 	}
 	return (NO_ERROR);
 }

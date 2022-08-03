@@ -1,15 +1,32 @@
 #include "minishell.h"
 
-//	free whatever malloc up to the failed one /////
-void	ft_free_partial_split(char ***split, int failed_i)
+//	check next branch for pipe else return null list /////
+t_token	*next_branch(t_token *list)
 {
-	int	i;
+	if (!list)
+		printf(BHRED "[next_branch] Empty t_token ?\n" BHWHT);
+	while (list)
+	{
+		list = list->next;
+		if (list && list->type == TOK_PIPE)
+			return (list);
+	}
+	return (list);
+}
 
-	i = 0;
-	while (i < failed_i)
-		free((*split)[i++]);
-	free(*split);
-	*split = NULL;
+//	add root node for pipe / no pipe node, else add leaf node /////
+t_err	add_tree_node(t_node_t type, t_tree **tree, char **data)
+{	
+	if (type == PIPE || type == NO_PIPE)
+	{
+		if (!data)
+			add_root_node(type, tree);
+		else
+			printf(BHRED "PIPE/NO_PIPE node should not have data!!\n" BHWHT);
+	}
+	else
+		add_leaf_node(type, data, *tree);
+	return (NO_ERROR);
 }
 
 //	look for next root node /////

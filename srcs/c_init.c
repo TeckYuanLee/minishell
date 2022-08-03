@@ -1,27 +1,57 @@
 #include "minishell.h"
 
-//	/////
-void	ft_free_split(char ***split)
+//  add keys and values into envp /////
+t_err	add_to_ms_envp(char *key, char *value, t_item **head)
 {
-	int	i;
+	t_item	*new_envp;
+	int		i;
 
+	i = 0;
+	while ((head[i])->key)
+		i++;
+	new_envp = ft_calloc(i + 2, sizeof(t_item));
+	if (!new_envp)
+		return (MALLOC_FAIL);
 	i = -1;
-	if (!*split)
-		return ;
-	while ((*split)[++i])
+	while (head[++i]->key)
 	{
-		free((*split)[i]);
-		(*split)[i] = NULL;
+		new_envp[i].key = head[i]->key;
+		new_envp[i].value = head[i]->value;
 	}
-	free(*split);
-	*split = NULL;
+	new_envp[i].key = key;
+	new_envp[i].value = value;
+	free(*head);
+	*head = new_envp;
+	return (NO_ERROR);
 }
 
-//  save current term settings
-// void	save_term_settings(struct termios *termios_p)
-// {
-// 	tcgetattr(2, termios_p);
-// }
+//  copy from env key and value to envp /////
+t_err	copy_to_ms_envp(char *str, t_item *ms_envp)
+{
+	char	*key;
+	char	*value;
+
+	if (!str)
+		return (printf(BHRED "[copy_to_custom_envp] str to NULL..\n" BHWHT));
+	if (get_env_key(str, &key) == MALLOC_FAIL)
+		return (MALLOC_FAIL);
+	if (ft_strlen(key) < ft_strlen(str))
+	{
+		if (str[ft_strlen(key)] != '=')
+			return (printf(BHRED "[copy_to_custom_envp] no '=' sign..\n" BHWHT));
+		value = ft_strdup(str + ft_strlen(key) + 1);
+		if (!value)
+		{
+			free (key);
+			return (MALLOC_FAIL);
+		}
+	}
+	else
+		value = NULL;
+	ms_envp->key = key;
+	ms_envp->value = value;
+	return (NO_ERROR);
+}
 
 //  update shell lvl /////
 t_err	set_shlvl(t_env *envi)

@@ -12,6 +12,34 @@
 
 #include "minishell.h"
 
+//	check for single and double quotes in readline /////
+t_err	quotes(char *input, int *i, t_token **list)
+{
+	t_token	*new_token;
+	char	*quote;
+	t_err	err;
+
+	err = save_quote(input + 1, &quote, input);
+	if (err != NO_ERROR)
+		return (err);
+	*i += ft_strlen(quote) + 2;
+	if (*input == '"')
+	{
+		if (ft_strchr(quote, '$'))
+			return (expand_d_quote(quote, list));
+		new_token = create_token(TOK_DQUOTE, quote);
+	}
+	else
+		new_token = create_token(TOK_QUOTE, quote);
+	if (!new_token)
+	{
+		free (quote);
+		return (MALLOC_FAIL);
+	}
+	add_to_tokenlist(list, new_token);
+	return (NO_ERROR);
+}
+
 //	save content within quotes to create token /////
 t_err	save_quote(const char *line, char **quote, char *input)
 {
@@ -95,21 +123,4 @@ t_err	expand_d_quote(const char *dquote, t_token **list)
 		dquote += j;
 	}
 	return (NO_ERROR);
-}
-
-//	copy word literal for word token /////
-char	*save_word(const char *input)
-{
-	char	*word;
-	int		i;
-
-	i = 0;
-	while (allowed_char(input[i], "<>|$';\"\\[]{}()")
-		&& !ft_isspace(input[i]))
-		i++;
-	word = malloc(i + 1);
-	if (!word)
-		return (NULL);
-	ft_strlcpy(word, input, i + 1);
-	return (word);
 }

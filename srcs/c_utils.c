@@ -1,5 +1,30 @@
 #include "minishell.h"
 
+//	copy word literal for word token /////
+char	*save_word(const char *input)
+{
+	char	*word;
+	int		i;
+
+	i = 0;
+	while (allowed_char(input[i], "<>|$';\"\\[]{}()")
+		&& !ft_isspace(input[i]))
+		i++;
+	word = malloc(i + 1);
+	if (!word)
+		return (NULL);
+	ft_strlcpy(word, input, i + 1);
+	return (word);
+}
+
+//	check if the char is allowed /////
+t_bool	allowed_char(int c, char *not_allowed)
+{
+	if (ft_strchr(not_allowed, c))
+		return (FALSE);
+	return (TRUE);
+}
+
 //	create cmd and store in 2d array if not parsed /////
 char	**create_cmd_split(t_token *list, int word_count)
 {
@@ -49,38 +74,6 @@ char	**make_split(t_token *list, int word_amount)
 		list = list->next;
 	}
 	return (split);
-}
-
-//	add root node for pipe / no pipe node, else add leaf node /////
-t_err	add_tree_node(t_node_t type, t_tree **tree, char **data)
-{	
-	if (type == PIPE || type == NO_PIPE)
-	{
-		if (!data)
-			add_root_node(type, tree);
-		else
-			printf(BHRED "PIPE/NO_PIPE node should not have data!!\n" BHWHT);
-	}
-	else
-		add_leaf_node(type, data, *tree);
-	return (NO_ERROR);
-}
-
-//	print syntax error /////
-t_err	syntax_err(t_token_t type)
-{
-	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
-	if (type == TOK_PIPE)
-		ft_putstr_fd("'|'\n", 2);
-	else if (type == TOK_REDIR_IN)
-		ft_putstr_fd("'<'\n", 2);
-	else if (type == TOK_REDIR_OUT)
-		ft_putstr_fd("'>'\n", 2);
-	else if (type == TOK_APPEND)
-		ft_putstr_fd("'>>'\n", 2);
-	else if (type == TOK_HERE_DOC)
-		ft_putstr_fd("'<<'\n", 2);
-	return (SYNTAX_ERR);
 }
 
 //	retrieve token type in string format /////

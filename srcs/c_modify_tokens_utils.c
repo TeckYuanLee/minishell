@@ -1,4 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokens_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/25 09:25:15 by telee             #+#    #+#             */
+/*   Updated: 2022/07/25 09:25:15 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+//	handle '$?' /////
+t_err	exitcode_token(const char *dquote, int *j, t_token **list)
+{
+	char	*question;
+
+	(void)dquote;
+	(void)j;
+	question = ft_strdup("?");
+	if (!question)
+		return (MALLOC_FAIL);
+	if (add_new_token(list, TOK_DOLLAR, NULL) == MALLOC_FAIL)
+	{
+		free(question);
+		return (MALLOC_FAIL);
+	}
+	if (add_new_token(list, TOK_WORD, question) == MALLOC_FAIL)
+	{
+		free(question);
+		return (MALLOC_FAIL);
+	}
+	return (NO_ERROR);
+}
 
 //  create new string /////
 void	create_full_string(char **str, char *data, int len)
@@ -71,54 +106,4 @@ t_err	do_headstuff(t_token **head, char *key, char *value, char *data)
 	}
 	free(key);
 	return (NO_ERROR);
-}
-
-//  replace current token with new token /////
-void	replace_token(t_token *list, t_token *new)
-{
-	if (!list)
-		return ((void)printf(BHRED "[replace_token] no token_list..\n" BHWHT));
-	if (!list->prev)
-		return ((void)printf(BHRED "[replace_token] no prev in \
-			token_list..\n" BHWHT));
-	new->next = list->next;
-	if (new->next)
-		list->next->prev = new;
-	new->prev = list->prev;
-	if (new->prev)
-		list->prev->next = new;
-	del_token(list);
-}
-
-//  replace first token with new token /////
-void	replace_head_token(t_token **head, t_token *new)
-{
-	if (!*head)
-		return ((void)printf(BHRED "[replace_head_token] no head..\n" BHWHT));
-	if ((*head)->prev)
-		return ((void)printf(BHRED "[replace_head_token] not a head?\n" BHWHT));
-	if ((*head)->next)
-	{
-		new->next = (*head)->next;
-		(*head)->next->prev = new;
-	}
-	del_token(*head);
-	*head = new;
-}
-
-//  insert new token between current token and next token /////
-void	insert_token_after(t_token *list, t_token *new)
-{
-	if (!list)
-		printf(BHRED "[insert_token_after] empty list?!\n" BHWHT);
-	else if (!new)
-		printf(BHRED "[insert_token_after] empty (new)list?!\n" BHWHT);
-	else
-	{
-		new->next = list->next;
-		if (list->next)
-			list->next->prev = new;
-		list->next = new;
-		new->prev = list;
-	}
 }

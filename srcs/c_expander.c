@@ -1,28 +1,5 @@
 #include "minishell.h"
 
-//	remove space tokens /////
-t_err	rm_token_type(t_token **list, t_token_t type)
-{
-	t_token	*node;
-	t_token	*temp;
-
-	node = *list;
-	// printf("%d\n", node->type);
-	while (node)
-	{
-		temp = node->next;
-		if (node->type == type)
-		{
-			if (node->prev)
-				cut_token(node);
-			else
-				cut_head_token(list);
-		}
-		node = temp;
-	}
-	return (NO_ERROR);
-}
-
 //	join words for current token and next token(s) /////
 t_err	word_join(t_token **list)
 {
@@ -94,49 +71,4 @@ t_err	quotes_to_words(t_token **list)
 		node = node->next;
 	}
 	return (NO_ERROR);
-}
-
-//	remove duplicated dollar tokens /////
-t_err	rm_double_tokens(t_token **list, t_token_t type)
-{
-	t_token	*node;
-	t_token	*temp;
-
-	node = *list;
-	if (!node)
-		return (EMPTY);
-	while (node && node->next)
-	{
-		temp = node->next;
-		if (node->type == type && node->next->type == type)
-		{
-			if (node->prev)
-				cut_token(node);
-			else
-				cut_head_token(list);
-		}
-		node = temp;
-	}
-	return (NO_ERROR);
-}
-
-//	expand tokens /////
-t_err	expander(t_input *input, t_env *info)
-{
-	t_err	err;
-	t_token	**list;
-
-	list = &input->lexer;
-	if (!*list)
-		return (EMPTY);
-	err = rm_double_tokens(list, TOK_DOLLAR);
-	if (err == NO_ERROR)
-		err = quotes_to_words(list);
-	if (err == NO_ERROR)
-		err = expand_dollars(list, info);
-	if (err == NO_ERROR)
-		err = word_join(list);
-	if (err == NO_ERROR)
-		return (rm_token_type(list, TOK_SPACE));
-	return (err);
 }
