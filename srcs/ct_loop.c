@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//	handle append and heredoc
 int	ft_redirs_loop_two(t_tree *tree, t_exec *exec, t_env *envi)
 {
 	if (tree->type == REDIR_APP)
