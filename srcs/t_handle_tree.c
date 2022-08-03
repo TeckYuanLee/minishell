@@ -45,55 +45,6 @@ int	ft_copy_fd(t_exec *exec)
 	return (0);
 }
 
-//	handle heredoc for pipe when execute index == 0
-int	ft_handle_loop_two(t_env *envi, t_exec *exec, t_tree *tree)
-{
-	int	i;
-
-	i = 0;
-	if (tree->type == PIPE && exec->index == 0)
-	{
-		i = ft_pipe_start(envi, tree, exec);
-		if (i == 33)
-		{
-			ft_handle_heredoc(exec, envi);
-			return (i);
-		}
-		if (i == 34)
-			return (i);
-	}
-	return (0);
-}
-
-//	handle heredoc for pipe and nopipe
-int	ft_handle_loop(t_env *envi, t_exec *exec, t_tree *tree)
-{
-	int	i;
-
-	i = 0;
-	if (tree->type == NO_PIPE && exec->index > 0)
-	{
-		i = ft_nopipe_end(tree, envi, exec);
-		if (i == 33)
-		{
-			ft_handle_heredoc(exec, envi);
-			return (i);
-		}
-	}
-	if (tree->type == PIPE && exec->index > 0)
-	{
-		i = ft_pipe_inbetween(envi, tree, exec);
-		if (i == 33)
-		{
-			ft_handle_heredoc(exec, envi);
-			return (i);
-		}
-		if (i == 666)
-			return (i);
-	}
-	return (0);
-}
-
 //	wait for children process to finish
 int	ft_wait_on_children(t_exec *exec, t_env *envi)
 {
@@ -116,30 +67,6 @@ int	ft_wait_on_children(t_exec *exec, t_env *envi)
 	if (signal_found || exec->builtin_check == 1)
 		return (envi->exitcode);
 	return (WEXITSTATUS(status));
-}
-
-//	start tree roots when type is nopipe
-int	ft_nopipe_start(t_env *envi, t_tree *tree, t_exec *exec)
-{
-	pid_t	pid;
-
-	exec->index++;
-	pid = fork();
-	if (pid < 0)
-		ft_error_exec(1, 0, envi);
-	if (!pid)
-	{
-		restore_signals();
-		while (tree->left_node)
-		{
-			ft_redirs_loop(tree, exec, envi);
-			tree = get_next_node(tree);
-		}
-		if (tree->type == CMD)
-			ft_helper_nopipe_start(tree, envi);
-	}
-	ft_check_nonwriteable(tree, envi, exec);
-	return (0);
 }
 
 //	handle loops and building tree roots

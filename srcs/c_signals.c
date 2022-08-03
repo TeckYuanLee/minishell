@@ -1,5 +1,39 @@
 #include "minishell.h"
 
+//	restore sigint and sigquit to default
+void	restore_signals(void)
+{
+	struct sigaction	sig;
+
+	ft_bzero(&sig, sizeof(struct sigaction));
+	sig.sa_handler = SIG_DFL;
+	sigaction(SIGINT, &sig, NULL);
+	sigaction(SIGQUIT, &sig, NULL);
+}
+
+//	process sigint and sigquit
+void	process_signal(int sig, int *exitcode, int fd[2])
+{
+	if (sig == SIGINT)
+	{
+		if (fd)
+			ft_close_fd(fd);
+		*exitcode = 130;
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
+	else if (sig == SIGQUIT)
+	{
+		if (fd)
+			ft_close_fd(fd);
+		*exitcode = 131;
+		ft_putstr_fd("Quit: 3\n", 2);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
+}
+
 //  exit signal /////
 int	ft_exit_sig(t_env *envi)
 {

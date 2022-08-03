@@ -77,23 +77,6 @@ t_err	parse_and_add_to_envp(char *str, t_item **ms_envp, char *key)
 	return (NO_ERROR);
 }
 
-//	print error message for export command
-int	export_error_msg(char *str)
-{
-	if (str[0] == '-' && str[1] != '\0')
-	{
-		ft_putstr_fd("minishell: export: -", 2);
-		ft_putchar_fd(str[1], 2);
-		ft_putstr_fd(": invalid option\n", 2);
-		ft_putstr_fd("export: usage: export [name[=value] ...]\n", 2);
-		return (2);
-	}
-	ft_putstr_fd("minishell: export: '", 2);
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-	return (1);
-}
-
 //	identify if it is an export key
 int	is_export_key(char *key)
 {

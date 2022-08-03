@@ -99,15 +99,3 @@ int	ft_get_paths(t_env *envi, char **arg)
 	ft_acces_and_exec(envi, arg, paths);
 	return (0);
 }
-
-//	start of nopipe instructions
-void	ft_helper_nopipe_start(t_tree *tree, t_env *envi)
-{
-	if (!tree->data[0] || !ft_strncmp(tree->data[0], "", 1))
-	{
-		free_envi(envi);
-		exit(0);
-	}
-	ft_check_builtin(tree, envi);
-	ft_get_paths(envi, tree->data);
-}

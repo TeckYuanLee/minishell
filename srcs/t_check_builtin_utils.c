@@ -12,16 +12,6 @@ char	*get_path_env(char *temp)
 	return (path);
 }
 
-//	print env error message
-int	env_error_msg( t_env *envi)
-{
-	(void)envi;
-	ft_putstr_fd("minishell: env", 2);
-	ft_putstr_fd(": argument(s) unsupported\n", 2);
-	ft_putstr_fd("env: usage: env\n", 2);
-	exit (1);
-}
-
 //	print all env values retrieved by minishell
 int	ms_env(char **argv, t_env *envi)
 {

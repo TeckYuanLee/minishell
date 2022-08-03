@@ -88,23 +88,6 @@ t_err	rm_from_envp(char *key, t_item **envp)
 	return (NO_ERROR);
 }
 
-//	print error message for unset
-int	unset_error_msg(char *str)
-{
-	if (str[0] == '-' && str[1] != '\0')
-	{
-		ft_putstr_fd("minishell: unset: -", 2);
-		ft_putchar_fd(str[1], 2);
-		ft_putstr_fd(": invalid option\n", 2);
-		ft_putstr_fd("unset: usage: unset [name ...]\n", 2);
-		return (2);
-	}
-	ft_putstr_fd("minishell: unset: '", 2);
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-	return (1);
-}
-
 //	check for unset key
 int	is_unset_key(char *key)
 {
