@@ -15,21 +15,6 @@ void	ft_close_all(t_exec *exec)
 	ft_close_fd(exec->fd_in);
 }
 
-//	simply get next node
-t_tree	*get_next_node(t_tree *tree)
-{
-	if (!tree)
-	{
-		printf(BHRED "Empty forrest?!?!?\n");
-		return (NULL);
-	}
-	if (tree->left_node)
-		tree = tree->left_node;
-	else
-		tree = next_root_node(tree);
-	return (tree);
-}
-
 int	ft_close_fd(int fd[2])
 {
 	close(fd[0]);
@@ -69,7 +54,7 @@ int	ft_wait_on_children(t_exec *exec, t_env *envi)
 	return (WEXITSTATUS(status));
 }
 
-//	handle loops and building tree roots
+//	building tree roots
 int	ft_handle_tree(t_env *envi, t_tree *tree, t_exec *exec)
 {
 	int	i;

@@ -1,5 +1,25 @@
 #include "minishell.h"
 
+//	handle exit command
+int	ft_exit(t_tree *tree, t_env *envi, t_exec *exec)
+{
+	int	i;
+
+	i = 0;
+	while (tree->data[i])
+		i++;
+	if (!ft_strncmp(tree->data[0], "exit", 5) && i == 1)
+	{
+		ft_putstr_fd("exit\n", 2);
+		envi->exitcode = 0;
+		ft_exit_free(tree, exec, envi);
+		exit(envi->exitcode);
+	}
+	ft_exit_multi_arg(tree, envi, i, exec);
+	ft_exit_one_arg(tree, envi, i, exec);
+	return (envi->exitcode);
+}
+
 //	handle one argument exit with plus sign
 void	ft_exit_one_arg_plus(t_tree *tree, t_env *envi, t_exec *exec)
 {

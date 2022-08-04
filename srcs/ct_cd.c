@@ -1,5 +1,21 @@
 #include "minishell.h"
 
+//	initialize pwd strings
+t_pwdstr	init_strings(void)
+{
+	t_pwdstr	strings;
+
+	strings.oldpwd = ft_strdup("OLDPWD");
+	if (strings.oldpwd)
+		strings.pwd = ft_strdup("PWD");
+	if (!strings.pwd)
+	{
+		free(strings.oldpwd);
+		strings.oldpwd = NULL;
+	}
+	return (strings);
+}
+
 //	replace values of both old and new pwd
 t_err	update_both_pwds(t_env *envi, char *curr_pwd, char *new_pwd)
 {
@@ -25,6 +41,36 @@ t_err	update_both_pwds(t_env *envi, char *curr_pwd, char *new_pwd)
 	else if (add_to_ms_envp(strings.oldpwd, curr_pwd, &envi->ms_envp) == 1)
 		return (MALLOC_FAIL);
 	return (NO_ERROR);
+}
+
+//	copy path contents to parse path
+int	add_path_chunk(char parse_path[512], char *path)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (i < 1024 && parse_path[i])
+		i++;
+	if (i && parse_path[i - 1] != '/')
+		parse_path[i++] = '/';
+	while (path[j] && path[j] != '/')
+		parse_path[i++] = path[j++];
+	return (j);
+}
+
+//	remove parse path contents
+void	remove_dir(char parse_path[512])
+{
+	int	i;
+
+	i = 0;
+	while (i < 255 && parse_path[i])
+		i++;
+	while (parse_path[i] != '/')
+		parse_path[i--] = '\0';
+	parse_path[i] = '\0';
 }
 
 //	combine old pwd with path
@@ -69,25 +115,6 @@ t_err	only_update_oldpwd(t_env *envi, char *curr_pwd)
 	return (add_to_ms_envp(key, curr_pwd, &envi->ms_envp));
 }
 
-//	join two strings together
-int	add_string2(char *perror_str, char *string2, int rv)
-{
-	char	*temp;
-	char	*temp2;
-
-	temp = ft_strjoin(perror_str, ": ");
-	free (perror_str);
-	if (!temp)
-		return (-1);
-	temp2 = ft_strjoin(temp, string2);
-	free(temp);
-	if (!temp2)
-		return (-1);
-	perror(temp2);
-	free(temp2);
-	return (rv);
-}
-
 //	update current pwd and new pwd values
 t_err	update_pwd_oldpwd(char *path, t_env *envi)
 {
@@ -108,5 +135,23 @@ t_err	update_pwd_oldpwd(char *path, t_env *envi)
 		return (MALLOC_FAIL);
 	}
 	update_both_pwds(envi, curr_pwd, new_pwd);
+	return (NO_ERROR);
+}
+
+//	handle cd command
+t_err	ms_cd(char **argv, t_env *envi)
+{
+	if (!argv)
+		return (printf(BHRED "[ms_cd] NULL-pointing argv..\n" BHWHT));
+	if (!*argv)
+		return (printf(BHRED "[ms_cd] empty argv..\n" BHWHT));
+	if (!argv[1])
+		return (0);
+	if (chdir(argv[1]))
+		return (ms_perror("Minishell: cd", argv[1], NULL, 1));
+	if (update_pwd_oldpwd(argv[1], envi) == MALLOC_FAIL)
+		return (MALLOC_FAIL);
+	if (ms_envp_to_var(envi->ms_envp, &envi->var) == MALLOC_FAIL)
+		return (MALLOC_FAIL);
 	return (NO_ERROR);
 }

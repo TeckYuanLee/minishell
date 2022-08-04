@@ -54,6 +54,18 @@ int	ft_acces_and_exec(t_env *envi, char **arg, char **paths)
 	return (0);
 }
 
+//	get path from env
+char	*get_path_env(char *temp)
+{
+	char	*path;
+
+	path = ft_strtrim(temp, "PATH=");
+	free (temp);
+	if (!path)
+		return (NULL);
+	return (path);
+}
+
 //	find path from env
 char	*find_path_env(char **envp, t_env *envi)
 {

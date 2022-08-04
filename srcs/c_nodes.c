@@ -1,5 +1,20 @@
 #include "minishell.h"
 
+//	simply get next node
+t_tree	*get_next_node(t_tree *tree)
+{
+	if (!tree)
+	{
+		printf(BHRED "Empty forrest?!?!?\n");
+		return (NULL);
+	}
+	if (tree->left_node)
+		tree = tree->left_node;
+	else
+		tree = next_root_node(tree);
+	return (tree);
+}
+
 //	check next branch for pipe else return null list /////
 t_token	*next_branch(t_token *list)
 {

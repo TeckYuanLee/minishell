@@ -1,5 +1,16 @@
 #include "minishell.h"
 
+//	free env variables
+void	free_envi(t_env *envi)
+{
+	clean_tree(envi->loc_tree_ptr);
+	free(envi->exec);
+	ft_free_split(&envi->var);
+	free_envp(envi->ms_envp);
+	close(0);
+	close(1);
+}
+
 //	free whatever malloc up to the failed one /////
 void	ft_free_partial_split(char ***split, int failed_i)
 {

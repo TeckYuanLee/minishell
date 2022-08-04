@@ -34,6 +34,25 @@ int	export_error_msg(char *str)
 	return (1);
 }
 
+//	join two strings together
+int	add_string2(char *perror_str, char *string2, int rv)
+{
+	char	*temp;
+	char	*temp2;
+
+	temp = ft_strjoin(perror_str, ": ");
+	free (perror_str);
+	if (!temp)
+		return (-1);
+	temp2 = ft_strjoin(temp, string2);
+	free(temp);
+	if (!temp2)
+		return (-1);
+	perror(temp2);
+	free(temp2);
+	return (rv);
+}
+
 //	execute perror
 int	ms_perror(char *perror_str, char *string, char *string2, int rv)
 {

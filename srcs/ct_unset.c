@@ -1,51 +1,5 @@
 #include "minishell.h"
 
-//	initialize pwd strings
-t_pwdstr	init_strings(void)
-{
-	t_pwdstr	strings;
-
-	strings.oldpwd = ft_strdup("OLDPWD");
-	if (strings.oldpwd)
-		strings.pwd = ft_strdup("PWD");
-	if (!strings.pwd)
-	{
-		free(strings.oldpwd);
-		strings.oldpwd = NULL;
-	}
-	return (strings);
-}
-
-//	copy path contents to parse path
-int	add_path_chunk(char parse_path[512], char *path)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (i < 1024 && parse_path[i])
-		i++;
-	if (i && parse_path[i - 1] != '/')
-		parse_path[i++] = '/';
-	while (path[j] && path[j] != '/')
-		parse_path[i++] = path[j++];
-	return (j);
-}
-
-//	remove parse path contents
-void	remove_dir(char parse_path[512])
-{
-	int	i;
-
-	i = 0;
-	while (i < 255 && parse_path[i])
-		i++;
-	while (parse_path[i] != '/')
-		parse_path[i--] = '\0';
-	parse_path[i] = '\0';
-}
-
 //	if key is different, copy, else remove key
 void	copy_or_rm(t_item **envp, char *key, t_item **new_envp)
 {
@@ -103,4 +57,31 @@ int	is_unset_key(char *key)
 	if (ft_strlen(key) == i)
 		return (1);
 	return (0);
+}
+
+//	handle unset command
+int	ms_unset(char **argv, t_env *envi)
+{
+	int	i;
+	int	exitcode;
+
+	if (!argv)
+		return (printf(BHRED "[ms_unset] NULL-pointing argv..\n" BHWHT));
+	if (!argv[1])
+		return (0);
+	exitcode = 0;
+	i = 1;
+	while (argv[i])
+	{
+		if (!ft_strncmp(argv[i], "PWD", 4))
+			return (0);
+		else if (!is_unset_key(argv[i]))
+			exitcode = unset_error_msg(argv[i]);
+		else
+			rm_from_envp(argv[i], &envi->ms_envp);
+		i++;
+	}
+	if (ms_envp_to_var(envi->ms_envp, &envi->var) == MALLOC_FAIL)
+		return (-1);
+	return (exitcode);
 }

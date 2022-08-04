@@ -166,6 +166,7 @@ void	free_envp(t_item *ms_envp);
 void	ft_free_split(char ***split);
 void	ft_free_str(char **str);
 void	ft_free_partial_split(char ***split, int failed_i);
+void	free_envi(t_env *envi);
 
 //	c_create_token.c
 t_token	*create_token(t_token_t type, char *data);
@@ -236,6 +237,7 @@ t_tree	*last_root_node(t_tree *tree);
 t_tree	*next_root_node(t_tree *tree);
 t_err	add_tree_node(t_node_t type, t_tree **tree, char **data);
 t_token	*next_branch(t_token *list);
+t_tree	*get_next_node(t_tree *tree);
 
 //	c_quotes.c
 t_err	quotes(char *input, int *i, t_token **list);
@@ -282,10 +284,14 @@ t_err	word_join(t_token **list);
 int		ft_pipe_start(t_env *envi, t_tree *tree, t_exec *exec);
 void	ft_helper_pipe_start(t_tree *tree, t_env *envi, t_exec *exec);
 int		ft_pipe_start_util(t_tree *tree, pid_t pid);
+int		ft_pipe_inbetween(t_env *envi, t_tree *tree, t_exec *exec);
+void	ft_helper_pipe_inbetween(t_tree *tree, t_env *envi, t_exec *exec);
 
 //	ct_nopipe.c
 int		ft_nopipe_start(t_env *envi, t_tree *tree, t_exec *exec);
 void	ft_helper_nopipe_start(t_tree *tree, t_env *envi);
+int		ft_check_nonwriteable(t_tree *tree, t_env *envi, t_exec *exec);
+int		ft_start_builtin(t_tree *tree, t_env *envi, t_exec *exec);
 int		ft_nopipe_end(t_tree *tree, t_env *envi, t_exec *exec);
 void	ft_nopipe_child(t_tree *tree, t_env *envi, t_exec *exec);
 int		ft_nopipe_end_util(t_tree *tree, pid_t pid, int status);
@@ -296,6 +302,8 @@ int		ft_handle_loop(t_env *envi, t_exec *exec, t_tree *tree);
 int		ft_handle_loop_two(t_env *envi, t_exec *exec, t_tree *tree);
 int		ft_redirs_loop(t_tree *tree, t_exec *exec, t_env *envi);
 int		ft_redirs_loop_two(t_tree *tree, t_exec *exec, t_env *envi);
+int		make_here_doc(char *delimiter);
+int		prev_heredoc_exists(t_tree *tree);
 
 //	ct_error.c
 int		ft_error_exec(int code, int *fd, t_env *envi);
@@ -303,6 +311,7 @@ int		ft_redir_error(t_tree *tree, int fd, t_env *envi);
 int		ft_redir_in_error(t_tree *tree, t_env *envi);
 int		env_error_msg( t_env *envi);
 int		ms_perror(char *perror_str, char *string, char *string2, int rv);
+int		add_string2(char *perror_str, char *string2, int rv);
 int		export_error_msg(char *str);
 int		unset_error_msg(char *str);
 
@@ -313,6 +322,7 @@ void	ft_exit_numeric(t_tree *tree, t_env *envi, t_exec *exec);
 void	ft_exit_one_arg(t_tree *tree, t_env *envi, int i, t_exec *exec);
 void	ft_exit_one_range(t_tree *tree, t_env *envi, t_exec *exec);
 void	ft_exit_one_arg_plus(t_tree *tree, t_env *envi, t_exec *exec);
+int		ft_exit(t_tree *tree, t_env *envi, t_exec *exec);
 
 //	ct_utils.c
 int		ft_isplus(char *str);
@@ -322,31 +332,35 @@ int		ft_check_isdigit(char *str);
 long long	ft_atoi_exit(const char *str);
 // static int	ft_skip(const char *str, int i);
 
-//	t_check_builtin.c
-int		ft_check_builtin(t_tree *tree, t_env *envi);
+//	ct_echo.c
 int		ft_builtin_echo(t_env *envi, t_tree *tree);
-int		ft_pwd_builtin(t_env *envi);
-void	ft_check_export(t_tree *tree, t_env *envi);
-int		ft_check_builtin_end(t_tree *tree, t_env *envi, int i);
-int		ft_check_builtin_add(t_tree *tree, t_env *envi, int i);
-
-//	t_check_builtin_utils.c
 int		ft_handle_echo(t_tree *tree, int i, int check, int err);
 int		ft_print_echo(t_tree *tree, int i, int err);
 int		ft_check_n(char *str);
+
+//	ct_pwd.c
+int		ft_pwd_builtin(t_env *envi);
 char	*ft_get_pwd(char **envp);
 char	*ft_get_pwd_env(char *temp);
-int		ms_env(char **argv, t_env *envi);
-char	*get_path_env(char *temp);
 
-//	t_cd.c
+//	ct_cd.c
+t_err	ms_cd(char **argv, t_env *envi);
 t_err	update_pwd_oldpwd(char *path, t_env *envi);
-int		add_string2(char *perror_str, char *string2, int rv);
 t_err	only_update_oldpwd(t_env *envi, char *curr_pwd);
 char	*parse_path(char *path, char *old_pwd);
+void	remove_dir(char parse_path[512]);
+int		add_path_chunk(char parse_path[512], char *path);
 t_err	update_both_pwds(t_env *envi, char *curr_pwd, char *new_pwd);
+t_pwdstr	init_strings(void);
 
-//	t_dir.c
+//	ct_paths.c
+int		ft_get_paths(t_env *envi, char **arg);
+char	*find_path_env(char **envp, t_env *envi);
+char	*get_path_env(char *temp);
+int		ft_acces_and_exec(t_env *envi, char **arg, char **paths);
+int		ft_parse_dir(char **envp, char **arg, t_env *envi, char **paths);
+
+//	ct_paths_utils.c
 char	**ft_edit_paths(char **paths, char **arg, int i);
 char	*ft_search_bins(char **exec_paths);
 int		ft_check_access(char *path, char **envp, char **arg, t_env *envi);
@@ -357,7 +371,9 @@ int		ft_parse_dir_loop(char *str);
 void	ft_dir_exit(char **arg, t_env *envi, char **paths);
 int		ft_is_dir(char **envp, char **arg, t_env *envi, char **paths);
 
-//	t_export.c
+//	ct_export.c
+void	ft_check_export(t_tree *tree, t_env *envi);
+int		ms_export(char **argv, t_env *envi);
 t_err	single_export(t_item *ms_envp);
 t_err	export_get_env_key(const char *str, char **return_key);
 int		is_export_key(char *key);
@@ -367,7 +383,7 @@ t_err	get_plusis_value(char *value, char *key, t_item *ms_envp, \
 		char **joined);
 t_err	add_value_to_envp(t_item **ms_envp, char *key, char *value);
 
-//	t_export_utils.c
+//	ct_export_utils.c
 int		get_ms_envp_len(t_item *ms_envp);
 int		not_ready(int *arr, int arr_len);
 t_err	print_smallest_and_mark_arr(t_item *ms_envp, int *arr, int arr_len);
@@ -376,48 +392,25 @@ int		is_smallest_key(char *key, t_item *ms_envp, int *arr);
 void	print_key(char *key, t_item *ms_envp);
 void	mark_array(char *key, t_item *ms_envp, int *arr);
 
-//	t_unset.c
+//	ct_unset.c
+int		ms_unset(char **argv, t_env *envi);
 int		is_unset_key(char *key);
 t_err	rm_from_envp(char *key, t_item **envp);
 void	copy_or_rm(t_item **envp, char *key, t_item **new_envp);
-void	remove_dir(char parse_path[512]);
-int		add_path_chunk(char parse_path[512], char *path);
-t_pwdstr	init_strings(void);
 
-//	t_handle_tree.c
+//	ct_builtin.c
+int		ft_check_builtin(t_tree *tree, t_env *envi);
+int		ft_check_builtin_end(t_tree *tree, t_env *envi, int i);
+int		ft_check_builtin_add(t_tree *tree, t_env *envi, int i);
+int		ms_env(char **argv, t_env *envi);
+int		ft_check_builtin_child(t_tree *tree, t_env *envi, t_exec *exec);
+
+//	ct_handle_tree.c
 int		ft_handle_tree(t_env *envi, t_tree *tree, t_exec *exec);
 int		ft_wait_on_children(t_exec *exec, t_env *envi);
 int		ft_copy_fd(t_exec *exec);
 int		ft_close_fd(int fd[2]);
-t_tree	*get_next_node(t_tree *tree);
 void	ft_close_all(t_exec *exec);
 void	ft_handle_heredoc(t_exec *exec, t_env *envi);
-
-//	t_pipe_start.c
-int		ft_check_builtin_child(t_tree *tree, t_env *envi, t_exec *exec);
-int		ft_pipe_inbetween(t_env *envi, t_tree *tree, t_exec *exec);
-void	ft_helper_pipe_inbetween(t_tree *tree, t_env *envi, t_exec *exec);
-
-//	t_helper_nopipe_start.c
-int		ft_get_paths(t_env *envi, char **arg);
-char	*find_path_env(char **envp, t_env *envi);
-int		ft_acces_and_exec(t_env *envi, char **arg, char **paths);
-int		ft_parse_dir(char **envp, char **arg, t_env *envi, char **paths);
-
-//	t_nopipe_end.c
-int		prev_heredoc_exists(t_tree *tree);
-
-//	t_nonwriteable.c
-int		ft_check_nonwriteable(t_tree *tree, t_env *envi, t_exec *exec);
-int		ft_start_builtin(t_tree *tree, t_env *envi, t_exec *exec);
-int		ms_export(char **argv, t_env *envi);
-t_err	ms_cd(char **argv, t_env *envi);
-int		ms_unset(char **argv, t_env *envi);
-int		ft_exit(t_tree *tree, t_env *envi, t_exec *exec);
-
-//	t_redirs_loop.c
-void	free_envi(t_env *envi);
-int		make_here_doc(char *delimiter);
-
 
 #endif

@@ -1,5 +1,50 @@
 #include "minishell.h"
 
+//	heredoc exists in previous node
+int	prev_heredoc_exists(t_tree *tree)
+{
+	if (!tree)
+		return (0);
+	tree = tree->up_node;
+	while (tree && tree->type != HERE_DOC)
+		tree = tree->left_node;
+	if (!tree)
+		return (0);
+	return (1);
+}
+
+static t_bool	delimiter_found(char *delimiter, char *line)
+{
+	if (!ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1))
+		return (TRUE);
+	return (FALSE);
+}
+
+int	make_here_doc(char *delimiter)
+{
+	int		fd;
+	char	*line;
+
+	fd = open(".here_doc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd == -1)
+		return (-1);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+			break ;
+		else if (delimiter_found(delimiter, line))
+		{
+			free(line);
+			break ;
+		}
+		ft_putendl_fd(line, fd);
+		free(line);
+	}
+	close(fd);
+	return (open(".here_doc", O_RDONLY));
+}
+
 //	handle append and heredoc
 int	ft_redirs_loop_two(t_tree *tree, t_exec *exec, t_env *envi)
 {

@@ -137,3 +137,50 @@ t_err	single_export(t_item *ms_envp)
 	free(arr);
 	return (0);
 }
+
+//	handle export command
+int	ms_export(char **argv, t_env *envi)
+{
+	int		i;
+	char	*key;
+	int		exitcode;
+
+	if (!argv[1])
+		return (single_export(envi->ms_envp));
+	exitcode = 0;
+	i = 1;
+	while (argv[i])
+	{
+		if (export_get_env_key(argv[i], &key) == MALLOC_FAIL)
+			return (-1);
+		if (!is_export_key(key))
+		{
+			ft_free_str(&key);
+			exitcode = export_error_msg(argv[i]);
+		}
+		else
+			parse_and_add_to_envp(argv[i], &envi->ms_envp, key);
+		i++;
+	}
+	if (ms_envp_to_var(envi->ms_envp, &envi->var) == MALLOC_FAIL)
+		return (-1);
+	return (exitcode);
+}
+
+//	check for 'export' command
+void	ft_check_export(t_tree *tree, t_env *envi)
+{
+	int	exit_code;
+
+	if (!ft_strncmp(tree->data[0], "export", 7) && tree->data[1])
+	{
+		free_envi(envi);
+		exit(0);
+	}
+	else if (!ft_strncmp(tree->data[0], "export", 7))
+	{
+		exit_code = ms_export(tree->data, envi);
+		free_envi(envi);
+		exit(exit_code);
+	}
+}
