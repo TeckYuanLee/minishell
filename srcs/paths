@@ -21,4 +21,20 @@ dollars $
 - if next char is '?' -> exitcode token
 
 quotes ' "
-- if " -> expand " -> 
+- if " -> expand " -> extract words and tokenize it 
+	-> if $
+	-> if next char '\0' or space -> treat as word token
+	-> if next char digit -> i++
+	-> if next char '?' -> exitcode token
+	-> add dollar and word tokens
+- if ' -> tokenize '
+
+expander
+- remove dup tokens -> if prev exists -> cut token else cut head token
+- quotes to words -> change token type from quotes to words
+- expand dollars -> search list for $ and words token -> cut token
+				 -> if '?' -> exitcode
+				 -> if disallowed char -> insert full string
+				 -> if get value from env -> insert token (& remove current token)
+				 -> else expand dollar tailbit -> if data > key -> extract tail part -> else remove token cos no value from env
+- word join -> 
