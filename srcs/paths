@@ -1,0 +1,24 @@
+main
+- init variables -> count no of env -> calloc ms_env -> copy env to ms_env -> assign key "OLDPWD" if non-existent in env
+- ms_env to variables -> combine key and value & store into variables
+- set SHLVL -> if exists in ms_env -> update value -> else add to ms_env
+- save term settings
+- do loop
+
+do loop
+- init signals -> C > new prompt; Q > SIG_IGN
+- get input -> set term settings -> rl_replace_line -> readline -> restore term settings -> trim whitespace form input -> add history -> if !input, exit
+- process input -> go through lexer, expander, parser -> return error no -> clean lexer
+
+lexer
+- spaces -> tokenize spaces
+- print syntax error when disallowed char
+- tokenize (< << > >> | $ ' " words) -> add to tokenlist
+
+dollars $
+- if next char is '\0' or space -> treat as word token
+- if next char is digit -> i++
+- if next char is '?' -> exitcode token
+
+quotes ' "
+- if " -> expand " -> 
