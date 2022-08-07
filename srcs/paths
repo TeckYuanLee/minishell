@@ -37,4 +37,43 @@ expander
 				 -> if disallowed char -> insert full string
 				 -> if get value from env -> insert token (& remove current token)
 				 -> else expand dollar tailbit -> if data > key -> extract tail part -> else remove token cos no value from env
-- word join -> 
+- word join -> if current and next token type is words, join them
+- remove space tokens -> cut tokens
+
+parser
+- check pipe syntax -> return error if pipe is first/last and double pipe
+- check redir syntax 
+	-> if pipe, skip 
+	-> if < > << >>, and if last or next is not words, return error
+- create root node for PIPE and NOPIPE -> put at the end of other root nodes
+- create node for redir < > << >> -> put at the end of other leaf nodes
+- check for word tokens -> turn all into cmd -> put at the end of other leaf nodes
+- if next branch with PIPE exists -> continue loop
+
+continue do loop
+- if error -> clean tree & clean lexer -> continue loop
+			-> if MALLOC FAIL -> exit (-1)
+- ignore signals C & Q
+- start tree
+
+start tree
+- init executor -> index & builtin check -> if error, return
+- loc tree ptr ?? (might be no use)
+- handle tree -> if i = 33 or 34, exitcode = 1
+- unlink ".here_doc"
+- clean tree & free executor
+
+handle tree
+- init exitcode
+- if NOPIPE & executor index = 0 -> start nopipe
+								 -> wait on children -> exitcode
+								 -> return
+- handle loop -> if i = 33 or 34, return (i)
+- handle loop two -> if i = 33 or 34, return (i)
+- copy fd of executor
+- traverse next node of tree (root??)
+- wait on children -> exitcode
+- close all executor fd (in and out)
+
+nopipe start
+- 
