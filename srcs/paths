@@ -98,8 +98,8 @@ handle loop
 												 -> if i = 666, return (i)
 
 handle loop two
-- if PIPE & executor index = 0 -> start pipe* -> if i = 33 -> handle heredoc, return (i)
-											  -> if i = 34, return (i)
+- if PIPE & executor index = 0 -> start pipe -> if i = 33 -> handle heredoc, return (i)
+											 -> if i = 34, return (i)
 
 redirs loop
 - if REDIR IN -> open fd in -> access F_OK -> access R_OK -> else redir error
@@ -123,9 +123,55 @@ nopipe end
 - copy fd
 - if heredoc exists up node -> wait
 - fork
-- if pid < 0 -> error exec
-- if pid = 0 -> nopipe child*
-- if nopipe end util* = 33 -> return 33
+- if pid < 0 -> executor error
+- if pid = 0 -> nopipe child
+- if nopipe end util = 33 -> return 33
 - close fd in
 
+nopipe child
+- while leaf node -> redirs loop
+- if CMD -> nopipe end helper
+
+nopipe end helper
+- if no data -> close fd in -> close fd out -> free envi -> exit
+- dup2 -> close fd in -> close fd out -> check builtin child -> get paths
+
+nopipe end util
+- if leaf node & HEREDOC -> waitpid -> if WIFSIGNALED, return 33
+
+start pipe
+- executor index +1
+- if pipe fd out < 0 -> executor error
+- fork
+- if pid < 0 -> executor error
+- if pid = 0 -> restore signals -> helper start pipe
+- start pipe util
+- if i = 34, return 34
+
+start pipe helper
+- while leaf node -> redirs loop
+- if CMD -> if no data -> close fd in -> close fd out -> free envi -> exit
+		 -> dup2 -> close fd out -> check builtin child -> get paths
+- close fd in -> close fd out
+
+pipe start util
+- if leaf node & HEREDOC -> waitpid -> if WIFSIGNALED & WTERMSIG not = 81, return 34
+
 pipe inbetween
+- executor index +1
+- if pipe fd out < 0 -> executor error
+- if heredoc exists up node -> wait
+- fork
+- if pid < 0 -> executor error
+- if pid = 0 -> helper pipe inbetween
+- if leaf node & type is HEREDOC -> waitpid -> if WIFSIGNALED, return 33
+- close fd
+
+helper pipe inbetween
+- while leaf node -> redirs loop
+- if type is CMD -> if no data -> close fd in -> close fd out -> free envi -> exit
+				 -> if fd in -> dup2
+				 -> dup2 -> close fd in -> close fd out -> check builtin child* -> get paths*
+
+check builtin child
+				 
