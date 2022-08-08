@@ -71,9 +71,61 @@ handle tree
 - handle loop -> if i = 33 or 34, return (i)
 - handle loop two -> if i = 33 or 34, return (i)
 - copy fd of executor
-- traverse next node of tree (root??)
+- traverse next node of tree -> next root node or leaf node
 - wait on children -> exitcode
 - close all executor fd (in and out)
 
 nopipe start
-- 
+- executor index +1
+- fork -> if pid < 0 -> executor error
+- if pid = 0 -> restore signals
+			 -> traverse down leaf nodes -> redirs loop
+			 -> if type is CMD -> start nopipe helper
+- check nonwritable -> search for CMD -> start builtin (export, cd, unset, exit)
+									  -> return if no data in CMD
+
+wait on children
+- while executor index-- > 0 -> wait(&status) -> if WIFSIGNALED
+											  -> restore term settings
+											  -> process signal C & Q (WTERMSIG)
+											  -> signal found = 1
+- if signal found or builtin check = 1 -> return exitcode
+									   -> else return WEXITSTATUS
+
+handle loop
+- if NOPIPE & executor index > 0 -> end nopipe -> if i = 33 -> handle heredoc, return (i)
+- if PIPE & executor index > 0 -> pipe inbetween -> if i = 33 -> handle heredoc, return (i)
+												 -> if i = 666, return (i)
+
+handle loop two
+- if PIPE & executor index = 0 -> start pipe* -> if i = 33 -> handle heredoc, return (i)
+											  -> if i = 34, return (i)
+
+redirs loop
+- if REDIR IN -> open fd in -> access F_OK -> access R_OK -> else redir error
+			  -> dup2 -> close
+- if REDIR OUT -> open fd out -> access W_OK -> else redir error
+			   -> dup2 -> close
+- redirs loop two
+
+redirs loop two
+- if APPEND -> open fd out -> access W_OK -> else redir error
+			-> dup2 -> close
+- if HEREDOC & leaf node not HEREDOC -> restore term settings
+									 -> set term settings
+									 -> init heredoc signals
+									 -> if PIPE & heredoc dont exists up node -> close
+									 -> make heredoc fd in
+									 -> dup2 -> close -> unlink ".here_doc"
+
+nopipe end
+- executor index +1
+- copy fd
+- if heredoc exists up node -> wait
+- fork
+- if pid < 0 -> error exec
+- if pid = 0 -> nopipe child*
+- if nopipe end util* = 33 -> return 33
+- close fd in
+
+pipe inbetween
