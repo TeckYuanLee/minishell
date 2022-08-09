@@ -171,7 +171,21 @@ helper pipe inbetween
 - while leaf node -> redirs loop
 - if type is CMD -> if no data -> close fd in -> close fd out -> free envi -> exit
 				 -> if fd in -> dup2
-				 -> dup2 -> close fd in -> close fd out -> check builtin child* -> get paths*
+				 -> dup2 -> close fd in -> close fd out -> check builtin child -> get paths
 
 check builtin child
-				 
+- if echo -> builtin echo
+- if cd -> ms cd -> exitcode -> i++
+- check builtin add
+- if exit -> exit -> exitcode -> i++
+- if i not 0 -> free envi -> exit -> else return (i)
+
+check builtin add
+- if pwd -> pwd builtin
+- if export -> ms export -> exitcode -> i++
+- if unset -> ms unset -> exitcode -> i++
+- if env -> ms env -> exitcode -> i++
+
+get paths
+- find path env -> split -> free ; else executor error
+- access and execute
