@@ -156,8 +156,6 @@ void	process_signal(int sig, int *exitcode, int fd[2]);
 void	restore_signals(void);
 
 //	c_cleaner.c
-void	free_envi_parent(t_env *envi);
-// static void	clean_leaves(t_tree *root_tree);
 void	clean_tree(t_tree **head_tree);
 void	clean_lexer(t_token **list);
 void	free_envp(t_item *ms_envp);
@@ -166,7 +164,7 @@ void	free_envp(t_item *ms_envp);
 void	ft_free_split(char ***split);
 void	ft_free_str(char **str);
 void	ft_free_partial_split(char ***split, int failed_i);
-void	free_envi(t_env *envi);
+void	free_envi(t_env *envi, int exitcode);
 
 //	c_create_token.c
 t_token	*create_token(t_token_t type, char *data);
@@ -234,8 +232,6 @@ t_tree	*create_tree_node(t_node_t type, char **data);
 t_err	add_root_node(t_node_t type, t_tree **head_tree);
 t_err	add_leaf_node(t_node_t type, char **data, t_tree *parent);
 t_tree	*last_root_node(t_tree *tree);
-t_tree	*next_root_node(t_tree *tree);
-t_err	add_tree_node(t_node_t type, t_tree **tree, char **data);
 t_token	*next_branch(t_token *list);
 t_tree	*get_next_node(t_tree *tree);
 
@@ -243,7 +239,6 @@ t_tree	*get_next_node(t_tree *tree);
 t_err	quotes(char *input, int *i, t_token **list);
 t_err	save_quote(const char *line, char **quote, char *input);
 t_err	d_quote_dollars(const char *dquote, int *j, t_token **list);
-t_err	put_d_quote_token(const char *dquote, t_token **list, int j);
 t_err	expand_d_quote(const char *dquote, t_token **list);
 
 //	c_tokenize.c
@@ -261,17 +256,13 @@ t_err	redir_pass(t_token *list, t_tree **root);
 t_err	cmd_pass(t_token *list, t_tree **root);
 
 //	c_utils.c
-char	*get_token_str(t_token_t type);
 char	**make_split(t_token *list, int word_amount);
 char	**create_cmd_split(t_token *list, int word_count);
 t_bool	allowed_char(int c, char *not_allowed);
-char	*save_word(const char *input);
 
 //	c_loop_do.c
 int		do_loop(t_input *curr_input, t_env *envi);
 void	set_term_settings(void);
-// void	save_term_settings(struct termios *termios_p);
-// void	restore_term_settings(struct termios *termios_p);
 void	ft_start_tree(t_env *envi, t_tree **tree);
 t_exec	*ft_init_exec(void);
 
@@ -283,26 +274,23 @@ t_err	word_join(t_token **list);
 //	ct_pipe.c
 int		ft_pipe_start(t_env *envi, t_tree *tree, t_exec *exec);
 void	ft_helper_pipe_start(t_tree *tree, t_env *envi, t_exec *exec);
-int		ft_pipe_start_util(t_tree *tree, pid_t pid);
 int		ft_pipe_inbetween(t_env *envi, t_tree *tree, t_exec *exec);
 void	ft_helper_pipe_inbetween(t_tree *tree, t_env *envi, t_exec *exec);
 
 //	ct_nopipe.c
 int		ft_nopipe_start(t_env *envi, t_tree *tree, t_exec *exec);
-void	ft_helper_nopipe_start(t_tree *tree, t_env *envi);
 int		ft_check_nonwriteable(t_tree *tree, t_env *envi, t_exec *exec);
 int		ft_start_builtin(t_tree *tree, t_env *envi, t_exec *exec);
 int		ft_nopipe_end(t_tree *tree, t_env *envi, t_exec *exec);
 void	ft_nopipe_child(t_tree *tree, t_env *envi, t_exec *exec);
 int		ft_nopipe_end_util(t_tree *tree, pid_t pid, int status);
-void	ft_helper_nopipe_end(t_tree *tree, t_env *envi, t_exec *exec);
 
 //	ct_loop.c
 int		ft_handle_loop(t_env *envi, t_exec *exec, t_tree *tree);
 int		ft_handle_loop_two(t_env *envi, t_exec *exec, t_tree *tree);
 int		ft_redirs_loop(t_tree *tree, t_exec *exec, t_env *envi);
 int		ft_redirs_loop_two(t_tree *tree, t_exec *exec, t_env *envi);
-int		make_here_doc(char *delimiter);
+int		make_here_doc(char *delim);
 int		prev_heredoc_exists(t_tree *tree);
 
 //	ct_error.c

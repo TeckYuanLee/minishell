@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 //	free env variables
-void	free_envi(t_env *envi)
+void	free_envi(t_env *envi, int exitcode)
 {
 	clean_tree(envi->loc_tree_ptr);
 	free(envi->exec);
@@ -9,6 +9,8 @@ void	free_envi(t_env *envi)
 	free_envp(envi->ms_envp);
 	close(0);
 	close(1);
+	if (exitcode != -100)
+		exit(exitcode);
 }
 
 //	free whatever malloc up to the failed one /////

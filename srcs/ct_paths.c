@@ -7,7 +7,7 @@ int	ft_parse_dir(char **envp, char **arg, t_env *envi, char **paths)
 	{
 		ft_putstr_fd("minishell: .: filename argument required\n", 2);
 		ft_putstr_fd(".: usage: . filename [arguments]\n", 2);
-		free_envi(envi);
+		free_envi(envi, -100);
 		ft_free_paths(paths, NULL, NULL);
 		exit(2);
 	}

@@ -105,5 +105,5 @@ void	ft_exit_free(t_tree *tree, t_exec *exec, t_env *envi)
 {
 	(void)tree;
 	(void)exec;
-	free_envi(envi);
+	free_envi(envi, -100);
 }

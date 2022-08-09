@@ -20,12 +20,8 @@ int	ft_check_builtin_child(t_tree *tree, t_env *envi, t_exec *exec)
 		i++;
 	}
 	if (i != 0)
-	{
-		free_envi(envi);
-		exit(envi->exitcode);
-	}
-	else
-		return (i);
+		free_envi(envi, envi->exitcode);
+	return (i);
 }
 
 //	print all env values retrieved by minishell
@@ -35,7 +31,7 @@ int	ms_env(char **argv, t_env *envi)
 
 	if (argv[1])
 	{
-		free_envi(envi);
+		free_envi(envi, -100);
 		env_error_msg(envi);
 	}
 	ms_envp = envi->ms_envp;
@@ -79,10 +75,7 @@ int	ft_check_builtin_end(t_tree *tree, t_env *envi, int i)
 		i++;
 	}
 	if (i != 0)
-	{
-		free_envi(envi);
-		exit(envi->exitcode);
-	}
+		free_envi(envi, envi->exitcode);
 	return (i);
 }
 
@@ -96,10 +89,7 @@ int	ft_check_builtin(t_tree *tree, t_env *envi)
 		i = ft_builtin_echo(envi, tree);
 	else if (!ft_strncmp(tree->data[0], "cd", 3) || \
 		!ft_strncmp(tree->data[0], "exit", 5))
-	{
-		free_envi(envi);
-		exit(0);
-	}
+		free_envi(envi, 0);
 	else if (!ft_strncmp(tree->data[0], "pwd", 4))
 		i = ft_pwd_builtin(envi);
 	ft_check_export(tree, envi);

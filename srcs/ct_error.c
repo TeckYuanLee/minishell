@@ -97,8 +97,7 @@ int	ft_redir_in_error(t_tree *tree, t_env *envi)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(tree->data[0], 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
-	free_envi(envi);
-	exit(1);
+	free_envi(envi, 1);
 	return (-1);
 }
 
@@ -109,8 +108,7 @@ int	ft_redir_error(t_tree *tree, int fd, t_env *envi)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(tree->data[0], 2);
 	ft_putstr_fd(": Permission denied\n", 2);
-	free_envi(envi);
-	exit(1);
+	free_envi(envi, 1);
 	return (-1);
 }
 
@@ -119,7 +117,7 @@ int	ft_error_exec(int code, int *fd, t_env *envi)
 {
 	if (fd != 0)
 		close(*fd);
-	free_envi(envi);
+	free_envi(envi, -100);
 	ft_putstr_fd("minishell: ", 2);
 	if (code == 1)
 		ft_putstr_fd("fork error\n", 2);

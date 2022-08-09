@@ -170,17 +170,8 @@ int	ms_export(char **argv, t_env *envi)
 //	check for 'export' command
 void	ft_check_export(t_tree *tree, t_env *envi)
 {
-	int	exit_code;
-
 	if (!ft_strncmp(tree->data[0], "export", 7) && tree->data[1])
-	{
-		free_envi(envi);
-		exit(0);
-	}
+		free_envi(envi, 0);
 	else if (!ft_strncmp(tree->data[0], "export", 7))
-	{
-		exit_code = ms_export(tree->data, envi);
-		free_envi(envi);
-		exit(exit_code);
-	}
+		free_envi(envi, ms_export(tree->data, envi));
 }

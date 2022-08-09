@@ -1,22 +1,5 @@
 #include "minishell.h"
 
-//	copy word literal for word token /////
-char	*save_word(const char *input)
-{
-	char	*word;
-	int		i;
-
-	i = 0;
-	while (allowed_char(input[i], "<>|$';\"\\[]{}()")
-		&& !ft_isspace(input[i]))
-		i++;
-	word = malloc(i + 1);
-	if (!word)
-		return (NULL);
-	ft_strlcpy(word, input, i + 1);
-	return (word);
-}
-
 //	check if the char is allowed /////
 t_bool	allowed_char(int c, char *not_allowed)
 {
@@ -74,25 +57,4 @@ char	**make_split(t_token *list, int word_amount)
 		list = list->next;
 	}
 	return (split);
-}
-
-//	retrieve token type in string format /////
-char	*get_token_str(t_token_t type)
-{
-	static char	*strings[12] = {
-		"WORD",
-		"PIPE",
-		"QUOTE",
-		"DQUOTE",
-		"DOLLAR",
-		"REDIR_IN",
-		"REDIR_OUT",
-		"APPEND",
-		"HERE_DOC",
-		"SPACE",
-		"EMPTY_WORD",
-		"TOK_ERROR"
-	};
-
-	return (strings[type]);
 }

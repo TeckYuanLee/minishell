@@ -18,7 +18,7 @@ t_err	cmd_pass(t_token *list, t_tree **root)
 	split = create_cmd_split(list, word_count);
 	if (!split)
 		return (MALLOC_FAIL);
-	add_tree_node(CMD, root, split);
+	add_leaf_node(CMD, split, *root);
 	return (NO_ERROR);
 }
 
@@ -38,13 +38,13 @@ t_err	redir_pass(t_token *list, t_tree **root)
 		if (!split)
 			return (MALLOC_FAIL);
 		else if (list->type == TOK_REDIR_IN)
-			add_tree_node(REDIR_IN, root, split);
+			add_leaf_node(REDIR_IN, split, *root);
 		else if (list->type == TOK_REDIR_OUT)
-			add_tree_node(REDIR_OUT, root, split);
+			add_leaf_node(REDIR_OUT, split, *root);
 		else if (list->type == TOK_APPEND)
-			add_tree_node(REDIR_APP, root, split);
+			add_leaf_node(REDIR_APP, split, *root);
 		else if (list->type == TOK_HERE_DOC)
-			add_tree_node(HERE_DOC, root, split);
+			add_leaf_node(HERE_DOC, split, *root);
 		list = list->next;
 		list->is_parsed = TRUE;
 	}
@@ -57,9 +57,9 @@ t_err	root_pass(t_token *list, t_tree **root)
 	(void)list;
 	(void)root;
 	if (next_branch(list))
-		add_tree_node(PIPE, root, NULL);
+		add_root_node(PIPE, root);
 	else
-		add_tree_node(NO_PIPE, root, NULL);
+		add_root_node(NO_PIPE, root);
 	return (NO_ERROR);
 }
 
@@ -80,9 +80,6 @@ t_err	redir_syntax_pass(t_token *list)
 		}
 		else if (list->type == TOK_WORD)
 			(void)list;
-		else
-			printf(BHRED "[redir_syntax_pass] Wrong tok_type?: %s\n" \
-				BHWHT, get_token_str(list->type));
 		list = list->next;
 	}
 	return (NO_ERROR);

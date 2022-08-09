@@ -34,7 +34,7 @@ void	process_signal(int sig, int *exitcode, int fd[2])
 	}
 }
 
-//  exit signal /////
+//  ctrl-D /////
 int	ft_exit_sig(t_env *envi)
 {
 	tcsetattr(2, TCSANOW, &envi->termios_p);
@@ -79,10 +79,10 @@ void	init_here_doc_signals(void)
 
 	ft_bzero(&sig_slash, sizeof(struct sigaction));
 	ft_bzero(&sig_c, sizeof(struct sigaction));
-	sig_slash.sa_handler = SIG_IGN;
 	sig_c.sa_handler = SIG_DFL;
-	sigaction(SIGQUIT, &sig_slash, NULL);
+	sig_slash.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &sig_c, NULL);
+	sigaction(SIGQUIT, &sig_slash, NULL);
 }
 
 //  initialize signals /////

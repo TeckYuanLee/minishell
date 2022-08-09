@@ -40,7 +40,6 @@ t_err	rm_token_type(t_token **list, t_token_t type)
 	t_token	*temp;
 
 	node = *list;
-	// printf("%d\n", node->type);
 	while (node)
 	{
 		temp = node->next;

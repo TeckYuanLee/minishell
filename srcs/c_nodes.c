@@ -11,7 +11,13 @@ t_tree	*get_next_node(t_tree *tree)
 	if (tree->left_node)
 		tree = tree->left_node;
 	else
-		tree = next_root_node(tree);
+	{
+		if (tree->type == PIPE || tree->type == NO_PIPE)
+			return (tree->right_node);
+		while (tree->up_node && tree->type != PIPE && tree->type != NO_PIPE)
+			tree = tree->up_node;
+		return (tree->right_node);
+	}
 	return (tree);
 }
 
@@ -27,31 +33,6 @@ t_token	*next_branch(t_token *list)
 			return (list);
 	}
 	return (list);
-}
-
-//	add root node for pipe / no pipe node, else add leaf node /////
-t_err	add_tree_node(t_node_t type, t_tree **tree, char **data)
-{	
-	if (type == PIPE || type == NO_PIPE)
-	{
-		if (!data)
-			add_root_node(type, tree);
-		else
-			printf(BHRED "PIPE/NO_PIPE node should not have data!!\n" BHWHT);
-	}
-	else
-		add_leaf_node(type, data, *tree);
-	return (NO_ERROR);
-}
-
-//	look for next root node /////
-t_tree	*next_root_node(t_tree *tree)
-{
-	if (tree->type == PIPE || tree->type == NO_PIPE)
-		return (tree->right_node);
-	while (tree->up_node && tree->type != PIPE && tree->type != NO_PIPE)
-		tree = tree->up_node;
-	return (tree->right_node);
 }
 
 //	traverse right of pipe or no pipe, else traverse leftmost

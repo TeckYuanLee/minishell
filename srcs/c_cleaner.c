@@ -1,12 +1,5 @@
 #include "minishell.h"
 
-//  free envi parent /////
-void	free_envi_parent(t_env *envi)
-{
-	clean_tree(envi->loc_tree_ptr);
-	free(envi->exec);
-}
-
 //  free envp /////
 void	free_envp(t_item *ms_envp)
 {
@@ -27,25 +20,12 @@ void	free_envp(t_item *ms_envp)
 	free (ms_envp);
 }
 
-//  clean rows /////
-static void	clean_leaves(t_tree *root_tree)
-{
-	t_tree	*next_leave;
-
-	while (root_tree)
-	{
-		next_leave = root_tree->left_node;
-		ft_free_split(&root_tree->data);
-		free (root_tree);
-		root_tree = next_leave;
-	}
-}
-
-//  clean rows columns by columns /////
+//  clean rows columns by columns and rows by rows /////
 void	clean_tree(t_tree **head_tree)
 {
 	t_tree	*node;
 	t_tree	*next_root;
+	t_tree	*next_leave;
 
 	node = *head_tree;
 	if (!node)
@@ -53,7 +33,13 @@ void	clean_tree(t_tree **head_tree)
 	while (node)
 	{
 		next_root = node->right_node;
-		clean_leaves(node);
+		while (node)
+		{
+			next_leave = node->left_node;
+			ft_free_split(&node->data);
+			free (node);
+			node = next_leave;
+		}
 		node = next_root;
 	}
 	*head_tree = NULL;

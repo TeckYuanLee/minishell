@@ -13,14 +13,7 @@ int	prev_heredoc_exists(t_tree *tree)
 	return (1);
 }
 
-static t_bool	delimiter_found(char *delimiter, char *line)
-{
-	if (!ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1))
-		return (TRUE);
-	return (FALSE);
-}
-
-int	make_here_doc(char *delimiter)
+int	make_here_doc(char *delim)
 {
 	int		fd;
 	char	*line;
@@ -33,7 +26,7 @@ int	make_here_doc(char *delimiter)
 		line = readline("> ");
 		if (!line)
 			break ;
-		else if (delimiter_found(delimiter, line))
+		else if (!ft_strncmp(line, delim, ft_strlen(delim) + 1))
 		{
 			free(line);
 			break ;

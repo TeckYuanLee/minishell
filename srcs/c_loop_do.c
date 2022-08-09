@@ -26,20 +26,9 @@ void	ft_start_tree(t_env *envi, t_tree **tree)
 	if (i == 34 || i == 33)
 		envi->exitcode = 1;
 	unlink(".here_doc");
-	free_envi_parent(envi);
+	clean_tree(envi->loc_tree_ptr);
+	free(envi->exec);
 }
-
-//  restore terminal settings
-// void	restore_term_settings(struct termios *termios_p)
-// {
-// 	tcsetattr(2, TCSANOW, termios_p);
-// }
-
-//  save current term settings
-// void	save_term_settings(struct termios *termios_p)
-// {
-// 	tcgetattr(2, termios_p);
-// }
 
 //  change termios settings /////
 void	set_term_settings(void)

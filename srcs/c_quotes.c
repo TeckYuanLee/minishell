@@ -65,22 +65,6 @@ t_err	save_quote(const char *line, char **quote, char *input)
 	return (NO_ERROR);
 }
 
-//	extract words within double quote and store in tokenlist /////
-t_err	put_d_quote_token(const char *dquote, t_token **list, int j)
-{
-	char	*word;
-
-	word = ft_substr(dquote, 0, j);
-	if (!word)
-		return (MALLOC_FAIL);
-	if (add_new_token(list, TOK_QUOTE, word) == MALLOC_FAIL)
-	{
-		free (word);
-		return (MALLOC_FAIL);
-	}
-	return (NO_ERROR);
-}
-
 //	handle dollar sign during double quote /////
 t_err	d_quote_dollars(const char *dquote, int *j, t_token **list)
 {
@@ -108,6 +92,7 @@ t_err	d_quote_dollars(const char *dquote, int *j, t_token **list)
 t_err	expand_d_quote(const char *dquote, t_token **list)
 {
 	int		j;
+	char	*word;
 
 	while (*dquote)
 	{
@@ -115,8 +100,16 @@ t_err	expand_d_quote(const char *dquote, t_token **list)
 		while (dquote[j] && dquote[j] != '$')
 			j++;
 		if (j > 0)
-			if (put_d_quote_token(dquote, list, j) == MALLOC_FAIL)
+		{
+			word = ft_substr(dquote, 0, j);
+			if (!word)
 				return (MALLOC_FAIL);
+			if (add_new_token(list, TOK_QUOTE, word) == MALLOC_FAIL)
+			{
+				free (word);
+				return (MALLOC_FAIL);
+			}
+		}
 		if (dquote[j] == '$')
 			if (d_quote_dollars(dquote, &j, list) == MALLOC_FAIL)
 				return (MALLOC_FAIL);

@@ -34,9 +34,16 @@ t_err	words(char *input, int *i, t_token **list)
 {
 	t_token	*new_token;
 	char	*word;
+	int		j;
 
-	word = save_word(input);
-	if (!word)
+	j = 0;
+	while (allowed_char(input[j], "<>|$';\"\\[]{}()")
+		&& !ft_isspace(input[j]))
+		j++;
+	word = malloc(j + 1);
+	if (word)
+		ft_strlcpy(word, input, j + 1);
+	else
 		return (MALLOC_FAIL);
 	new_token = create_token(TOK_WORD, word);
 	if (!new_token)

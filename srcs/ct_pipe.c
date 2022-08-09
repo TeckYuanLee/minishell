@@ -14,8 +14,7 @@ void	ft_helper_pipe_inbetween(t_tree *tree, t_env *envi, t_exec *exec)
 		{
 			ft_close_fd(exec->fd_in);
 			ft_close_fd(exec->fd_out);
-			free_envi(envi);
-			exit(0);
+			free_envi(envi, 0);
 		}
 		if (exec->fd_in[0])
 			dup2(exec->fd_in[0], STDIN_FILENO);
@@ -53,21 +52,6 @@ int	ft_pipe_inbetween(t_env *envi, t_tree *tree, t_exec *exec)
 	return (0);
 }
 
-//	WIFSIGNALED & WTERMSIG
-int	ft_pipe_start_util(t_tree *tree, pid_t pid)
-{
-	int	status;
-
-	status = 0;
-	if (tree->left_node && tree->left_node->type == HERE_DOC)
-	{
-		waitpid(pid, &status, 0);
-		if (WIFSIGNALED(status) && WTERMSIG(status) != 81)
-			return (34);
-	}
-	return (0);
-}
-
 //	do pipe command, builtin, and get path
 void	ft_helper_pipe_start(t_tree *tree, t_env *envi, t_exec *exec)
 {
@@ -82,8 +66,7 @@ void	ft_helper_pipe_start(t_tree *tree, t_env *envi, t_exec *exec)
 		{
 			ft_close_fd(exec->fd_in);
 			ft_close_fd(exec->fd_out);
-			free_envi(envi);
-			exit(0);
+			free_envi(envi, 0);
 		}
 		dup2(exec->fd_out[1], STDOUT_FILENO);
 		ft_close_fd(exec->fd_out);
@@ -101,7 +84,7 @@ void	ft_helper_pipe_start(t_tree *tree, t_env *envi, t_exec *exec)
 int	ft_pipe_start(t_env *envi, t_tree *tree, t_exec *exec)
 {
 	pid_t	pid;
-	int		i;
+	int		status;
 
 	exec->index++;
 	if (pipe(exec->fd_out) < 0)
@@ -114,8 +97,12 @@ int	ft_pipe_start(t_env *envi, t_tree *tree, t_exec *exec)
 		restore_signals();
 		ft_helper_pipe_start(tree, envi, exec);
 	}
-	i = ft_pipe_start_util(tree, pid);
-	if (i == 34)
-		return (34);
+	status = 0;
+	if (tree->left_node && tree->left_node->type == HERE_DOC)
+	{
+		waitpid(pid, &status, 0);
+		if (WIFSIGNALED(status) && WTERMSIG(status) != 81)
+			return (34);
+	}
 	return (0);
 }
