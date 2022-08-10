@@ -1,16 +1,5 @@
 #include "minishell.h"
 
-//	skip whitespaces
-static int	ft_skip(const char *str, int i)
-{
-	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || \
-			str[i] == '\r' || str[i] == '\v' || str[i] == '\f')
-	{
-		i++;
-	}
-	return (i);
-}
-
 //	long long atoi for exit command
 long long	ft_atoi_exit(const char *str)
 {
@@ -18,20 +7,21 @@ long long	ft_atoi_exit(const char *str)
 	long long	i;
 	long long	sign;
 
-	i = ft_skip(str, 0);
+	i = 0;
 	value = 0;
 	sign = 1;
-	if (str[i] == '+' || str[i] == '-')
+	while (str[i] && (str[i] == 32 || (str[i] > 8 && str[i] < 14)))
 		i++;
-	while (str[i] >= '0' && str[i] <= '9')
+	if (str[i] == '+' || str[i] == '-')
 	{
-		value = (value * 10) + (str[i] - '0');
+		if (str[i] == '-')
+			sign *= -1;
 		i++;
 	}
+	while (str[i] && str[i] >= '0' && str[i] <= '9')
+		value = (value * 10) + (str[i++] - '0');
 	return (value * sign);
 }
-
-
 
 //	check for digits within the string
 int	ft_check_isdigit(char *str)
@@ -63,23 +53,14 @@ int	ft_check_minus_plus(char *str)
 	int	i;
 	int	check;
 
-	i = 0;
+	i = -1;
 	check = 0;
-	while (str[i])
+	while (str[++i])
 	{
 		if (str[i] == '-')
 			check++;
 		if (str[i] == '+')
 			check++;
-		i++;
 	}
 	return (check);
-}
-
-//	check for + sign
-int	ft_isplus(char *str)
-{
-	if (str[0] == '+')
-		return (1);
-	return (0);
 }

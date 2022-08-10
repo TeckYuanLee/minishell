@@ -46,24 +46,13 @@ int	ft_acces_and_exec(t_env *envi, char **arg, char **paths)
 	if (path)
 	{
 		i = ft_check_access(path, envi->var, arg, envi);
-		ft_exec_cmd(path, envi->var, arg, envi);
+		if (execve(path, arg, envi->var) < 0)
+			ft_error_exec(4, 0, envi);
 	}
 	ft_free_paths(exec_paths, NULL, NULL);
 	if (!path)
 		ft_cmd_exit(arg, envi, paths);
 	return (0);
-}
-
-//	get path from env
-char	*get_path_env(char *temp)
-{
-	char	*path;
-
-	path = ft_strtrim(temp, "PATH=");
-	free (temp);
-	if (!path)
-		return (NULL);
-	return (path);
 }
 
 //	find path from env
@@ -72,9 +61,10 @@ char	*find_path_env(char **envp, t_env *envi)
 	int		i;
 	int		len;
 	char	*temp;
+	char	*path;
 
-	i = 0;
-	while (envp[i] != NULL)
+	i = -1;
+	while (envp[++i] != NULL)
 	{
 		if (!(ft_strncmp(envp[i], "PATH", 4)))
 		{
@@ -84,9 +74,10 @@ char	*find_path_env(char **envp, t_env *envi)
 				ft_error_exec(5, 0, envi);
 			temp = ft_memcpy(temp, envp[i], ft_strlen(envp[i]));
 			temp[len] = '\0';
-			return (get_path_env(temp));
+			path = ft_strtrim(temp, "PATH=");
+			free (temp);
+			return (path);
 		}
-		i++;
 	}
 	return (NULL);
 }

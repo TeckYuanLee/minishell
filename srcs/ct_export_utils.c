@@ -63,21 +63,20 @@ t_err	print_smallest_and_mark_arr(t_item *ms_envp, int *arr, int arr_len)
 	static char	*smallest_key = NULL;
 	static char	full_key[255];
 
-	i = 0;
+	i = -1;
 	ft_memchr(full_key, '~', 256);
 	if (smallest_key == NULL)
 		smallest_key = full_key;
 	else
 		smallest_key = first_available(ms_envp, arr, arr_len);
-	while (i < arr_len)
+	while (++i < arr_len)
 	{
 		if (is_smallest_key(smallest_key, ms_envp + i, arr + i))
 		{
 			smallest_key = (ms_envp + i)->key;
-			i = 0;
+			i = -1;
 			continue ;
 		}
-		i++;
 	}
 	print_key(smallest_key, ms_envp);
 	mark_array(smallest_key, ms_envp, arr);
@@ -94,18 +93,4 @@ int	not_ready(int *arr, int arr_len)
 		if (*(arr + i) == 0)
 			return (1);
 	return (0);
-}
-
-//	get length of envp
-int	get_ms_envp_len(t_item *ms_envp)
-{
-	int	i;
-
-	i = 0;
-	while (ms_envp->key)
-	{
-		ms_envp++;
-		i++;
-	}
-	return (i);
 }

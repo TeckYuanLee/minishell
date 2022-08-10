@@ -14,7 +14,8 @@ int	ft_is_dir(char **envp, char **arg, t_env *envi, char **paths)
 		else if (flag == S_IFREG)
 		{
 			ft_check_access(arg[0], envp, arg, envi);
-			ft_exec_cmd(arg[0], envp, arg, envi);
+			if (execve(arg[0], arg, envp) < 0)
+				ft_error_exec(4, 0, envi);
 		}
 	}
 	ft_putstr_fd("minishell: ", 2);
@@ -76,14 +77,6 @@ void	*ft_free_paths(char **first, char **second, char *third)
 	return (NULL);
 }
 
-//	execute command
-int	ft_exec_cmd(char *path, char **envp, char **arg, t_env *envi)
-{
-	if (execve(path, arg, envp) < 0)
-		ft_error_exec(4, 0, envi);
-	return (0);
-}
-
 //	check if have permission to execute
 int	ft_check_access(char *path, char **envp, char **arg, t_env *envi)
 {
@@ -106,13 +99,10 @@ char	*ft_search_bins(char **exec_paths)
 	struct stat	stat;
 	int			i;
 
-	i = 0;
-	while (exec_paths && exec_paths[i])
-	{
+	i = -1;
+	while (exec_paths && exec_paths[++i])
 		if (!(lstat(exec_paths[i], &stat)))
 			return (exec_paths[i]);
-		i++;
-	}
 	return (NULL);
 }
 

@@ -45,15 +45,6 @@ t_err	get_plusis_value(char *value, char *key, t_item *ms_envp, \
 	return (NO_ERROR);
 }
 
-//	extract the value of envp
-char	*point_to_value(char *str)
-{
-	str = ft_strchr(str, '=');
-	if (str)
-		str++;
-	return (str);
-}
-
 //	extract value and add to list of envp
 t_err	parse_and_add_to_envp(char *str, t_item **ms_envp, char *key)
 {
@@ -62,7 +53,10 @@ t_err	parse_and_add_to_envp(char *str, t_item **ms_envp, char *key)
 	value = NULL;
 	if (str[ft_strlen(key)] == '=' || str[ft_strlen(key)] == '+')
 	{
-		value = ft_strdup(point_to_value(str));
+		str = ft_strchr(str, '=');
+		if (str)
+			str++;
+		value = ft_strdup(str);
 		if (!value)
 		{
 			free(key);
@@ -120,7 +114,12 @@ t_err	single_export(t_item *ms_envp)
 	int	arr_len;
 	int	*arr;
 
-	arr_len = get_ms_envp_len(ms_envp);
+	arr_len = 0;
+	while (ms_envp->key)
+	{
+		ms_envp++;
+		arr_len++;
+	}
 	if (!ms_envp)
 		return (printf(BHRED "[single_export] ms_envp pointing to (null)..\n"));
 	arr = ft_calloc(arr_len, sizeof(int));
@@ -164,13 +163,4 @@ int	ms_export(char **argv, t_env *envi)
 	if (ms_envp_to_var(envi->ms_envp, &envi->var) == MALLOC_FAIL)
 		return (-1);
 	return (exitcode);
-}
-
-//	check for 'export' command
-void	ft_check_export(t_tree *tree, t_env *envi)
-{
-	if (!ft_strncmp(tree->data[0], "export", 7) && tree->data[1])
-		free_envi(envi, 0);
-	else if (!ft_strncmp(tree->data[0], "export", 7))
-		free_envi(envi, ms_export(tree->data, envi));
 }

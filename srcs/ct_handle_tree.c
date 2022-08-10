@@ -22,14 +22,6 @@ int	ft_close_fd(int fd[2])
 	return (0);
 }
 
-//	simply copy fd out into fd in
-int	ft_copy_fd(t_exec *exec)
-{
-	exec->fd_in[0] = exec->fd_out[0];
-	exec->fd_in[1] = exec->fd_out[1];
-	return (0);
-}
-
 //	wait for children process to finish
 int	ft_wait_on_children(t_exec *exec, t_env *envi)
 {
@@ -75,7 +67,8 @@ int	ft_handle_tree(t_env *envi, t_tree *tree, t_exec *exec)
 		i = ft_handle_loop_two(envi, exec, tree);
 		if (i == 33 || i == 34)
 			return (i);
-		ft_copy_fd(exec);
+		exec->fd_in[0] = exec->fd_out[0];
+		exec->fd_in[1] = exec->fd_out[1];
 		tree = get_next_node(tree);
 	}
 	envi->exitcode = ft_wait_on_children(exec, envi);

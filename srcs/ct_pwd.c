@@ -1,17 +1,5 @@
 #include "minishell.h"
 
-//	get pwd from env
-char	*ft_get_pwd_env(char *temp)
-{
-	char	*cwd;
-
-	cwd = ft_strtrim(temp, "PWD=");
-	free (temp);
-	if (!cwd)
-		return (NULL);
-	return (cwd);
-}
-
 //	look for pwd from list of envp
 char	*ft_get_pwd(char **envp)
 {
@@ -20,8 +8,8 @@ char	*ft_get_pwd(char **envp)
 	char	*temp;
 	char	*cwd;
 
-	i = 0;
-	while (envp[i] != NULL)
+	i = -1;
+	while (envp[++i] != NULL)
 	{
 		if (!ft_strncmp(envp[i], "PWD", 3))
 		{
@@ -31,12 +19,10 @@ char	*ft_get_pwd(char **envp)
 				return (NULL);
 			temp = ft_memcpy(temp, envp[i], ft_strlen(envp[i]));
 			temp[len] = '\0';
-			cwd = ft_get_pwd_env(temp);
-			if (!cwd)
-				return (NULL);
+			cwd = ft_strtrim(temp, "PWD=");
+			free (temp);
 			return (cwd);
 		}
-		i++;
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/10 11:54:25 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/10 18:42:04 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,27 +307,22 @@ void	ft_exit_multi_arg(t_tree *tree, t_env *envi, int i);
 void	ft_exit_numeric(t_tree *tree, t_env *envi);
 void	ft_exit_one_arg(t_tree *tree, t_env *envi, int i);
 void	ft_exit_one_range(t_tree *tree, t_env *envi);
-void	ft_exit_one_arg_plus(t_tree *tree, t_env *envi);
 int		ft_exit(t_tree *tree, t_env *envi);
 
 //	ct_utils.c
-int		ft_isplus(char *str);
 int		ft_check_minus_plus(char *str);
 int		ft_check_isalpha(char *str);
 int		ft_check_isdigit(char *str);
 long long	ft_atoi_exit(const char *str);
-// static int	ft_skip(const char *str, int i);
 
 //	ct_echo.c
 int		ft_builtin_echo(t_env *envi, t_tree *tree);
 int		ft_handle_echo(t_tree *tree, int i, int check, int err);
 int		ft_print_echo(t_tree *tree, int i, int err);
-int		ft_check_n(char *str);
 
 //	ct_pwd.c
 int		ft_pwd_builtin(t_env *envi);
 char	*ft_get_pwd(char **envp);
-char	*ft_get_pwd_env(char *temp);
 
 //	ct_cd.c
 t_err	ms_cd(char **argv, t_env *envi);
@@ -342,7 +337,6 @@ t_pwdstr	init_strings(void);
 //	ct_paths.c
 int		ft_get_paths(t_env *envi, char **arg);
 char	*find_path_env(char **envp, t_env *envi);
-char	*get_path_env(char *temp);
 int		ft_acces_and_exec(t_env *envi, char **arg, char **paths);
 int		ft_parse_dir(char **envp, char **arg, t_env *envi, char **paths);
 
@@ -350,7 +344,6 @@ int		ft_parse_dir(char **envp, char **arg, t_env *envi, char **paths);
 char	**ft_edit_paths(char **paths, char **arg, int i);
 char	*ft_search_bins(char **exec_paths);
 int		ft_check_access(char *path, char **envp, char **arg, t_env *envi);
-int		ft_exec_cmd(char *path, char **envp, char **arg, t_env *envi);
 void	*ft_free_paths(char **first, char **second, char *third);
 void	ft_cmd_exit(char **arg, t_env *envi, char **paths);
 int		ft_parse_dir_loop(char *str);
@@ -358,19 +351,16 @@ void	ft_dir_exit(char **arg, t_env *envi, char **paths);
 int		ft_is_dir(char **envp, char **arg, t_env *envi, char **paths);
 
 //	ct_export.c
-void	ft_check_export(t_tree *tree, t_env *envi);
 int		ms_export(char **argv, t_env *envi);
 t_err	single_export(t_item *ms_envp);
 t_err	export_get_env_key(const char *str, char **return_key);
 int		is_export_key(char *key);
 t_err	parse_and_add_to_envp(char *str, t_item **ms_envp, char *key);
-char	*point_to_value(char *str);
 t_err	get_plusis_value(char *value, char *key, t_item *ms_envp, \
 		char **joined);
 t_err	add_value_to_envp(t_item **ms_envp, char *key, char *value);
 
 //	ct_export_utils.c
-int		get_ms_envp_len(t_item *ms_envp);
 int		not_ready(int *arr, int arr_len);
 t_err	print_smallest_and_mark_arr(t_item *ms_envp, int *arr, int arr_len);
 char	*first_available(t_item *ms_envp, int *arr, int arr_len);
@@ -386,7 +376,6 @@ void	copy_or_rm(t_item **envp, char *key, t_item **new_envp);
 
 //	ct_builtin.c
 int		ft_check_builtin(t_tree *tree, t_env *envi);
-int		ft_check_builtin_end(t_tree *tree, t_env *envi, int i);
 int		ft_check_builtin_add(t_tree *tree, t_env *envi, int i);
 int		ms_env(char **argv, t_env *envi);
 int		ft_check_builtin_child(t_tree *tree, t_env *envi);
@@ -394,7 +383,6 @@ int		ft_check_builtin_child(t_tree *tree, t_env *envi);
 //	ct_handle_tree.c
 int		ft_handle_tree(t_env *envi, t_tree *tree, t_exec *exec);
 int		ft_wait_on_children(t_exec *exec, t_env *envi);
-int		ft_copy_fd(t_exec *exec);
 int		ft_close_fd(int fd[2]);
 void	ft_close_all(t_exec *exec);
 void	ft_handle_heredoc(t_exec *exec, t_env *envi);

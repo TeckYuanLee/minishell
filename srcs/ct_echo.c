@@ -1,20 +1,5 @@
 #include "minishell.h"
 
-//	check for the char 'n'
-int	ft_check_n(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i + 1])
-	{
-		if (str[i + 1] != 'n')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 //	echo readline
 int	ft_print_echo(t_tree *tree, int i, int err)
 {
@@ -37,12 +22,16 @@ int	ft_print_echo(t_tree *tree, int i, int err)
 int	ft_handle_echo(t_tree *tree, int i, int check, int err)
 {
 	int	ret;
+	int	j;
 
 	ret = 0;
 	while (tree->data[i] && !(ft_strncmp(tree->data[i], "-n", 2)) && err == 0)
 	{
 		check++;
-		ret = ft_check_n(tree->data[i]);
+		j = -1;
+		while (tree->data[i][++j] && tree->data[i][j + 1] && ret == 0)
+			if (tree->data[i][j + 1] != 'n')
+				ret = 1;
 		if (ret)
 			break ;
 		i++;
@@ -52,7 +41,6 @@ int	ft_handle_echo(t_tree *tree, int i, int check, int err)
 		return (err);
 	if (!check)
 		err = write(STDOUT_FILENO, "\n", 1);
-	// printf("yo\n");
 	return (err);
 }
 
@@ -65,9 +53,7 @@ int	ft_builtin_echo(t_env *envi, t_tree *tree)
 
 	i = 1;
 	check = 0;
-	err = 0;
-	err = ft_handle_echo(tree, i, check, err);
-	// printf("yo\n");
+	err = ft_handle_echo(tree, i, check, 0);
 	if (err == -1)
 	{
 		ft_putstr_fd("minishell: error in echo.\n", 2);

@@ -69,19 +69,6 @@ int	ft_check_builtin_add(t_tree *tree, t_env *envi, int i)
 	return (i);
 }
 
-//	when builtin command is at the end of readline
-int	ft_check_builtin_end(t_tree *tree, t_env *envi, int i)
-{
-	if (!ft_strncmp(tree->data[0], "env", 4))
-	{
-		envi->exitcode = ms_env(tree->data, envi);
-		i++;
-	}
-	if (i != 0)
-		free_envi(envi, envi->exitcode);
-	return (i);
-}
-
 //	check for builtin commands
 int	ft_check_builtin(t_tree *tree, t_env *envi)
 {
@@ -95,9 +82,18 @@ int	ft_check_builtin(t_tree *tree, t_env *envi)
 		free_envi(envi, 0);
 	else if (!ft_strncmp(tree->data[0], "pwd", 4))
 		i = ft_pwd_builtin(envi);
-	ft_check_export(tree, envi);
+	if (!ft_strncmp(tree->data[0], "export", 7) && tree->data[1])
+		free_envi(envi, 0);
+	else if (!ft_strncmp(tree->data[0], "export", 7))
+		free_envi(envi, ms_export(tree->data, envi));
 	if (!ft_strncmp(tree->data[0], "unset", 6))
 		i = 33;
-	i = ft_check_builtin_end(tree, envi, i);
+	if (!ft_strncmp(tree->data[0], "env", 4))
+	{
+		envi->exitcode = ms_env(tree->data, envi);
+		i++;
+	}
+	if (i != 0)
+		free_envi(envi, envi->exitcode);
 	return (i);
 }

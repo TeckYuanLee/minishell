@@ -21,7 +21,7 @@ void	ft_helper_pipe_inbetween(t_tree *tree, t_env *envi, t_exec *exec)
 		dup2(exec->fd_out[1], STDOUT_FILENO);
 		ft_close_fd(exec->fd_in);
 		ft_close_fd(exec->fd_out);
-		ft_check_builtin_child(tree, envi, exec);
+		ft_check_builtin_child(tree, envi);
 		ft_get_paths(envi, tree->data);
 	}
 }
@@ -70,7 +70,7 @@ void	ft_helper_pipe_start(t_tree *tree, t_env *envi, t_exec *exec)
 		}
 		dup2(exec->fd_out[1], STDOUT_FILENO);
 		ft_close_fd(exec->fd_out);
-		ft_check_builtin_child(tree, envi, exec);
+		ft_check_builtin_child(tree, envi);
 		ft_get_paths(envi, tree->data);
 	}
 	else
