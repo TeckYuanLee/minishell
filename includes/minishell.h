@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/03 14:36:36 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/10 11:54:25 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,20 +297,18 @@ int		prev_heredoc_exists(t_tree *tree);
 int		ft_error_exec(int code, int *fd, t_env *envi);
 int		ft_redir_error(t_tree *tree, int fd, t_env *envi);
 int		ft_redir_in_error(t_tree *tree, t_env *envi);
-int		env_error_msg( t_env *envi);
 int		ms_perror(char *perror_str, char *string, char *string2, int rv);
 int		add_string2(char *perror_str, char *string2, int rv);
 int		export_error_msg(char *str);
 int		unset_error_msg(char *str);
 
 //	ct_exit.c
-void	ft_exit_free(t_tree *tree, t_exec *exec, t_env *envi);
-void	ft_exit_multi_arg(t_tree *tree, t_env *envi, int i, t_exec *exec);
-void	ft_exit_numeric(t_tree *tree, t_env *envi, t_exec *exec);
-void	ft_exit_one_arg(t_tree *tree, t_env *envi, int i, t_exec *exec);
-void	ft_exit_one_range(t_tree *tree, t_env *envi, t_exec *exec);
-void	ft_exit_one_arg_plus(t_tree *tree, t_env *envi, t_exec *exec);
-int		ft_exit(t_tree *tree, t_env *envi, t_exec *exec);
+void	ft_exit_multi_arg(t_tree *tree, t_env *envi, int i);
+void	ft_exit_numeric(t_tree *tree, t_env *envi);
+void	ft_exit_one_arg(t_tree *tree, t_env *envi, int i);
+void	ft_exit_one_range(t_tree *tree, t_env *envi);
+void	ft_exit_one_arg_plus(t_tree *tree, t_env *envi);
+int		ft_exit(t_tree *tree, t_env *envi);
 
 //	ct_utils.c
 int		ft_isplus(char *str);
@@ -391,7 +389,7 @@ int		ft_check_builtin(t_tree *tree, t_env *envi);
 int		ft_check_builtin_end(t_tree *tree, t_env *envi, int i);
 int		ft_check_builtin_add(t_tree *tree, t_env *envi, int i);
 int		ms_env(char **argv, t_env *envi);
-int		ft_check_builtin_child(t_tree *tree, t_env *envi, t_exec *exec);
+int		ft_check_builtin_child(t_tree *tree, t_env *envi);
 
 //	ct_handle_tree.c
 int		ft_handle_tree(t_env *envi, t_tree *tree, t_exec *exec);

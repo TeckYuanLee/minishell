@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 //	check for child process's builtin
-int	ft_check_builtin_child(t_tree *tree, t_env *envi, t_exec *exec)
+int	ft_check_builtin_child(t_tree *tree, t_env *envi)
 {
 	int	i;
 
@@ -16,7 +16,7 @@ int	ft_check_builtin_child(t_tree *tree, t_env *envi, t_exec *exec)
 	i = ft_check_builtin_add(tree, envi, i);
 	if (!ft_strncmp(tree->data[0], "exit", 5))
 	{
-		envi->exitcode = ft_exit(tree, envi, exec);
+		envi->exitcode = ft_exit(tree, envi);
 		i++;
 	}
 	if (i != 0)
@@ -32,7 +32,10 @@ int	ms_env(char **argv, t_env *envi)
 	if (argv[1])
 	{
 		free_envi(envi, -100);
-		env_error_msg(envi);
+		ft_putstr_fd("minishell: env", 2);
+		ft_putstr_fd(": argument(s) unsupported\n", 2);
+		ft_putstr_fd("env: usage: env\n", 2);
+		exit (1);
 	}
 	ms_envp = envi->ms_envp;
 	while (ms_envp->key)

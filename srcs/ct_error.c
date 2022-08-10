@@ -81,16 +81,6 @@ int	ms_perror(char *perror_str, char *string, char *string2, int rv)
 	return (rv);
 }
 
-//	print env error message
-int	env_error_msg( t_env *envi)
-{
-	(void)envi;
-	ft_putstr_fd("minishell: env", 2);
-	ft_putstr_fd(": argument(s) unsupported\n", 2);
-	ft_putstr_fd("env: usage: env\n", 2);
-	exit (1);
-}
-
 //	file inwards redirection error
 int	ft_redir_in_error(t_tree *tree, t_env *envi)
 {

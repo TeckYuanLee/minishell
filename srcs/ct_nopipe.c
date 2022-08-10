@@ -31,7 +31,7 @@ void	ft_nopipe_child(t_tree *tree, t_env *envi, t_exec *exec)
 		dup2(exec->fd_in[0], STDIN_FILENO);
 		ft_close_fd(exec->fd_in);
 		ft_close_fd(exec->fd_out);
-		ft_check_builtin_child(tree, envi, exec);
+		ft_check_builtin_child(tree, envi);
 		ft_get_paths(envi, tree->data);
 	}
 }
@@ -79,7 +79,7 @@ int	ft_start_builtin(t_tree *tree, t_env *envi, t_exec *exec)
 	}
 	else if (!ft_strncmp(tree->data[0], "exit", 5))
 	{
-		envi->exitcode = ft_exit(tree, envi, exec);
+		envi->exitcode = ft_exit(tree, envi);
 		exec->builtin_check = 1;
 	}
 	return (0);

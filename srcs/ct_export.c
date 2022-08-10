@@ -148,8 +148,8 @@ int	ms_export(char **argv, t_env *envi)
 	if (!argv[1])
 		return (single_export(envi->ms_envp));
 	exitcode = 0;
-	i = 1;
-	while (argv[i])
+	i = 0;
+	while (argv[++i])
 	{
 		if (export_get_env_key(argv[i], &key) == MALLOC_FAIL)
 			return (-1);
@@ -160,7 +160,6 @@ int	ms_export(char **argv, t_env *envi)
 		}
 		else
 			parse_and_add_to_envp(argv[i], &envi->ms_envp, key);
-		i++;
 	}
 	if (ms_envp_to_var(envi->ms_envp, &envi->var) == MALLOC_FAIL)
 		return (-1);
