@@ -25,21 +25,21 @@ t_err	add_to_ms_envp(char *key, char *value, t_item **head)
 	return (NO_ERROR);
 }
 
-//  copy from env key and value to envp /////
-t_err	copy_to_ms_envp(char *str, t_item *ms_envp)
+//  copy from env key and value to envp ///// ok
+t_err	envp_to_ms_envp(char *envp_str, t_item *ms_envp)
 {
 	char	*key;
 	char	*value;
 
-	if (!str)
-		return (printf(BHRED "[copy_to_custom_envp] str to NULL..\n" BHWHT));
-	if (get_env_key(str, &key) == MALLOC_FAIL)
+	if (!envp_str)
+		return (printf(BHRED "[copy_to_custom_envp] envp_str to NULL..\n" BHWHT));
+	if (get_env_key(envp_str, &key) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
-	if (ft_strlen(key) < ft_strlen(str))
+	if (ft_strlen(key) < ft_strlen(envp_str))
 	{
-		if (str[ft_strlen(key)] != '=')
+		if (envp_str[ft_strlen(key)] != '=')
 			return (printf(BHRED "[copy_to_custom_envp] no '=' sign..\n" BHWHT));
-		value = ft_strdup(str + ft_strlen(key) + 1);
+		value = ft_strdup(envp_str + ft_strlen(key) + 1);
 		if (!value)
 		{
 			free (key);
@@ -54,7 +54,7 @@ t_err	copy_to_ms_envp(char *str, t_item *ms_envp)
 }
 
 //  update shell lvl /////
-t_err	set_shlvl(t_env *envi)
+t_err	update_shlvl(t_env *envi)
 {
 	int		lvl;
 	char	*value;
@@ -70,59 +70,58 @@ t_err	set_shlvl(t_env *envi)
 	value = ft_itoa(++lvl);
 	if (!value)
 		return (MALLOC_FAIL);
-	if (key_exists("SHLVL", envi->ms_envp))
+	if (ms_envp_key("SHLVL", envi->ms_envp))
 		return (update_value("SHLVL", value, envi->ms_envp));
 	return (add_to_ms_envp("SHLVL", value, &envi->ms_envp));
 }
 
 //  combine key values from envp with variables /////
-t_err	ms_envp_to_var(t_item *ms_envp, char ***var)
+t_err	ms_envp_to_var(t_item *ms_envp, char ***env_var)
 {
 	int	i;
 	int	j;
 
 	if (!ms_envp)
-		return (printf(BHRED "[ms_envp_to_var] ms_envp = NULL\n" BHWHT));
+		return (printf(BHRED "[ms_envp_to_env_var] ms_envp = NULL\n" BHWHT));
 	i = 0;
 	while (ms_envp[i].key)
 		i++;
-	if (*var)
-		ft_free_split(var);
-	*var = ft_calloc(i + 1, sizeof(char *));
-	if (!*var)
+	if (*env_var)
+		ft_free_split(env_var);
+	*env_var = ft_calloc(i + 1, sizeof(char *));
+	if (!*env_var)
 		return (MALLOC_FAIL);
 	j = -1;
 	while (++j < i)
 	{
-		if (combine_key_value(&ms_envp[j], &(*var)[j]) == MALLOC_FAIL)
+		if (combine_key_value(&ms_envp[j], &(*env_var)[j]) == MALLOC_FAIL)
 		{
-			ft_free_partial_split(var, j);
+			ft_free_partial_split(env_var, j);
 			return (MALLOC_FAIL);
 		}
 	}
 	return (NO_ERROR);
 }
 
-//  initialize variables in envi /////
-t_err	init_var(char **envp, t_env *envi)
+//  initialize variables in envi ///// ok
+t_err	init_ms_env(char **envp, t_env *ms_env)
 {
 	int	i;
 
 	i = 0;
-	ft_bzero(envi, sizeof(t_env));
+	ft_bzero(ms_env, sizeof(t_env));
 	while (envp[i])
 		i++;
-	envi->ms_envp = ft_calloc(i + 2, sizeof(t_item));
-	if (!envi->ms_envp)
+	ms_env->ms_envp = ft_calloc(i + 2, sizeof(t_item));
+	if (!ms_env->ms_envp)
 		return (MALLOC_FAIL);
 	i = -1;
 	while (envp[++i])
-		copy_to_ms_envp(envp[i], &envi->ms_envp[i]);
-	// printf("%s\n", envi->ms_envp->key);
-	if (!key_exists("OLDPWD", envi->ms_envp))
+		envp_to_ms_envp(envp[i], &ms_env->ms_envp[i]);
+	if (!ms_envp_key("OLDPWD", ms_env->ms_envp))
 	{
-		envi->ms_envp->key = ft_strdup("OLDPWD");
-		if (!envi->ms_envp->key)
+		ms_env->ms_envp->key = ft_strdup("OLDPWD");
+		if (!ms_env->ms_envp->key)
 			return (MALLOC_FAIL);
 	}
 	return (NO_ERROR);
@@ -131,18 +130,18 @@ t_err	init_var(char **envp, t_env *envi)
 //  initialize minishell
 // t_err	ms_init(char **envp, t_env *envi)
 // {
-// 	if (init_var(envp, envi) == MALLOC_FAIL)
+// 	if (init_ms_env(envp, envi) == MALLOC_FAIL)
 // 		return (MALLOC_FAIL);
-// 	if (ms_envp_to_var(envi->ms_envp, &envi->var) == MALLOC_FAIL)
+// 	if (ms_envp_to_var(envi->ms_envp, &envi->envp) == MALLOC_FAIL)
 // 		return (MALLOC_FAIL);
-// 	if (set_shlvl(envi) == MALLOC_FAIL)
+// 	if (update_shlvl(envi) == MALLOC_FAIL)
 // 		return (MALLOC_FAIL);
 // 	save_term_settings(&envi->termios_p);
 // 	return (NO_ERROR);
 
-// 	if (init_var(envp, envi) != MALLOC_FAIL)
-// 		if (ms_envp_to_var(envi->ms_envp, &envi->var) != MALLOC_FAIL)
-// 			if (set_shlvl(envi) != MALLOC_FAIL)
+// 	if (init_ms_env(envp, envi) != MALLOC_FAIL)
+// 		if (ms_envp_to_var(envi->ms_envp, &envi->envp) != MALLOC_FAIL)
+// 			if (update_shlvl(envi) != MALLOC_FAIL)
 // 				return (NO_ERROR | tcgetattr(2, &envi->termios_p));
 // 	return (MALLOC_FAIL);
 // }

@@ -35,7 +35,7 @@ int	ft_acces_and_exec(t_env *envi, char **arg, char **paths)
 
 	i = 0;
 	exec_paths = NULL;
-	ft_parse_dir(envi->var, arg, envi, paths);
+	ft_parse_dir(envi->envp, arg, envi, paths);
 	while (paths && paths[i])
 		i++;
 	if (paths)
@@ -45,8 +45,8 @@ int	ft_acces_and_exec(t_env *envi, char **arg, char **paths)
 	path = ft_search_bins(exec_paths);
 	if (path)
 	{
-		i = ft_check_access(path, envi->var, arg, envi);
-		if (execve(path, arg, envi->var) < 0)
+		i = ft_check_access(path, envi->envp, arg, envi);
+		if (execve(path, arg, envi->envp) < 0)
 			ft_error_exec(4, 0, envi);
 	}
 	ft_free_paths(exec_paths, NULL, NULL);
@@ -89,7 +89,7 @@ int	ft_get_paths(t_env *envi, char **arg)
 	char	**paths;
 
 	paths = NULL;
-	path = find_path_env(envi->var, envi);
+	path = find_path_env(envi->envp, envi);
 	if (path)
 	{
 		paths = ft_split(path, ':');

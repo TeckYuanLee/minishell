@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-//	long long atoi for exit command
-long long	ft_atoi_exit(const char *str)
+//	size_t atoi for exit command
+size_t	ft_atoi_exit(const char *str)
 {
-	long long	value;
-	long long	i;
-	long long	sign;
+	size_t	value;
+	size_t	i;
+	size_t	sign;
 
 	i = 0;
 	value = 0;

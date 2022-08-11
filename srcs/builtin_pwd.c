@@ -32,7 +32,7 @@ int	ft_pwd_builtin(t_env *envi)
 {
 	char	*pwd;
 
-	pwd = ft_get_pwd(envi->var);
+	pwd = ft_get_pwd(envi->envp);
 	if (!pwd)
 		ft_error_exec(5, 0, envi);
 	ft_putstr_fd(pwd, 1);

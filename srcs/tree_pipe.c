@@ -3,7 +3,7 @@
 //	
 void	ft_helper_pipe_inbetween(t_tree *tree, t_env *envi, t_exec *exec)
 {
-	while (tree->left_node)
+	while (tree->leaf)
 	{
 		ft_redirs_loop(tree, exec, envi);
 		tree = get_next_node(tree);
@@ -42,7 +42,7 @@ int	ft_pipe_inbetween(t_env *envi, t_tree *tree, t_exec *exec)
 		ft_error_exec(1, exec->fd_out, envi);
 	if (!pid)
 		ft_helper_pipe_inbetween(tree, envi, exec);
-	if (tree->left_node && tree->left_node->type == HERE_DOC)
+	if (tree->leaf && tree->leaf->type == HERE_DOC)
 	{
 		waitpid(pid, &status, 0);
 		if (WIFSIGNALED(status) == 1)
@@ -55,7 +55,7 @@ int	ft_pipe_inbetween(t_env *envi, t_tree *tree, t_exec *exec)
 //	do pipe command, builtin, and get path
 void	ft_helper_pipe_start(t_tree *tree, t_env *envi, t_exec *exec)
 {
-	while (tree->left_node)
+	while (tree->leaf)
 	{
 		ft_redirs_loop(tree, exec, envi);
 		tree = get_next_node(tree);
@@ -98,7 +98,7 @@ int	ft_pipe_start(t_env *envi, t_tree *tree, t_exec *exec)
 		ft_helper_pipe_start(tree, envi, exec);
 	}
 	status = 0;
-	if (tree->left_node && tree->left_node->type == HERE_DOC)
+	if (tree->leaf && tree->leaf->type == HERE_DOC)
 	{
 		waitpid(pid, &status, 0);
 		if (WIFSIGNALED(status) && WTERMSIG(status) != 81)

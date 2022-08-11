@@ -3,7 +3,7 @@
 //	wait for signal at end of nopipe instructions
 int	ft_nopipe_end_util(t_tree *tree, pid_t pid, int status)
 {
-	if (tree->left_node && tree->left_node->type == HERE_DOC)
+	if (tree->leaf && tree->leaf->type == HERE_DOC)
 	{
 		waitpid(pid, &status, 0);
 		if (WIFSIGNALED(status) == 1)
@@ -15,7 +15,7 @@ int	ft_nopipe_end_util(t_tree *tree, pid_t pid, int status)
 //	child process of nopipe
 void	ft_nopipe_child(t_tree *tree, t_env *envi, t_exec *exec)
 {
-	while (tree->left_node)
+	while (tree->leaf)
 	{
 		ft_redirs_loop(tree, exec, envi);
 		tree = get_next_node(tree);
@@ -115,7 +115,7 @@ int	ft_nopipe_start(t_env *envi, t_tree *tree, t_exec *exec)
 	if (!pid)
 	{
 		restore_signals();
-		while (tree->left_node)
+		while (tree->leaf)
 		{
 			ft_redirs_loop(tree, exec, envi);
 			tree = get_next_node(tree);

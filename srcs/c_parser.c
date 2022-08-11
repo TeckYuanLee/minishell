@@ -11,7 +11,7 @@ t_err	cmd_pass(t_token *list, t_tree **root)
 	word_count = 0;
 	while (node)
 	{
-		if (node->type == TOK_WORD && !node->is_parsed)
+		if (node->type == TOK_WORD && !node->parsed)
 			word_count++;
 		node = node->next;
 	}
@@ -46,7 +46,7 @@ t_err	redir_pass(t_token *list, t_tree **root)
 		else if (list->type == TOK_HERE_DOC)
 			add_leaf_node(HERE_DOC, split, *root);
 		list = list->next;
-		list->is_parsed = TRUE;
+		list->parsed = TRUE;
 	}
 	return (NO_ERROR);
 }

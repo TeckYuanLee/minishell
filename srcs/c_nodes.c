@@ -8,15 +8,15 @@ t_tree	*get_next_node(t_tree *tree)
 		printf(BHRED "Empty forrest?!?!?\n");
 		return (NULL);
 	}
-	if (tree->left_node)
-		tree = tree->left_node;
+	if (tree->leaf)
+		tree = tree->leaf;
 	else
 	{
 		if (tree->type == PIPE || tree->type == NO_PIPE)
-			return (tree->right_node);
-		while (tree->up_node && tree->type != PIPE && tree->type != NO_PIPE)
-			tree = tree->up_node;
-		return (tree->right_node);
+			return (tree->next_root);
+		while (tree->prev && tree->type != PIPE && tree->type != NO_PIPE)
+			tree = tree->prev;
+		return (tree->next_root);
 	}
 	return (tree);
 }
@@ -41,17 +41,17 @@ t_tree	*last_root_node(t_tree *tree)
 {
 	if (tree->type == PIPE || tree->type == NO_PIPE)
 	{
-		while (tree->right_node)
-			tree = tree->right_node;
+		while (tree->next_root)
+			tree = tree->next_root;
 		return (tree);
 	}
-	while (tree->left_node)
-		tree = tree->left_node;
+	while (tree->leaf)
+		tree = tree->leaf;
 	return (last_root_node(tree));
 }
 
 //	create new branch id if token type is pipe, else leave id /////
-t_tree	*create_tree_node(t_node_t type, char **data)
+t_tree	*create_tree_node(t_node type, char **data)
 {
 	static int	branch_id = 0;
 	static int	leave_id = 0;
@@ -75,7 +75,7 @@ t_tree	*create_tree_node(t_node_t type, char **data)
 }
 
 //	create and insert new node at leftmost node /////
-t_err	add_leaf_node(t_node_t type, char **data, t_tree *parent)
+t_err	add_leaf_node(t_node type, char **data, t_tree *parent)
 {
 	t_tree	*new_node;
 
@@ -84,22 +84,22 @@ t_err	add_leaf_node(t_node_t type, char **data, t_tree *parent)
 	new_node = create_tree_node(type, data);
 	if (!new_node)
 		return (MALLOC_FAIL);
-	while (parent->right_node)
-		parent = parent->right_node;
-	if (parent->left_node == NULL)
-		parent->left_node = new_node;
+	while (parent->next_root)
+		parent = parent->next_root;
+	if (parent->leaf == NULL)
+		parent->leaf = new_node;
 	else
 	{
-		while (parent->left_node)
-			parent = parent->left_node;
-		parent->left_node = new_node;
+		while (parent->leaf)
+			parent = parent->leaf;
+		parent->leaf = new_node;
 	}
-	new_node->up_node = parent;
+	new_node->prev = parent;
 	return (NO_ERROR);
 }
 
 //	create root node // put new node after root node /////
-t_err	add_root_node(t_node_t type, t_tree **head_tree)
+t_err	add_root_node(t_node type, t_tree **head_tree)
 {
 	t_tree	*node;
 	t_tree	*new_node;
@@ -114,7 +114,7 @@ t_err	add_root_node(t_node_t type, t_tree **head_tree)
 		return (NO_ERROR);
 	}
 	node = last_root_node(node);
-	new_node->up_node = node;
-	node->right_node = new_node;
+	new_node->prev = node;
+	node->next_root = new_node;
 	return (NO_ERROR);
 }

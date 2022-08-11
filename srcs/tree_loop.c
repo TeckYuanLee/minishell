@@ -5,9 +5,9 @@ int	prev_heredoc_exists(t_tree *tree)
 {
 	if (!tree)
 		return (0);
-	tree = tree->up_node;
+	tree = tree->prev;
 	while (tree && tree->type != HERE_DOC)
-		tree = tree->left_node;
+		tree = tree->leaf;
 	if (!tree)
 		return (0);
 	return (1);
@@ -50,12 +50,12 @@ int	ft_redirs_loop_two(t_tree *tree, t_exec *exec, t_env *envi)
 		dup2(exec->fd_out[1], STDOUT_FILENO);
 		close(exec->fd_out[1]);
 	}
-	if (tree->type == HERE_DOC && tree->left_node->type != HERE_DOC)
+	if (tree->type == HERE_DOC && tree->leaf->type != HERE_DOC)
 	{
 		tcsetattr(2, TCSANOW, &envi->termios_p);
 		set_term_settings();
 		init_here_doc_signals();
-		if (tree->up_node->type == PIPE && !prev_heredoc_exists(tree))
+		if (tree->prev->type == PIPE && !prev_heredoc_exists(tree))
 			close(exec->fd_in[0]);
 		exec->fd_in[0] = make_here_doc(tree->data[0]);
 		dup2(exec->fd_in[0], STDIN_FILENO);

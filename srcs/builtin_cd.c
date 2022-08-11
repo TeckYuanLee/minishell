@@ -1,9 +1,9 @@
 #include "minishell.h"
 
 //	initialize pwd strings
-t_pwdstr	init_strings(void)
+t_pwd	init_strings(void)
 {
-	t_pwdstr	strings;
+	t_pwd	strings;
 
 	strings.oldpwd = ft_strdup("OLDPWD");
 	if (strings.oldpwd)
@@ -19,12 +19,12 @@ t_pwdstr	init_strings(void)
 //	replace values of both old and new pwd
 t_err	update_both_pwds(t_env *envi, char *curr_pwd, char *new_pwd)
 {
-	t_pwdstr	strings;
+	t_pwd	strings;
 
 	strings = init_strings();
 	if (!strings.pwd)
 		return (MALLOC_FAIL);
-	if (key_exists("PWD", envi->ms_envp))
+	if (ms_envp_key("PWD", envi->ms_envp))
 	{
 		update_value(strings.pwd, new_pwd, envi->ms_envp);
 		free(strings.pwd);
@@ -32,7 +32,7 @@ t_err	update_both_pwds(t_env *envi, char *curr_pwd, char *new_pwd)
 	else
 		if (add_to_ms_envp(strings.pwd, new_pwd, &envi->ms_envp) == MALLOC_FAIL)
 			return (MALLOC_FAIL);
-	if (key_exists("OLDPWD", envi->ms_envp))
+	if (ms_envp_key("OLDPWD", envi->ms_envp))
 	{
 		update_value(strings.oldpwd, curr_pwd, envi->ms_envp);
 		free(strings.oldpwd);
@@ -107,7 +107,7 @@ t_err	only_update_oldpwd(t_env *envi, char *curr_pwd)
 	char	*key;
 
 	key = NULL;
-	if (key_exists("OLDPWD", envi->ms_envp))
+	if (ms_envp_key("OLDPWD", envi->ms_envp))
 		return ((t_err)update_value("OLDPWD", curr_pwd, envi->ms_envp));
 	key = ft_strdup("OLDPWD");
 	if (!key)
@@ -151,7 +151,7 @@ t_err	ms_cd(char **argv, t_env *envi)
 		return (ms_perror("Minishell: cd", argv[1], NULL, 1));
 	if (update_pwd_oldpwd(argv[1], envi) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
-	if (ms_envp_to_var(envi->ms_envp, &envi->var) == MALLOC_FAIL)
+	if (ms_envp_to_var(envi->ms_envp, &envi->envp) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	return (NO_ERROR);
 }

@@ -1,12 +1,12 @@
 #include "minishell.h"
 
-//  check if key of envp exists /////
-t_bool	key_exists(char *key, t_item *ms_envp)
+//  check if key of envp exists ///// ok
+t_bool	ms_envp_key(char *key, t_item *ms_envp)
 {
 	int	key_len;
 
 	if (!ms_envp)
-		return (printf(BHRED "[key_exists] ms_envp pointing to NULL?!\n" BHWHT));
+		return (printf(BHRED "[ms_envp_key] ms_envp pointing to NULL?!\n" BHWHT));
 	key_len = ft_strlen(key);
 	while (ms_envp->key)
 	{
@@ -59,18 +59,18 @@ t_err	combine_key_value(t_item *ms_envp, char **var)
 }
 
 //  get env value /////
-t_err	get_env_value(t_item *envp, char *key, char **value_ptr)
+t_err	get_env_value(t_item *ms_envp, char *key, char **value_ptr)
 {
 	int		i;
 
 	i = -1;
-	while (envp[++i].key)
+	while (ms_envp[++i].key)
 	{
-		if (!(ft_strncmp(envp[i].key, key, ft_strlen(key) + 1)))
+		if (!(ft_strncmp(ms_envp[i].key, key, ft_strlen(key) + 1)))
 		{
-			if (envp[i].value)
+			if (ms_envp[i].value)
 			{
-				*value_ptr = ft_strdup(envp[i].value);
+				*value_ptr = ft_strdup(ms_envp[i].value);
 				if (!*value_ptr)
 					return (MALLOC_FAIL);
 				return (NO_ERROR);

@@ -3,7 +3,7 @@
 //	if key doesn't exist, add to envp, else update value
 t_err	add_value_to_envp(t_item **ms_envp, char *key, char *value)
 {
-	if (!key_exists(key, *ms_envp))
+	if (!ms_envp_key(key, *ms_envp))
 	{
 		if (add_to_ms_envp(key, value, ms_envp) == MALLOC_FAIL)
 		{
@@ -160,7 +160,7 @@ int	ms_export(char **argv, t_env *envi)
 		else
 			parse_and_add_to_envp(argv[i], &envi->ms_envp, key);
 	}
-	if (ms_envp_to_var(envi->ms_envp, &envi->var) == MALLOC_FAIL)
+	if (ms_envp_to_var(envi->ms_envp, &envi->envp) == MALLOC_FAIL)
 		return (-1);
 	return (exitcode);
 }

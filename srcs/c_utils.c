@@ -20,7 +20,7 @@ char	**create_cmd_split(t_token *list, int word_count)
 	i = 0;
 	while (list && list->type != TOK_PIPE)
 	{
-		if (list->type == TOK_WORD && !list->is_parsed)
+		if (list->type == TOK_WORD && !list->parsed)
 		{
 			split[i] = ft_strdup(list->data);
 			if (!split[i])

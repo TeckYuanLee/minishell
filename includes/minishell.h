@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/10 18:42:04 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/11 16:15:49 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef enum e_err
 	DEFAULT_ERR
 }		t_err;
 
-typedef enum s_node_t
+typedef enum s_node
 {
 	PIPE,
 	NO_PIPE,
@@ -66,7 +66,7 @@ typedef enum s_node_t
 	REDIR_APP,
 	HERE_DOC,
 	CMD
-}		t_node_t;
+}		t_node;
 
 typedef enum s_token_t
 {
@@ -87,25 +87,19 @@ typedef enum s_token_t
 typedef struct s_tree
 {
 	int				id;
-	t_node_t		type;
+	t_node			type;
 	char			**data;
-	struct s_tree	*left_node;
-	struct s_tree	*right_node;
-	struct s_tree	*up_node;
+	struct s_tree	*next_root;
+	struct s_tree	*leaf;
+	struct s_tree	*prev;
 }		t_tree;
-
-typedef struct s_node
-{
-	t_node_t		type;
-	char			**arg;
-}		t_node;
 
 typedef struct s_token
 {
 	int				id;
 	t_token_t		type;
-	t_bool			is_parsed;
 	char			*data;
+	t_bool			parsed;
 	struct s_token	*next;
 	struct s_token	*prev;
 }		t_token;
@@ -133,18 +127,18 @@ typedef struct s_item
 typedef struct s_env
 {
 	t_item			*ms_envp;
-	char			**var;
+	char			**envp;
 	struct termios	termios_p;
 	int				exitcode;
 	t_exec			*exec;
 	t_tree			**loc_tree_ptr;
 }		t_env;
 
-typedef struct s_pwdstr
+typedef struct s_pwd
 {
 	char	*pwd;
 	char	*oldpwd;
-}			t_pwdstr;
+}			t_pwd;
 
 //	c_signals.c
 void	init_signals(void);
@@ -194,6 +188,12 @@ t_err	rm_token_type(t_token **list, t_token_t type);
 void	replace_head_token(t_token **head, t_token *new);
 void	replace_token(t_token *list, t_token *new);
 
+//	c_loop_do.c
+int		do_loop(t_input *curr_input, t_env *envi);
+void	set_term_settings(void);
+void	ft_start_tree(t_env *envi, t_tree **tree);
+t_exec	*ft_init_exec(void);
+
 //	c_process_input.c
 t_err	get_input(t_env *envi, char **input_ptr);
 t_err	process_input(char *line, t_input *input, t_env *info);
@@ -207,10 +207,10 @@ t_err	syntax_err_lexer(char token);
 
 //	c_env_utils.c
 t_err	get_env_key(const char *str, char **return_key);
-t_err	get_env_value(t_item *envp, char *key, char **value_ptr);
+t_err	get_env_value(t_item *ms_envp, char *key, char **value_ptr);
 t_err	combine_key_value(t_item *ms_envp, char **var);
 t_err	update_value(char *key, char *value, t_item *envp);
-t_bool	key_exists(char *key, t_item *ms_envp);
+t_bool	ms_envp_key(char *key, t_item *ms_envp);
 
 //	c_dollars.c
 t_err	dollars(char *input, int *i, t_token **list);
@@ -221,16 +221,16 @@ t_err	expand_d_tailbit(t_token **head, char *key, char *data);
 
 //	c_init.c
 // t_err	ms_init(char **envp, t_env *envi);
-t_err	init_var(char **envp, t_env *envi);
-t_err	ms_envp_to_var(t_item *ms_envp, char ***var);
-t_err	set_shlvl(t_env *envi);
-t_err	copy_to_ms_envp(char *str, t_item *custom_envp);
+t_err	init_ms_env(char **envp, t_env *ms_env);
+t_err	ms_envp_to_var(t_item *ms_envp, char ***env_var);
+t_err	update_shlvl(t_env *envi);
+t_err	envp_to_ms_envp(char *str, t_item *custom_envp);
 t_err	add_to_ms_envp(char *key, char *value, t_item **head);
 
 //	c_nodes.c
-t_tree	*create_tree_node(t_node_t type, char **data);
-t_err	add_root_node(t_node_t type, t_tree **head_tree);
-t_err	add_leaf_node(t_node_t type, char **data, t_tree *parent);
+t_tree	*create_tree_node(t_node type, char **data);
+t_err	add_root_node(t_node type, t_tree **head_tree);
+t_err	add_leaf_node(t_node type, char **data, t_tree *parent);
 t_tree	*last_root_node(t_tree *tree);
 t_token	*next_branch(t_token *list);
 t_tree	*get_next_node(t_tree *tree);
@@ -259,12 +259,6 @@ t_err	cmd_pass(t_token *list, t_tree **root);
 char	**make_split(t_token *list, int word_amount);
 char	**create_cmd_split(t_token *list, int word_count);
 t_bool	allowed_char(int c, char *not_allowed);
-
-//	c_loop_do.c
-int		do_loop(t_input *curr_input, t_env *envi);
-void	set_term_settings(void);
-void	ft_start_tree(t_env *envi, t_tree **tree);
-t_exec	*ft_init_exec(void);
 
 //	c_expander.c
 t_err	quotes_to_words(t_token **list);
@@ -313,7 +307,7 @@ int		ft_exit(t_tree *tree, t_env *envi);
 int		ft_check_minus_plus(char *str);
 int		ft_check_isalpha(char *str);
 int		ft_check_isdigit(char *str);
-long long	ft_atoi_exit(const char *str);
+size_t	ft_atoi_exit(const char *str);
 
 //	ct_echo.c
 int		ft_builtin_echo(t_env *envi, t_tree *tree);
@@ -332,7 +326,7 @@ char	*parse_path(char *path, char *old_pwd);
 void	remove_dir(char parse_path[512]);
 int		add_path_chunk(char parse_path[512], char *path);
 t_err	update_both_pwds(t_env *envi, char *curr_pwd, char *new_pwd);
-t_pwdstr	init_strings(void);
+t_pwd	init_strings(void);
 
 //	ct_paths.c
 int		ft_get_paths(t_env *envi, char **arg);

@@ -32,10 +32,10 @@ void	clean_tree(t_tree **head_tree)
 		return ;
 	while (node)
 	{
-		next_root = node->right_node;
+		next_root = node->next_root;
 		while (node)
 		{
-			next_leave = node->left_node;
+			next_leave = node->leaf;
 			ft_free_split(&node->data);
 			free (node);
 			node = next_leave;
