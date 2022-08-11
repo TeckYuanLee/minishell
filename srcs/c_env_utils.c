@@ -1,12 +1,12 @@
 #include "minishell.h"
 
 //  check if key of envp exists ///// ok
-t_bool	ms_envp_key(char *key, t_item *item)
+t_bool	ms_env_key(char *key, t_item *item)
 {
 	int	key_len;
 
 	if (!item)
-		return (printf(BHRED "[ms_envp_key] item pointing to NULL?!\n" BHWHT));
+		return (printf(BHRED "[ms_env_key] item pointing to NULL?!\n" BHWHT));
 	key_len = ft_strlen(key);
 	while (item->key)
 	{
@@ -36,8 +36,8 @@ t_err	update_value(char *key, char *value, t_item *envp)
 	return (NO_ERROR);
 }
 
-//  join env key and value /////
-t_err	combine_key_value(t_item *item, char **var)
+//  join env key and value
+t_err	key_and_value(t_item *item, char **envp)
 {
 	char	*temp;
 	char	*joined;
@@ -54,14 +54,14 @@ t_err	combine_key_value(t_item *item, char **var)
 		joined = ft_strdup(item->key);
 	if (!joined)
 		return (MALLOC_FAIL);
-	*var = joined;
+	*envp = joined;
 	return (NO_ERROR);
 }
 
 //  get env value /////
 t_err	get_env_value(t_item *item, char *key, char **value_ptr)
 {
-	int		i;
+	int	i;
 
 	i = -1;
 	while (item[++i].key)
@@ -89,7 +89,7 @@ t_err	get_env_value(t_item *item, char *key, char **value_ptr)
 //	get env key /////
 t_err	get_env_key(const char *str, char **return_key)
 {
-	int		i;
+	int	i;
 
 	*return_key = NULL;
 	i = 0;

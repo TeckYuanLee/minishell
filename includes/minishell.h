@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/11 16:56:40 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/11 22:55:44 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,9 +208,9 @@ t_err	syntax_err_lexer(char token);
 //	c_env_utils.c
 t_err	get_env_key(const char *str, char **return_key);
 t_err	get_env_value(t_item *item, char *key, char **value_ptr);
-t_err	combine_key_value(t_item *item, char **var);
+t_err	key_and_value(t_item *item, char **var);
 t_err	update_value(char *key, char *value, t_item *envp);
-t_bool	ms_envp_key(char *key, t_item *item);
+t_bool	ms_env_key(char *key, t_item *item);
 
 //	c_dollars.c
 t_err	dollars(char *input, int *i, t_token **list);
@@ -222,9 +222,9 @@ t_err	expand_d_tailbit(t_token **head, char *key, char *data);
 //	c_init.c
 // t_err	ms_init(char **envp, t_env *envi);
 t_err	init_ms_env(char **envp, t_env *ms_env);
-t_err	ms_envp_to_var(t_item *item, char ***env_var);
+t_err	ms_env_to_envp(t_item *item, char ***env_var);
 t_err	update_shlvl(t_env *envi);
-t_err	envp_to_ms_envp(char *str, t_item *custom_envp);
+t_err	envp_to_ms_env(char *str, t_item *custom_envp);
 t_err	add_to_ms_envp(char *key, char *value, t_item **head);
 
 //	c_nodes.c

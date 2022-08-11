@@ -81,7 +81,7 @@ int	ms_unset(char **argv, t_env *envi)
 			rm_from_envp(argv[i], &envi->item);
 		i++;
 	}
-	if (ms_envp_to_var(envi->item, &envi->envp) == MALLOC_FAIL)
+	if (ms_env_to_envp(envi->item, &envi->envp) == MALLOC_FAIL)
 		return (-1);
 	return (exitcode);
 }
