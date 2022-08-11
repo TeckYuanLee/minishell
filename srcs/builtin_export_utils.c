@@ -1,63 +1,63 @@
 #include "minishell.h"
 
 //	if keys are match, fill array
-void	mark_array(char *key, t_item *ms_envp, int *arr)
+void	mark_array(char *key, t_item *item, int *arr)
 {
 	int	i;
 
 	i = 0;
-	while (ms_envp->key)
+	while (item->key)
 	{
-		if (ft_strncmp(key, ms_envp->key, ft_strlen(key) + 1) == 0)
+		if (ft_strncmp(key, item->key, ft_strlen(key) + 1) == 0)
 		{
 			*(arr + i) = 1;
 			return ;
 		}
-		ms_envp++;
+		item++;
 		i++;
 	}
 }
 
 //	
-void	print_key(char *key, t_item *ms_envp)
+void	print_key(char *key, t_item *item)
 {
-	while (ms_envp->key)
+	while (item->key)
 	{
-		if (ft_strncmp(key, ms_envp->key, ft_strlen(key) + 1) == 0)
+		if (ft_strncmp(key, item->key, ft_strlen(key) + 1) == 0)
 		{
-			if (ms_envp->value)
-				printf("declare -x %s=\"%s\"\n", ms_envp->key, ms_envp->value);
+			if (item->value)
+				printf("declare -x %s=\"%s\"\n", item->key, item->value);
 			else
-				printf("declare -x %s\n", ms_envp->key);
+				printf("declare -x %s\n", item->key);
 		}
-		ms_envp++;
+		item++;
 	}
 }
 
 //	check for the smallest key
-int	is_smallest_key(char *key, t_item *ms_envp, int *arr)
+int	is_smallest_key(char *key, t_item *item, int *arr)
 {
 	if (*(arr) == 1)
 		return (0);
-	if (ft_strncmp(ms_envp->key, key, ft_strlen(ms_envp->key) + 1) < 0)
+	if (ft_strncmp(item->key, key, ft_strlen(item->key) + 1) < 0)
 		return (1);
 	return (0);
 }
 
 //	look for first available key
-char	*first_available(t_item *ms_envp, int *arr, int arr_len)
+char	*first_available(t_item *item, int *arr, int arr_len)
 {
 	int	i;
 
 	i = -1;
 	while (++i < arr_len)
 		if (*(arr + i) == 0)
-			return ((ms_envp + i)->key);
+			return ((item + i)->key);
 	return (0);
 }
 
 //	print first available envp and mark array
-t_err	print_smallest_and_mark_arr(t_item *ms_envp, int *arr, int arr_len)
+t_err	print_smallest_and_mark_arr(t_item *item, int *arr, int arr_len)
 {
 	int			i;
 	static char	*smallest_key = NULL;
@@ -68,18 +68,18 @@ t_err	print_smallest_and_mark_arr(t_item *ms_envp, int *arr, int arr_len)
 	if (smallest_key == NULL)
 		smallest_key = full_key;
 	else
-		smallest_key = first_available(ms_envp, arr, arr_len);
+		smallest_key = first_available(item, arr, arr_len);
 	while (++i < arr_len)
 	{
-		if (is_smallest_key(smallest_key, ms_envp + i, arr + i))
+		if (is_smallest_key(smallest_key, item + i, arr + i))
 		{
-			smallest_key = (ms_envp + i)->key;
+			smallest_key = (item + i)->key;
 			i = -1;
 			continue ;
 		}
 	}
-	print_key(smallest_key, ms_envp);
-	mark_array(smallest_key, ms_envp, arr);
+	print_key(smallest_key, item);
+	mark_array(smallest_key, item, arr);
 	return (NO_ERROR);
 }
 

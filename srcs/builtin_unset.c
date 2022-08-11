@@ -78,10 +78,10 @@ int	ms_unset(char **argv, t_env *envi)
 		else if (!is_unset_key(argv[i]))
 			exitcode = unset_error_msg(argv[i]);
 		else
-			rm_from_envp(argv[i], &envi->ms_envp);
+			rm_from_envp(argv[i], &envi->item);
 		i++;
 	}
-	if (ms_envp_to_var(envi->ms_envp, &envi->envp) == MALLOC_FAIL)
+	if (ms_envp_to_var(envi->item, &envi->envp) == MALLOC_FAIL)
 		return (-1);
 	return (exitcode);
 }

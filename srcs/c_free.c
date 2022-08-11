@@ -6,7 +6,7 @@ void	free_envi(t_env *envi, int exitcode)
 	clean_tree(envi->loc_tree_ptr);
 	free(envi->exec);
 	ft_free_split(&envi->envp);
-	free_envp(envi->ms_envp);
+	free_envp(envi->item);
 	close(0);
 	close(1);
 	if (exitcode != -100)

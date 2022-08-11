@@ -24,21 +24,21 @@ t_err	update_both_pwds(t_env *envi, char *curr_pwd, char *new_pwd)
 	strings = init_strings();
 	if (!strings.pwd)
 		return (MALLOC_FAIL);
-	if (ms_envp_key("PWD", envi->ms_envp))
+	if (ms_envp_key("PWD", envi->item))
 	{
-		update_value(strings.pwd, new_pwd, envi->ms_envp);
+		update_value(strings.pwd, new_pwd, envi->item);
 		free(strings.pwd);
 	}
 	else
-		if (add_to_ms_envp(strings.pwd, new_pwd, &envi->ms_envp) == MALLOC_FAIL)
+		if (add_to_ms_envp(strings.pwd, new_pwd, &envi->item) == MALLOC_FAIL)
 			return (MALLOC_FAIL);
-	if (ms_envp_key("OLDPWD", envi->ms_envp))
+	if (ms_envp_key("OLDPWD", envi->item))
 	{
-		update_value(strings.oldpwd, curr_pwd, envi->ms_envp);
+		update_value(strings.oldpwd, curr_pwd, envi->item);
 		free(strings.oldpwd);
 		return (NO_ERROR);
 	}
-	else if (add_to_ms_envp(strings.oldpwd, curr_pwd, &envi->ms_envp) == 1)
+	else if (add_to_ms_envp(strings.oldpwd, curr_pwd, &envi->item) == 1)
 		return (MALLOC_FAIL);
 	return (NO_ERROR);
 }
@@ -107,12 +107,12 @@ t_err	only_update_oldpwd(t_env *envi, char *curr_pwd)
 	char	*key;
 
 	key = NULL;
-	if (ms_envp_key("OLDPWD", envi->ms_envp))
-		return ((t_err)update_value("OLDPWD", curr_pwd, envi->ms_envp));
+	if (ms_envp_key("OLDPWD", envi->item))
+		return ((t_err)update_value("OLDPWD", curr_pwd, envi->item));
 	key = ft_strdup("OLDPWD");
 	if (!key)
 		return (MALLOC_FAIL);
-	return (add_to_ms_envp(key, curr_pwd, &envi->ms_envp));
+	return (add_to_ms_envp(key, curr_pwd, &envi->item));
 }
 
 //	update current pwd and new pwd values
@@ -121,7 +121,7 @@ t_err	update_pwd_oldpwd(char *path, t_env *envi)
 	char	*new_pwd;
 	char	*curr_pwd;
 
-	if (get_env_value(envi->ms_envp, "PWD", &curr_pwd) == MALLOC_FAIL)
+	if (get_env_value(envi->item, "PWD", &curr_pwd) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	if (!ft_strncmp(path, ".", 2))
 		return (only_update_oldpwd(envi, curr_pwd));
@@ -151,7 +151,7 @@ t_err	ms_cd(char **argv, t_env *envi)
 		return (ms_perror("Minishell: cd", argv[1], NULL, 1));
 	if (update_pwd_oldpwd(argv[1], envi) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
-	if (ms_envp_to_var(envi->ms_envp, &envi->envp) == MALLOC_FAIL)
+	if (ms_envp_to_var(envi->item, &envi->envp) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	return (NO_ERROR);
 }

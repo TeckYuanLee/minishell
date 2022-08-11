@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/11 16:15:49 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/11 16:56:40 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ typedef struct s_item
 
 typedef struct s_env
 {
-	t_item			*ms_envp;
+	t_item			*item;
 	char			**envp;
 	struct termios	termios_p;
 	int				exitcode;
@@ -152,7 +152,7 @@ void	restore_signals(void);
 //	c_cleaner.c
 void	clean_tree(t_tree **head_tree);
 void	clean_lexer(t_token **list);
-void	free_envp(t_item *ms_envp);
+void	free_envp(t_item *item);
 
 //	c_free.c
 void	ft_free_split(char ***split);
@@ -207,10 +207,10 @@ t_err	syntax_err_lexer(char token);
 
 //	c_env_utils.c
 t_err	get_env_key(const char *str, char **return_key);
-t_err	get_env_value(t_item *ms_envp, char *key, char **value_ptr);
-t_err	combine_key_value(t_item *ms_envp, char **var);
+t_err	get_env_value(t_item *item, char *key, char **value_ptr);
+t_err	combine_key_value(t_item *item, char **var);
 t_err	update_value(char *key, char *value, t_item *envp);
-t_bool	ms_envp_key(char *key, t_item *ms_envp);
+t_bool	ms_envp_key(char *key, t_item *item);
 
 //	c_dollars.c
 t_err	dollars(char *input, int *i, t_token **list);
@@ -222,7 +222,7 @@ t_err	expand_d_tailbit(t_token **head, char *key, char *data);
 //	c_init.c
 // t_err	ms_init(char **envp, t_env *envi);
 t_err	init_ms_env(char **envp, t_env *ms_env);
-t_err	ms_envp_to_var(t_item *ms_envp, char ***env_var);
+t_err	ms_envp_to_var(t_item *item, char ***env_var);
 t_err	update_shlvl(t_env *envi);
 t_err	envp_to_ms_envp(char *str, t_item *custom_envp);
 t_err	add_to_ms_envp(char *key, char *value, t_item **head);
@@ -346,21 +346,21 @@ int		ft_is_dir(char **envp, char **arg, t_env *envi, char **paths);
 
 //	ct_export.c
 int		ms_export(char **argv, t_env *envi);
-t_err	single_export(t_item *ms_envp);
+t_err	single_export(t_item *item);
 t_err	export_get_env_key(const char *str, char **return_key);
 int		is_export_key(char *key);
-t_err	parse_and_add_to_envp(char *str, t_item **ms_envp, char *key);
-t_err	get_plusis_value(char *value, char *key, t_item *ms_envp, \
+t_err	parse_and_add_to_envp(char *str, t_item **item, char *key);
+t_err	get_plusis_value(char *value, char *key, t_item *item, \
 		char **joined);
-t_err	add_value_to_envp(t_item **ms_envp, char *key, char *value);
+t_err	add_value_to_envp(t_item **item, char *key, char *value);
 
 //	ct_export_utils.c
 int		not_ready(int *arr, int arr_len);
-t_err	print_smallest_and_mark_arr(t_item *ms_envp, int *arr, int arr_len);
-char	*first_available(t_item *ms_envp, int *arr, int arr_len);
-int		is_smallest_key(char *key, t_item *ms_envp, int *arr);
-void	print_key(char *key, t_item *ms_envp);
-void	mark_array(char *key, t_item *ms_envp, int *arr);
+t_err	print_smallest_and_mark_arr(t_item *item, int *arr, int arr_len);
+char	*first_available(t_item *item, int *arr, int arr_len);
+int		is_smallest_key(char *key, t_item *item, int *arr);
+void	print_key(char *key, t_item *item);
+void	mark_array(char *key, t_item *item, int *arr);
 
 //	ct_unset.c
 int		ms_unset(char **argv, t_env *envi);

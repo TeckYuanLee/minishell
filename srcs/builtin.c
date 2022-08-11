@@ -27,7 +27,7 @@ int	ft_check_builtin_child(t_tree *tree, t_env *envi)
 //	print all env values retrieved by minishell
 int	ms_env(char **argv, t_env *envi)
 {
-	t_item	*ms_envp;
+	t_item	*item;
 
 	if (argv[1])
 	{
@@ -37,12 +37,12 @@ int	ms_env(char **argv, t_env *envi)
 		ft_putstr_fd("env: usage: env\n", 2);
 		exit (1);
 	}
-	ms_envp = envi->ms_envp;
-	while (ms_envp->key)
+	item = envi->item;
+	while (item->key)
 	{
-		if (ms_envp->value)
-			printf("%s=%s\n", ms_envp->key, ms_envp->value);
-		ms_envp++;
+		if (item->value)
+			printf("%s=%s\n", item->key, item->value);
+		item++;
 	}
 	return (0);
 }

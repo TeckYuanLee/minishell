@@ -1,23 +1,23 @@
 #include "minishell.h"
 
 //  free envp /////
-void	free_envp(t_item *ms_envp)
+void	free_envp(t_item *item)
 {
 	int			i;
 
-	if (!ms_envp)
+	if (!item)
 	{
-		printf(BHRED "[free_envp] ms_envp == NULL ?!??\n" BHWHT);
+		printf(BHRED "[free_envp] item == NULL ?!??\n" BHWHT);
 		return ;
 	}
 	i = 0;
-	while (ms_envp[i].key)
+	while (item[i].key)
 	{
-		ft_free_str(&ms_envp[i].key);
-		ft_free_str(&ms_envp[i].value);
+		ft_free_str(&item[i].key);
+		ft_free_str(&item[i].value);
 		i++;
 	}
-	free (ms_envp);
+	free (item);
 }
 
 //  clean rows columns by columns and rows by rows /////

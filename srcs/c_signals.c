@@ -43,7 +43,7 @@ int	ft_exit_sig(t_env *envi)
 	rl_redisplay();
 	write(1, "\n", 1);
 	ft_free_split(&envi->envp);
-	free_envp(envi->ms_envp);
+	free_envp(envi->item);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	close(STDERR_FILENO);

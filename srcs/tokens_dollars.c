@@ -36,7 +36,7 @@ t_err	expand_d(t_token **head, t_env *info, char *key, char *data)
 		value = ft_itoa(info->exitcode);
 	else if (!allowed_char(data[0], "/=."))
 		return (insert_full_string(head, key, data));
-	else if (get_env_value(info->ms_envp, key, &value) == MALLOC_FAIL)
+	else if (get_env_value(info->item, key, &value) == MALLOC_FAIL)
 	{
 		free(key);
 		return (MALLOC_FAIL);

@@ -1,18 +1,18 @@
 #include "minishell.h"
 
 //  check if key of envp exists ///// ok
-t_bool	ms_envp_key(char *key, t_item *ms_envp)
+t_bool	ms_envp_key(char *key, t_item *item)
 {
 	int	key_len;
 
-	if (!ms_envp)
-		return (printf(BHRED "[ms_envp_key] ms_envp pointing to NULL?!\n" BHWHT));
+	if (!item)
+		return (printf(BHRED "[ms_envp_key] item pointing to NULL?!\n" BHWHT));
 	key_len = ft_strlen(key);
-	while (ms_envp->key)
+	while (item->key)
 	{
-		if (ft_strncmp(ms_envp->key, key, key_len + 1) == 0)
+		if (ft_strncmp(item->key, key, key_len + 1) == 0)
 			return (TRUE);
-		ms_envp++;
+		item++;
 	}
 	return (FALSE);
 }
@@ -37,21 +37,21 @@ t_err	update_value(char *key, char *value, t_item *envp)
 }
 
 //  join env key and value /////
-t_err	combine_key_value(t_item *ms_envp, char **var)
+t_err	combine_key_value(t_item *item, char **var)
 {
 	char	*temp;
 	char	*joined;
 
-	if (ms_envp->value)
+	if (item->value)
 	{
-		temp = ft_strjoin(ms_envp->key, "=");
+		temp = ft_strjoin(item->key, "=");
 		if (!temp)
 			return (MALLOC_FAIL);
-		joined = ft_strjoin(temp, ms_envp->value);
+		joined = ft_strjoin(temp, item->value);
 		free (temp);
 	}
 	else
-		joined = ft_strdup(ms_envp->key);
+		joined = ft_strdup(item->key);
 	if (!joined)
 		return (MALLOC_FAIL);
 	*var = joined;
@@ -59,18 +59,18 @@ t_err	combine_key_value(t_item *ms_envp, char **var)
 }
 
 //  get env value /////
-t_err	get_env_value(t_item *ms_envp, char *key, char **value_ptr)
+t_err	get_env_value(t_item *item, char *key, char **value_ptr)
 {
 	int		i;
 
 	i = -1;
-	while (ms_envp[++i].key)
+	while (item[++i].key)
 	{
-		if (!(ft_strncmp(ms_envp[i].key, key, ft_strlen(key) + 1)))
+		if (!(ft_strncmp(item[i].key, key, ft_strlen(key) + 1)))
 		{
-			if (ms_envp[i].value)
+			if (item[i].value)
 			{
-				*value_ptr = ft_strdup(ms_envp[i].value);
+				*value_ptr = ft_strdup(item[i].value);
 				if (!*value_ptr)
 					return (MALLOC_FAIL);
 				return (NO_ERROR);

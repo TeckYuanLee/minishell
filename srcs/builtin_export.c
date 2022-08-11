@@ -1,31 +1,31 @@
 #include "minishell.h"
 
 //	if key doesn't exist, add to envp, else update value
-t_err	add_value_to_envp(t_item **ms_envp, char *key, char *value)
+t_err	add_value_to_envp(t_item **item, char *key, char *value)
 {
-	if (!ms_envp_key(key, *ms_envp))
+	if (!ms_envp_key(key, *item))
 	{
-		if (add_to_ms_envp(key, value, ms_envp) == MALLOC_FAIL)
+		if (add_to_ms_envp(key, value, item) == MALLOC_FAIL)
 		{
 			free(key);
 			return (MALLOC_FAIL);
 		}
 		return (NO_ERROR);
 	}
-	update_value(key, value, *ms_envp);
+	update_value(key, value, *item);
 	free (key);
 	return (NO_ERROR);
 }
 
 //	join old value with value
-t_err	get_plusis_value(char *value, char *key, t_item *ms_envp, \
+t_err	get_plusis_value(char *value, char *key, t_item *item, \
 		char **joined)
 {
 	char	*old_value;
 	char	*temp;
 
 	temp = NULL;
-	if (get_env_value(ms_envp, key, &old_value) == MALLOC_FAIL)
+	if (get_env_value(item, key, &old_value) == MALLOC_FAIL)
 	{
 		free(key);
 		free(value);
@@ -46,7 +46,7 @@ t_err	get_plusis_value(char *value, char *key, t_item *ms_envp, \
 }
 
 //	extract value and add to list of envp
-t_err	parse_and_add_to_envp(char *str, t_item **ms_envp, char *key)
+t_err	parse_and_add_to_envp(char *str, t_item **item, char *key)
 {
 	char	*value;
 
@@ -64,10 +64,10 @@ t_err	parse_and_add_to_envp(char *str, t_item **ms_envp, char *key)
 		}
 	}
 	if (str[ft_strlen(key)] == '+')
-		if (get_plusis_value(value, key, *ms_envp, &value) == MALLOC_FAIL)
+		if (get_plusis_value(value, key, *item, &value) == MALLOC_FAIL)
 			return (MALLOC_FAIL);
 	if (str[ft_strlen(key)] == '=' || str[ft_strlen(key)] == '\0')
-		return (add_value_to_envp(ms_envp, key, value));
+		return (add_value_to_envp(item, key, value));
 	return (NO_ERROR);
 }
 
@@ -109,25 +109,25 @@ t_err	export_get_env_key(const char *str, char **return_key)
 }
 
 //	check if export is ready
-t_err	single_export(t_item *ms_envp)
+t_err	single_export(t_item *item)
 {
 	int	arr_len;
 	int	*arr;
 
 	arr_len = 0;
-	while (ms_envp->key)
+	while (item->key)
 	{
-		ms_envp++;
+		item++;
 		arr_len++;
 	}
-	if (!ms_envp)
-		return (printf(BHRED "[single_export] ms_envp pointing to (null)..\n"));
+	if (!item)
+		return (printf(BHRED "[single_export] item pointing to (null)..\n"));
 	arr = ft_calloc(arr_len, sizeof(int));
 	if (!arr)
 		return (MALLOC_FAIL);
 	while (not_ready(arr, arr_len))
 	{
-		if (print_smallest_and_mark_arr(ms_envp, arr, arr_len) == MALLOC_FAIL)
+		if (print_smallest_and_mark_arr(item, arr, arr_len) == MALLOC_FAIL)
 		{
 			free(arr);
 			return (MALLOC_FAIL);
@@ -145,7 +145,7 @@ int	ms_export(char **argv, t_env *envi)
 	int		exitcode;
 
 	if (!argv[1])
-		return (single_export(envi->ms_envp));
+		return (single_export(envi->item));
 	exitcode = 0;
 	i = 0;
 	while (argv[++i])
@@ -158,9 +158,9 @@ int	ms_export(char **argv, t_env *envi)
 			exitcode = export_error_msg(argv[i]);
 		}
 		else
-			parse_and_add_to_envp(argv[i], &envi->ms_envp, key);
+			parse_and_add_to_envp(argv[i], &envi->item, key);
 	}
-	if (ms_envp_to_var(envi->ms_envp, &envi->envp) == MALLOC_FAIL)
+	if (ms_envp_to_var(envi->item, &envi->envp) == MALLOC_FAIL)
 		return (-1);
 	return (exitcode);
 }
