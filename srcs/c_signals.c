@@ -1,15 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   c_signals.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/12 14:42:16 by telee             #+#    #+#             */
+/*   Updated: 2022/08/12 16:26:03 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-
-//	restore sigint and sigquit to default
-void	restore_signals(void)
-{
-	struct sigaction	sig;
-
-	ft_bzero(&sig, sizeof(struct sigaction));
-	sig.sa_handler = SIG_DFL;
-	sigaction(SIGINT, &sig, NULL);
-	sigaction(SIGQUIT, &sig, NULL);
-}
 
 //	process sigint and sigquit
 void	process_signal(int sig, int *exitcode, int fd[2])
@@ -34,35 +35,24 @@ void	process_signal(int sig, int *exitcode, int fd[2])
 	}
 }
 
-//  ctrl-D /////
-int	ft_exit_sig(t_env *envi)
+//  ctrl-D
+int	ft_exit_sig(t_env *ms_env)
 {
-	tcsetattr(2, TCSANOW, &envi->termios_p);
+	tcsetattr(2, TCSANOW, &ms_env->termios_p);
 	rl_replace_line("exit", 0);
 	rl_on_new_line();
 	rl_redisplay();
 	write(1, "\n", 1);
-	ft_free_split(&envi->envp);
-	free_envp(envi->item);
+	ft_free_split(&ms_env->envp);
+	free_ms_env(ms_env->item);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	close(STDERR_FILENO);
 	exit(0);
 }
 
-//  ignore signals /////
-void	ignore_signals(void)
-{
-	struct sigaction	sig;
-
-	ft_bzero(&sig, sizeof(struct sigaction));
-	sig.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &sig, NULL);
-	sigaction(SIGQUIT, &sig, NULL);
-}
-
-//  print newline /////
-void	new_prompt(int sig)
+//  print newline
+void	new_readline(int sig)
 {
 	(void)sig;
 	write(1, "\n", 1);
@@ -71,30 +61,36 @@ void	new_prompt(int sig)
 	rl_redisplay();
 }
 
-//	initialize heredoc signals /////
-void	init_here_doc_signals(void)
-{
-	struct sigaction	sig_slash;
-	struct sigaction	sig_c;
-
-	ft_bzero(&sig_slash, sizeof(struct sigaction));
-	ft_bzero(&sig_c, sizeof(struct sigaction));
-	sig_c.sa_handler = SIG_DFL;
-	sig_slash.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &sig_c, NULL);
-	sigaction(SIGQUIT, &sig_slash, NULL);
-}
-
-//  initialize signals /////
-void	init_signals(void)
+/*
+1. restore signals
+2. init signals
+3. heredoc signals
+4. ignore signals
+*/
+void	ms_signals(char *str)
 {
 	struct sigaction	sig_c;
 	struct sigaction	sig_q;
 
-	ft_bzero(&sig_c, sizeof(struct sigaction));
-	ft_bzero(&sig_q, sizeof(struct sigaction));
-	sig_c.sa_handler = new_prompt;
-	sig_q.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &sig_c, NULL);
-	sigaction(SIGQUIT, &sig_q, NULL);
+	if (!ft_strncmp(str, "restore", 8))
+	{
+		ft_bzero(&sig_c, sizeof(struct sigaction));
+		sig_c.sa_handler = SIG_DFL;
+		sigaction(SIGINT, &sig_c, NULL);
+		sigaction(SIGQUIT, &sig_c, NULL);
+	}
+	else
+	{
+		ft_bzero(&sig_c, sizeof(struct sigaction));
+		ft_bzero(&sig_q, sizeof(struct sigaction));
+		if (!ft_strncmp(str, "init", 5))
+			sig_c.sa_handler = new_readline;
+		else if (!ft_strncmp(str, "heredoc", 8))
+			sig_c.sa_handler = SIG_DFL;
+		else if (!ft_strncmp(str, "ignore", 7))
+			sig_c.sa_handler = SIG_IGN;
+		sig_q.sa_handler = SIG_IGN;
+		sigaction(SIGINT, &sig_c, NULL);
+		sigaction(SIGQUIT, &sig_q, NULL);
+	}
 }

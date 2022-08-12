@@ -46,7 +46,7 @@ t_err	redir_pass(t_token *list, t_tree **root)
 		else if (list->type == TOK_HERE_DOC)
 			add_leaf_node(HERE_DOC, split, *root);
 		list = list->next;
-		list->parsed = TRUE;
+		list->parsed = 1;
 	}
 	return (NO_ERROR);
 }

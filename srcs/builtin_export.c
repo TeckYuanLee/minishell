@@ -5,7 +5,7 @@ t_err	add_value_to_envp(t_item **item, char *key, char *value)
 {
 	if (!ms_env_key(key, *item))
 	{
-		if (add_to_ms_envp(key, value, item) == MALLOC_FAIL)
+		if (update_ms_env(key, value, item) == MALLOC_FAIL)
 		{
 			free(key);
 			return (MALLOC_FAIL);
@@ -138,14 +138,14 @@ t_err	single_export(t_item *item)
 }
 
 //	handle export command
-int	ms_export(char **argv, t_env *envi)
+int	ms_export(char **argv, t_env *ms_env)
 {
 	int		i;
 	char	*key;
 	int		exitcode;
 
 	if (!argv[1])
-		return (single_export(envi->item));
+		return (single_export(ms_env->item));
 	exitcode = 0;
 	i = 0;
 	while (argv[++i])
@@ -158,9 +158,9 @@ int	ms_export(char **argv, t_env *envi)
 			exitcode = export_error_msg(argv[i]);
 		}
 		else
-			parse_and_add_to_envp(argv[i], &envi->item, key);
+			parse_and_add_to_envp(argv[i], &ms_env->item, key);
 	}
-	if (ms_env_to_envp(envi->item, &envi->envp) == MALLOC_FAIL)
+	if (ms_env_to_envp(ms_env->item, &ms_env->envp) == MALLOC_FAIL)
 		return (-1);
 	return (exitcode);
 }

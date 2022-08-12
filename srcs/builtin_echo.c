@@ -45,7 +45,7 @@ int	ft_handle_echo(t_tree *tree, int i, int check, int err)
 }
 
 //	execute echo command
-int	ft_builtin_echo(t_env *envi, t_tree *tree)
+int	ft_builtin_echo(t_env *ms_env, t_tree *tree)
 {
 	int	i;
 	int	check;
@@ -57,9 +57,9 @@ int	ft_builtin_echo(t_env *envi, t_tree *tree)
 	if (err == -1)
 	{
 		ft_putstr_fd("minishell: error in echo.\n", 2);
-		envi->exitcode = 1;
+		ms_env->exitcode = 1;
 	}
 	else
-		envi->exitcode = 0;
+		ms_env->exitcode = 0;
 	return (1);
 }

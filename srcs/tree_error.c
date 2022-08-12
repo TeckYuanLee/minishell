@@ -82,32 +82,32 @@ int	ms_perror(char *perror_str, char *string, char *string2, int rv)
 }
 
 //	file inwards redirection error
-int	ft_redir_in_error(t_tree *tree, t_env *envi)
+int	ft_redir_in_error(t_tree *tree, t_env *ms_env)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(tree->data[0], 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
-	free_envi(envi, 1);
+	free_envi(ms_env, 1);
 	return (-1);
 }
 
 //	lnr angles usage error message
-int	ft_redir_error(t_tree *tree, int fd, t_env *envi)
+int	ft_redir_error(t_tree *tree, int fd, t_env *ms_env)
 {
 	close(fd);
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(tree->data[0], 2);
 	ft_putstr_fd(": Permission denied\n", 2);
-	free_envi(envi, 1);
+	free_envi(ms_env, 1);
 	return (-1);
 }
 
 //	function execution error message
-int	ft_error_exec(int code, int *fd, t_env *envi)
+int	ft_error_exec(int code, int *fd, t_env *ms_env)
 {
 	if (fd != 0)
 		close(*fd);
-	free_envi(envi, -100);
+	free_envi(ms_env, -100);
 	ft_putstr_fd("minishell: ", 2);
 	if (code == 1)
 		ft_putstr_fd("fork error\n", 2);

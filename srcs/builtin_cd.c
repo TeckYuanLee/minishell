@@ -1,44 +1,21 @@
 #include "minishell.h"
 
-//	initialize pwd strings
-t_pwd	init_strings(void)
-{
-	t_pwd	strings;
-
-	strings.oldpwd = ft_strdup("OLDPWD");
-	if (strings.oldpwd)
-		strings.pwd = ft_strdup("PWD");
-	if (!strings.pwd)
-	{
-		free(strings.oldpwd);
-		strings.oldpwd = NULL;
-	}
-	return (strings);
-}
-
 //	replace values of both old and new pwd
-t_err	update_both_pwds(t_env *envi, char *curr_pwd, char *new_pwd)
+t_err	update_both_pwds(t_env *ms_env, char *curr_pwd, char *new_pwd)
 {
-	t_pwd	strings;
-
-	strings = init_strings();
-	if (!strings.pwd)
-		return (MALLOC_FAIL);
-	if (ms_env_key("PWD", envi->item))
+	if (ms_env_key("PWD", ms_env->item))
 	{
-		update_value(strings.pwd, new_pwd, envi->item);
-		free(strings.pwd);
+		update_value("PWD", new_pwd, ms_env->item);
 	}
 	else
-		if (add_to_ms_envp(strings.pwd, new_pwd, &envi->item) == MALLOC_FAIL)
+		if (update_ms_env("PWD", new_pwd, &ms_env->item) == MALLOC_FAIL)
 			return (MALLOC_FAIL);
-	if (ms_env_key("OLDPWD", envi->item))
+	if (ms_env_key("OLDPWD", ms_env->item))
 	{
-		update_value(strings.oldpwd, curr_pwd, envi->item);
-		free(strings.oldpwd);
+		update_value("OLDPWD", curr_pwd, ms_env->item);
 		return (NO_ERROR);
 	}
-	else if (add_to_ms_envp(strings.oldpwd, curr_pwd, &envi->item) == 1)
+	else if (update_ms_env("OLDPWD", curr_pwd, &ms_env->item) == 1)
 		return (MALLOC_FAIL);
 	return (NO_ERROR);
 }
@@ -102,29 +79,29 @@ char	*parse_path(char *path, char *old_pwd)
 }
 
 //	update old pwd with current pwd
-t_err	only_update_oldpwd(t_env *envi, char *curr_pwd)
+t_err	only_update_oldpwd(t_env *ms_env, char *curr_pwd)
 {
 	char	*key;
 
 	key = NULL;
-	if (ms_env_key("OLDPWD", envi->item))
-		return ((t_err)update_value("OLDPWD", curr_pwd, envi->item));
+	if (ms_env_key("OLDPWD", ms_env->item))
+		return ((t_err)update_value("OLDPWD", curr_pwd, ms_env->item));
 	key = ft_strdup("OLDPWD");
 	if (!key)
 		return (MALLOC_FAIL);
-	return (add_to_ms_envp(key, curr_pwd, &envi->item));
+	return (update_ms_env(key, curr_pwd, &ms_env->item));
 }
 
 //	update current pwd and new pwd values
-t_err	update_pwd_oldpwd(char *path, t_env *envi)
+t_err	update_pwd_oldpwd(char *path, t_env *ms_env)
 {
 	char	*new_pwd;
 	char	*curr_pwd;
 
-	if (get_env_value(envi->item, "PWD", &curr_pwd) == MALLOC_FAIL)
+	if (get_env_value(ms_env->item, "PWD", &curr_pwd) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	if (!ft_strncmp(path, ".", 2))
-		return (only_update_oldpwd(envi, curr_pwd));
+		return (only_update_oldpwd(ms_env, curr_pwd));
 	if (path[0] == '/')
 		new_pwd = ft_strdup(path);
 	else
@@ -134,12 +111,12 @@ t_err	update_pwd_oldpwd(char *path, t_env *envi)
 		free(curr_pwd);
 		return (MALLOC_FAIL);
 	}
-	update_both_pwds(envi, curr_pwd, new_pwd);
+	update_both_pwds(ms_env, curr_pwd, new_pwd);
 	return (NO_ERROR);
 }
 
 //	handle cd command
-t_err	ms_cd(char **argv, t_env *envi)
+t_err	ms_cd(char **argv, t_env *ms_env)
 {
 	if (!argv)
 		return (printf(BHRED "[ms_cd] NULL-pointing argv..\n" BHWHT));
@@ -149,9 +126,9 @@ t_err	ms_cd(char **argv, t_env *envi)
 		return (0);
 	if (chdir(argv[1]))
 		return (ms_perror("Minishell: cd", argv[1], NULL, 1));
-	if (update_pwd_oldpwd(argv[1], envi) == MALLOC_FAIL)
+	if (update_pwd_oldpwd(argv[1], ms_env) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
-	if (ms_env_to_envp(envi->item, &envi->envp) == MALLOC_FAIL)
+	if (ms_env_to_envp(ms_env->item, &ms_env->envp) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	return (NO_ERROR);
 }

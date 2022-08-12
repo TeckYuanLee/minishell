@@ -1,12 +1,11 @@
 #include "minishell.h"
 
 //	free env variables
-void	free_envi(t_env *envi, int exitcode)
+void	free_envi(t_env *ms_env, int exitcode)
 {
-	clean_tree(envi->loc_tree_ptr);
-	free(envi->exec);
-	ft_free_split(&envi->envp);
-	free_envp(envi->item);
+	free(ms_env->exec);
+	ft_free_split(&ms_env->envp);
+	free_ms_env(ms_env->item);
 	close(0);
 	close(1);
 	if (exitcode != -100)

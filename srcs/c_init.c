@@ -1,72 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   c_init.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/12 13:40:02 by telee             #+#    #+#             */
+/*   Updated: 2022/08/12 13:40:02 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-//  add keys and values into envp /////
-t_err	add_to_ms_envp(char *key, char *value, t_item **head)
+//  join env key and value
+t_err	key_and_value(t_item *item, char **envp)
 {
-	t_item	*new_envp;
-	int		i;
+	char	*temp;
+	char	*joined;
 
-	i = 0;
-	while ((head[i])->key)
-		i++;
-	new_envp = ft_calloc(i + 2, sizeof(t_item));
-	if (!new_envp)
-		return (MALLOC_FAIL);
-	i = -1;
-	while (head[++i]->key)
+	if (item->value)
 	{
-		new_envp[i].key = head[i]->key;
-		new_envp[i].value = head[i]->value;
-	}
-	new_envp[i].key = key;
-	new_envp[i].value = value;
-	free(*head);
-	*head = new_envp;
-	return (NO_ERROR);
-}
-
-/*
-1. get key from envp_str
-2. get value from envp_str
-*/
-t_err	envp_to_ms_env(char *envp_str, t_item *item)
-{
-	if (get_env_key(envp_str, &item->key) == MALLOC_FAIL)
-		return (MALLOC_FAIL);
-	if (ft_strlen(item->key) < ft_strlen(envp_str))
-	{
-		item->value = ft_strdup(envp_str + ft_strlen(item->key) + 1);
-		if (!item->value)
-		{
-			free (item->key);
+		temp = ft_strjoin(item->key, "=");
+		if (!temp)
 			return (MALLOC_FAIL);
-		}
+		joined = ft_strjoin(temp, item->value);
+		free (temp);
 	}
 	else
-		item->value = NULL;
+		joined = ft_strdup(item->key);
+	if (!joined)
+		return (MALLOC_FAIL);
+	*envp = joined;
 	return (NO_ERROR);
-}
-
-//  update shell lvl
-t_err	update_shlvl(t_env *envi)
-{
-	int		lvl;
-	char	*value;
-
-	if (get_env_value(envi->item, "SHLVL", &value) == MALLOC_FAIL)
-		return (MALLOC_FAIL);
-	if (!value)
-		lvl = 0;
-	else
-		lvl = ft_atoi(value);
-	if (lvl)
-		free(value);
-	value = ft_itoa(++lvl);
-	if (!value)
-		return (MALLOC_FAIL);
-	if (ms_env_key("SHLVL", envi->item))
-		return (update_value("SHLVL", value, envi->item));
-	return (add_to_ms_envp("SHLVL", value, &envi->item));
 }
 
 // form envp by combining key and value
@@ -95,11 +60,56 @@ t_err	ms_env_to_envp(t_item *item, char ***envp)
 	return (NO_ERROR);
 }
 
+//  update shell lvl
+t_err	update_shlvl(t_env *ms_env)
+{
+	int		shlvl;
+	char	*value;
+
+	if (get_env_value(ms_env->item, "SHLVL", &value) == MALLOC_FAIL)
+		return (MALLOC_FAIL);
+	if (!value)
+		shlvl = 0;
+	else
+		shlvl = ft_atoi(value);
+	if (value)
+		free(value);
+	value = ft_itoa(++shlvl);
+	if (!value)
+		return (MALLOC_FAIL);
+	if (ms_env_key("SHLVL", ms_env->item))
+		return (update_value("SHLVL", value, ms_env->item));
+	return (update_ms_env("SHLVL", value, &ms_env->item));
+}
+
+/*
+1. get key from envp_str
+2. get value from envp_str
+*/
+t_err	envp_to_ms_env(char *envp_str, t_item *item)
+{
+	if (get_env_key(envp_str, &item->key) == MALLOC_FAIL)
+		return (MALLOC_FAIL);
+	if (ft_strlen(item->key) < ft_strlen(envp_str))
+	{
+		item->value = ft_strdup(envp_str + ft_strlen(item->key) + 1);
+		if (!item->value)
+		{
+			free (item->key);
+			return (MALLOC_FAIL);
+		}
+	}
+	else
+		item->value = NULL;
+	return (NO_ERROR);
+}
+
 /*
 1. bzero ms_env
 2. copy from envp to ms_env
 3. create key "OLDPWD"
 */
+// should be able to replace ms_env_key with update_ms_env in cd
 t_err	init_ms_env(char **envp, t_env *ms_env)
 {
 	int	i;
@@ -115,10 +125,10 @@ t_err	init_ms_env(char **envp, t_env *ms_env)
 	while (envp[++i])
 		envp_to_ms_env(envp[i], &ms_env->item[i]);
 	if (!ms_env_key("OLDPWD", ms_env->item))
-	{
 		ms_env->item->key = ft_strdup("OLDPWD");
-		if (!ms_env->item->key)
-			return (MALLOC_FAIL);
-	}
+	if (!ms_env->item->key)
+		return (MALLOC_FAIL);
+	if (update_shlvl(ms_env) == MALLOC_FAIL)
+		return (MALLOC_FAIL);
 	return (NO_ERROR);
 }

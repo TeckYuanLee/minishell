@@ -60,7 +60,7 @@ start tree
 - init executor -> index & builtin check -> if error, return
 - loc tree ptr ?? (might be no use)
 - handle tree -> if i = 33 or 34, exitcode = 1
-- unlink ".here_doc"
+- unlink ".heredoc"
 - clean tree & free executor
 
 handle tree
@@ -116,7 +116,7 @@ redirs loop two
 									 -> init heredoc signals
 									 -> if PIPE & heredoc dont exists up node -> close
 									 -> make heredoc fd in
-									 -> dup2 -> close -> unlink ".here_doc"
+									 -> dup2 -> close -> unlink ".heredoc"
 
 nopipe end
 - executor index +1

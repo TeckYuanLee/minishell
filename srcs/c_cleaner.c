@@ -1,21 +1,17 @@
 #include "minishell.h"
 
-//  free envp /////
-void	free_envp(t_item *item)
+//  free ms_env
+void	free_ms_env(t_item *item)
 {
 	int			i;
 
 	if (!item)
-	{
-		printf(BHRED "[free_envp] item == NULL ?!??\n" BHWHT);
 		return ;
-	}
-	i = 0;
-	while (item[i].key)
+	i = -1;
+	while (item[++i].key)
 	{
 		ft_free_str(&item[i].key);
 		ft_free_str(&item[i].value);
-		i++;
 	}
 	free (item);
 }

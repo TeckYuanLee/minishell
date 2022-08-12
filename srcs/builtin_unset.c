@@ -60,7 +60,7 @@ int	is_unset_key(char *key)
 }
 
 //	handle unset command
-int	ms_unset(char **argv, t_env *envi)
+int	ms_unset(char **argv, t_env *ms_env)
 {
 	int	i;
 	int	exitcode;
@@ -78,10 +78,10 @@ int	ms_unset(char **argv, t_env *envi)
 		else if (!is_unset_key(argv[i]))
 			exitcode = unset_error_msg(argv[i]);
 		else
-			rm_from_envp(argv[i], &envi->item);
+			rm_from_envp(argv[i], &ms_env->item);
 		i++;
 	}
-	if (ms_env_to_envp(envi->item, &envi->envp) == MALLOC_FAIL)
+	if (ms_env_to_envp(ms_env->item, &ms_env->envp) == MALLOC_FAIL)
 		return (-1);
 	return (exitcode);
 }

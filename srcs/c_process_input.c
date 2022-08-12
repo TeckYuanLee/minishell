@@ -94,14 +94,14 @@ t_err	process_input(char *line, t_input *input, t_env *info)
 }
 
 //  get input from readline after removing whitespace /////
-t_err	get_input(t_env *envi, char **input_ptr)
+t_err	get_input(t_env *ms_env, char **input_ptr)
 {
 	char	*temp;
 
 	set_term_settings();
 	rl_replace_line("", 0);
 	*input_ptr = readline(BHYEL PROMPT BHWHT);
-	tcsetattr(2, TCSANOW, &envi->termios_p);
+	tcsetattr(2, TCSANOW, &ms_env->termios_p);
 	if (*input_ptr && (*input_ptr)[0])
 	{
 		temp = *input_ptr;
@@ -112,6 +112,6 @@ t_err	get_input(t_env *envi, char **input_ptr)
 		add_history(*input_ptr);
 	}
 	else if (!*input_ptr)
-		ft_exit_sig(envi);
+		ft_exit_sig(ms_env);
 	return (NO_ERROR);
 }

@@ -1,36 +1,23 @@
 #include "minishell.h"
 
-//  initialize executor /////
-t_exec	*ft_init_exec(void)
-{	
-	t_exec	*new;
-
-	new = ft_calloc(sizeof(t_exec), 1);
-	if (!new)
-		return (NULL);
-	new->index = 0;
-	new->builtin_check = 0;
-	return (new);
-}
-
-//  start building tree /////
-void	ft_start_tree(t_env *envi, t_tree **tree)
+//  start building tree
+void	ft_start_tree(t_env *ms_env, t_tree **tree)
 {
 	int	i;
 
-	envi->exec = ft_init_exec();
-	envi->loc_tree_ptr = tree;
-	if (!envi->exec)
-		ft_error_exec(5, 0, envi);
-	i = ft_handle_tree(envi, *tree, envi->exec);
+	ms_env->exec = ft_calloc(sizeof(t_exec), 1);
+	if (!ms_env->exec)
+		ft_error_exec(5, 0, ms_env);
+	ms_env->exec->index = 0;
+	ms_env->exec->builtin_check = 0;
+	i = ft_handle_tree(ms_env, *tree, ms_env->exec);
 	if (i == 34 || i == 33)
-		envi->exitcode = 1;
-	unlink(".here_doc");
-	clean_tree(envi->loc_tree_ptr);
-	free(envi->exec);
+		ms_env->exitcode = 1;
+	unlink(".heredoc");
+	free(ms_env->exec);
 }
 
-//  change termios settings /////
+//  change termios settings
 void	set_term_settings(void)
 {
 	struct termios	termios_p;
@@ -41,20 +28,20 @@ void	set_term_settings(void)
 	tcsetattr(2, TCSANOW, &termios_p);
 }
 
-//  keep programm running /////
-int	do_loop(t_input *input, t_env *envi)
+//  keep programm running
+int	do_loop(t_input *input, t_env *ms_env)
 {
 	char	*curr_input;
 	t_err	err;
 
 	while (1)
 	{
-		init_signals();
-		if (get_input(envi, &curr_input) == MALLOC_FAIL)
+		ms_signals("init");
+		if (get_input(ms_env, &curr_input) == MALLOC_FAIL)
 			return (-1);
 		if (!curr_input)
 			continue ;
-		err = process_input(curr_input, input, envi);
+		err = process_input(curr_input, input, ms_env);
 		free (curr_input);
 		if (err != NO_ERROR)
 		{
@@ -64,7 +51,7 @@ int	do_loop(t_input *input, t_env *envi)
 				exit (-1);
 			continue ;
 		}
-		ignore_signals();
-		ft_start_tree(envi, &input->tree);
+		ms_signals("ignore");
+		ft_start_tree(ms_env, &input->tree);
 	}
 }

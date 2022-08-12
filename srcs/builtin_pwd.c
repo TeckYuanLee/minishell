@@ -28,16 +28,16 @@ char	*ft_get_pwd(char **envp)
 }
 
 //	execute pwd command
-int	ft_pwd_builtin(t_env *envi)
+int	ft_pwd_builtin(t_env *ms_env)
 {
 	char	*pwd;
 
-	pwd = ft_get_pwd(envi->envp);
+	pwd = ft_get_pwd(ms_env->envp);
 	if (!pwd)
-		ft_error_exec(5, 0, envi);
+		ft_error_exec(5, 0, ms_env);
 	ft_putstr_fd(pwd, 1);
 	ft_putstr_fd("\n", 1);
 	free (pwd);
-	envi->exitcode = 0;
+	ms_env->exitcode = 0;
 	return (1);
 }

@@ -1,11 +1,11 @@
 #include "minishell.h"
 
 //	check if the char is allowed /////
-t_bool	allowed_char(int c, char *not_allowed)
+int	allowed_char(int c, char *not_allowed)
 {
 	if (ft_strchr(not_allowed, c))
-		return (FALSE);
-	return (TRUE);
+		return (0);
+	return (1);
 }
 
 //	create cmd and store in 2d array if not parsed /////
