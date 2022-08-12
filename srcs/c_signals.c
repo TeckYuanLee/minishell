@@ -12,6 +12,17 @@
 
 #include "minishell.h"
 
+//  change termios settings
+void	set_term_settings(void)
+{
+	struct termios	termios_p;
+
+	ft_bzero(&termios_p, sizeof(struct termios));
+	tcgetattr(2, &termios_p);
+	termios_p.c_lflag &= (~ECHOCTL | ISIG);
+	tcsetattr(2, TCSANOW, &termios_p);
+}
+
 //	process sigint and sigquit
 void	process_signal(int sig, int *exitcode, int fd[2])
 {

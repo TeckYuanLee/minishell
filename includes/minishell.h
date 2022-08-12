@@ -143,7 +143,9 @@ int		ms_env_key(char *key, t_item *item);
 
 //	c_loop_do.c - OK
 int		do_loop(t_input *curr_input, t_env *ms_env);
-void	set_term_settings(void);
+t_err	get_input(t_env *ms_env, char **input_ptr);
+t_err	process_input(char *line, t_input *input, t_env *info);
+t_err	lexer(char *line, t_input *input);
 void	ft_start_tree(t_env *ms_env, t_tree **tree);
 
 //	c_signals.c - OK
@@ -151,6 +153,7 @@ void	ms_signals(char *str);
 void	new_readline(int sig);
 int		ft_exit_sig(t_env *ms_env);
 void	process_signal(int sig, int *exitcode, int fd[2]);
+void	set_term_settings(void);
 
 //	c_cleaner.c - OK
 void	clean_tree(t_tree **head_tree);
@@ -186,13 +189,6 @@ t_err	rm_token_type(t_token **list, t_token_t type);
 void	replace_head_token(t_token **head, t_token *new);
 void	replace_token(t_token *list, t_token *new);
 
-//	c_process_input.c
-t_err	get_input(t_env *ms_env, char **input_ptr);
-t_err	process_input(char *line, t_input *input, t_env *info);
-t_err	lexer(char *line, t_input *input);
-t_err	expander(t_input *input, t_env *info);
-t_err	parser(t_input *input);
-
 //	c_error.c
 t_err	syntax_err(t_token_t type);
 t_err	syntax_err_lexer(char token);
@@ -226,9 +222,10 @@ t_err	words(char *input, int *i, t_token **list);
 t_err	spaces(char *input, int *i, t_token **list);
 
 //	c_parser.c
+t_err	parser(t_input *input);
 t_err	pipe_syntax_pass(t_token *list);
-t_err	redir_syntax_pass(t_token *list);
-t_err	root_pass(t_token *list, t_tree **root);
+t_err	redir_syn_root_pass(t_token *list, t_tree **root);
+// t_err	root_pass(t_token *list, t_tree **root);
 t_err	redir_pass(t_token *list, t_tree **root);
 t_err	cmd_pass(t_token *list, t_tree **root);
 
@@ -238,6 +235,7 @@ char	**create_cmd_split(t_token *list, int word_count);
 int		allowed_char(int c, char *not_allowed);
 
 //	c_expander.c
+t_err	expander(t_input *input, t_env *info);
 t_err	quotes_to_words(t_token **list);
 t_err	expand_dollars(t_token **list, t_env *info);
 t_err	word_join(t_token **list);

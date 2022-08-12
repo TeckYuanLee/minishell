@@ -52,36 +52,39 @@ t_err	redir_pass(t_token *list, t_tree **root)
 }
 
 //	create a root node: PIPE or NOPIPE /////
-t_err	root_pass(t_token *list, t_tree **root)
-{
-	(void)list;
-	(void)root;
-	if (next_branch(list))
-		add_root_node(PIPE, root);
-	else
-		add_root_node(NO_PIPE, root);
-	return (NO_ERROR);
-}
+// t_err	root_pass(t_token *list, t_tree **root)
+// {
+// 	if (next_branch(list))
+// 		add_root_node(PIPE, root);
+// 	else
+// 		add_root_node(NO_PIPE, root);
+// 	return (NO_ERROR);
+// }
 
 //	check if lnr angles is input correctly, break if there is pipe /////
-t_err	redir_syntax_pass(t_token *list)
+t_err	redir_syn_root_pass(t_token *list, t_tree **root)
 {
+	t_token	*temp;
+
+	temp = list;
 	while (list)
 	{
 		if (list->type == TOK_PIPE)
 			break ;
-		else if (list->type == TOK_REDIR_IN || list->type == TOK_REDIR_OUT ||
-				list->type == TOK_APPEND || list->type == TOK_HERE_DOC)
+		else if (list->type == TOK_REDIR_IN || list->type == TOK_REDIR_OUT
+			|| list->type == TOK_APPEND || list->type == TOK_HERE_DOC)
 		{
 			if (!list->next || list->next->type != TOK_WORD)
 				return (syntax_err(list->type));
 			else
 				list = list->next;
 		}
-		else if (list->type == TOK_WORD)
-			(void)list;
 		list = list->next;
 	}
+	if (next_branch(temp))
+		add_root_node(PIPE, root);
+	else
+		add_root_node(NO_PIPE, root);
 	return (NO_ERROR);
 }
 
@@ -94,11 +97,37 @@ t_err	pipe_syntax_pass(t_token *list)
 		{
 			if (!list->prev || !list->next)
 				return (syntax_err(TOK_PIPE));
-			if (list->prev->type == TOK_PIPE ||
-				list->next->type == TOK_PIPE)
+			if (list->prev->type == TOK_PIPE
+				|| list->next->type == TOK_PIPE)
 				return (syntax_err(TOK_PIPE));
 		}
 		list = list->next;
+	}
+	return (NO_ERROR);
+}
+
+//	check tokens if they are used correctly /////
+t_err	parser(t_input *input)
+{
+	t_token	*list;
+	t_tree	**root;
+
+	list = input->lexer;
+	root = &input->tree;
+	if (!list)
+		return (printf(BHRED "[parser] Empty t_token\n" BHWHT));
+	if (pipe_syntax_pass(list) != NO_ERROR)
+		return (SYNTAX_ERR);
+	while (list)
+	{	
+		if (redir_syn_root_pass(list, root) != NO_ERROR)
+			return (SYNTAX_ERR);
+		// root_pass(list, root);
+		redir_pass(list, root);
+		cmd_pass(list, root);
+		list = next_branch(list);
+		if (list && list->type == TOK_PIPE)
+			list = list->next;
 	}
 	return (NO_ERROR);
 }
