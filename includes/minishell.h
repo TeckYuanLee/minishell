@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/12 16:56:08 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/12 20:19:02 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,25 +152,20 @@ void	new_readline(int sig);
 int		ft_exit_sig(t_env *ms_env);
 void	process_signal(int sig, int *exitcode, int fd[2]);
 
-//	c_cleaner.c
+//	c_cleaner.c - OK
 void	clean_tree(t_tree **head_tree);
 void	clean_lexer(t_token **list);
-void	free_ms_env(t_item *item);
-
-//	c_free.c
-void	ft_free_split(char ***split);
-void	ft_free_str(char **str);
-void	ft_free_partial_split(char ***split, int failed_i);
 void	free_envi(t_env *ms_env, int exitcode);
+void	free_ms_env(t_item *item);
+void	ft_free_split(char ***split);
 
-//	c_create_token.c
+//	tokens_create_token.c - OK
 t_token	*create_token(t_token_t type, char *data);
 t_err	add_new_token(t_token	**head, t_token_t type, char *data);
 void	add_to_tokenlist(t_token **head, t_token *new);
 t_err	insert_tokens(t_token **head, char *key, char *value, char *data);
-void	insert_token_after(t_token *list, t_token *new);
 
-//	c_modify_token.c
+//	tokens_modify_token.c
 void	cut_head_token(t_token **head);
 void	cut_token(t_token *list);
 t_err	join_head_token(t_token **list, t_token_t resulting_type);
@@ -178,8 +173,8 @@ t_err	join_token(t_token *list, t_token_t resulting_type);
 t_err	insert_full_string(t_token **head, char *key, char *data);
 
 //	c_modify_tokens_utils.c
-t_err	do_headstuff(t_token **head, char *key, char *value, char *data);
-t_err	do_normalstuff(t_token *list, char *key, char *value, char *data);
+t_err	sub_head_token(t_token **head, char *key, char *value, char *data);
+t_err	sub_token(t_token *list, char *key, char *value, char *data);
 t_token	*create_tailpart(char *key, char *data);
 void	create_full_string(char **str, char *data, int len);
 t_err	exitcode_token(const char *dquote, int *j, t_token **list);

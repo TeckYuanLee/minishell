@@ -53,7 +53,7 @@ t_err	ms_env_to_envp(t_item *item, char ***envp)
 	{
 		if (key_and_value(&item[j], &(*envp)[j]) == MALLOC_FAIL)
 		{
-			ft_free_partial_split(envp, j);
+			ft_free_split(envp);
 			return (MALLOC_FAIL);
 		}
 	}

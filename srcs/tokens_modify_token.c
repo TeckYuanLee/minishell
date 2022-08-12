@@ -78,10 +78,6 @@ t_err	join_head_token(t_token **list, t_token_t resulting_type)
 //  remove current token from list /////
 void	cut_token(t_token *list)
 {
-	if (!list)
-		return ((void)printf(BHRED "[cut_token] no token_list..\n" BHWHT));
-	if (!list->prev)
-		return ((void)printf(BHRED "[cut_token] no prev in token_list..\n" BHWHT));
 	if (list->next)
 		list->next->prev = list->prev;
 	list->prev->next = list->next;
@@ -93,10 +89,6 @@ void	cut_head_token(t_token **head)
 {
 	t_token	*new_head;
 
-	if (!*head)
-		return ((void)printf(BHRED "[cut_head_token] empty list.\n" BHWHT));
-	if ((*head)->prev)
-		return ((void)printf(BHRED "[cut_head_token] this is no head..\n" BHWHT));
 	if ((*head)->next)
 	{
 		new_head = (*head)->next;

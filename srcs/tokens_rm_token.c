@@ -84,6 +84,6 @@ void	del_token(t_token *list)
 {
 	if (!list)
 		return ((void)printf(BHRED "[del_token] (Null) token!!\n" BHWHT));
-	ft_free_str(&list->data);
+	free(list->data);
 	free (list);
 }

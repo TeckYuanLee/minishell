@@ -1,4 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   c_cleaner.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/12 18:06:38 by telee             #+#    #+#             */
+/*   Updated: 2022/08/12 18:06:39 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+//	free 2D array
+void	ft_free_split(char ***split)
+{
+	int	i;
+
+	i = -1;
+	if (!*split)
+		return ;
+	while ((*split)[++i])
+	{
+		free((*split)[i]);
+		(*split)[i] = NULL;
+	}
+	free(*split);
+	*split = NULL;
+}
 
 //  free ms_env
 void	free_ms_env(t_item *item)
@@ -10,13 +39,25 @@ void	free_ms_env(t_item *item)
 	i = -1;
 	while (item[++i].key)
 	{
-		ft_free_str(&item[i].key);
-		ft_free_str(&item[i].value);
+		free(item[i].key);
+		free(item[i].value);
 	}
 	free (item);
 }
 
-//  clean rows columns by columns and rows by rows /////
+//	free env variables
+void	free_envi(t_env *ms_env, int exitcode)
+{
+	free(ms_env->exec);
+	ft_free_split(&ms_env->envp);
+	free_ms_env(ms_env->item);
+	close(0);
+	close(1);
+	if (exitcode != -100)
+		exit(exitcode);
+}
+
+//  clean rows columns by columns and rows by rows
 void	clean_tree(t_tree **head_tree)
 {
 	t_tree	*node;
@@ -41,7 +82,7 @@ void	clean_tree(t_tree **head_tree)
 	*head_tree = NULL;
 }
 
-//  free data from lexer /////
+//  free data from lexer
 void	clean_lexer(t_token **list)
 {
 	t_token	*node;
@@ -53,7 +94,7 @@ void	clean_lexer(t_token **list)
 	while (node)
 	{
 		temp = node;
-		ft_free_str(&node->data);
+		free(node->data);
 		node = temp->next;
 		free (temp);
 	}

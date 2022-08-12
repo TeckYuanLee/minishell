@@ -57,8 +57,8 @@ t_token	*create_tailpart(char *key, char *data)
 	return (create_token(TOK_WORD, str));
 }
 
-//  create new token to replace current token /////
-t_err	do_normalstuff(t_token *list, char *key, char *value, char *data)
+//  create new token to replace current token
+t_err	sub_token(t_token *list, char *key, char *value, char *data)
 {
 	t_token	*var_token;
 	t_token	*temp;
@@ -77,14 +77,18 @@ t_err	do_normalstuff(t_token *list, char *key, char *value, char *data)
 		var_token = create_tailpart(key, data);
 		if (!var_token)
 			return (MALLOC_FAIL);
-		insert_token_after(temp, var_token);
+		var_token->next = temp->next;
+		if (temp->next)
+			temp->next->prev = var_token;
+		temp->next = var_token;
+		var_token->prev = temp;
 	}
 	free (key);
 	return (NO_ERROR);
 }
 
-//  create new token to replace head token /////
-t_err	do_headstuff(t_token **head, char *key, char *value, char *data)
+//  create new token to replace head token
+t_err	sub_head_token(t_token **head, char *key, char *value, char *data)
 {
 	t_token	*var_token;
 	t_token	*temp;
@@ -102,7 +106,11 @@ t_err	do_headstuff(t_token **head, char *key, char *value, char *data)
 		var_token = create_tailpart(key, data);
 		if (!var_token)
 			return (MALLOC_FAIL);
-		insert_token_after(temp, var_token);
+		var_token->next = temp->next;
+		if (temp->next)
+			temp->next->prev = var_token;
+		temp->next = var_token;
+		var_token->prev = temp;
 	}
 	free(key);
 	return (NO_ERROR);

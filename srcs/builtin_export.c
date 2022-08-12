@@ -34,8 +34,8 @@ t_err	get_plusis_value(char *value, char *key, t_item *item, \
 	if (old_value && value)
 	{
 		temp = ft_strjoin(old_value, value);
-		ft_free_str(&old_value);
-		ft_free_str(&value);
+		free(old_value);
+		free(value);
 		if (!temp)
 			return (MALLOC_FAIL);
 	}
@@ -154,7 +154,7 @@ int	ms_export(char **argv, t_env *ms_env)
 			return (-1);
 		if (!is_export_key(key))
 		{
-			ft_free_str(&key);
+			free(key);
 			exitcode = export_error_msg(argv[i]);
 		}
 		else

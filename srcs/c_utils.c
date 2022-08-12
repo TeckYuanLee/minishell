@@ -25,7 +25,7 @@ char	**create_cmd_split(t_token *list, int word_count)
 			split[i] = ft_strdup(list->data);
 			if (!split[i])
 			{
-				ft_free_partial_split(&split, i);
+				ft_free_split(&split);
 				return (NULL);
 			}
 			i++;
@@ -51,7 +51,7 @@ char	**make_split(t_token *list, int word_amount)
 		split[i] = ft_strdup(list->data);
 		if (!split[i])
 		{
-			ft_free_partial_split(&split, i);
+			ft_free_split(&split);
 			return (NULL);
 		}
 		list = list->next;
