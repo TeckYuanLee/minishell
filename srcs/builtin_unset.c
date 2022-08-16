@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_unset.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/17 01:28:26 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:28:26 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 //	if key is different, copy, else remove key
@@ -25,9 +37,9 @@ void	copy_or_rm(t_item **envp, char *key, t_item **new_envp)
 }
 
 //	copy or remove key from env
-t_err	rm_from_envp(char *key, t_item **envp)
+t_err	rm_ms_env(char *key, t_item **envp)
 {
-	t_item	*new_envp;
+	t_item		*new_envp;
 	int			i;
 
 	i = 0;
@@ -43,7 +55,7 @@ t_err	rm_from_envp(char *key, t_item **envp)
 }
 
 //	check for unset key
-int	is_unset_key(char *key)
+int	unset_key(char *key)
 {
 	size_t	i;
 
@@ -65,8 +77,6 @@ int	ms_unset(char **argv, t_env *ms_env)
 	int	i;
 	int	exitcode;
 
-	if (!argv)
-		return (printf(BHRED "[ms_unset] NULL-pointing argv..\n" BHWHT));
 	if (!argv[1])
 		return (0);
 	exitcode = 0;
@@ -75,10 +85,10 @@ int	ms_unset(char **argv, t_env *ms_env)
 	{
 		if (!ft_strncmp(argv[i], "PWD", 4))
 			return (0);
-		else if (!is_unset_key(argv[i]))
+		else if (!unset_key(argv[i]))
 			exitcode = unset_error_msg(argv[i]);
 		else
-			rm_from_envp(argv[i], &ms_env->item);
+			rm_ms_env(argv[i], &ms_env->item);
 		i++;
 	}
 	if (ms_env_to_envp(ms_env->item, &ms_env->envp) == MALLOC_FAIL)

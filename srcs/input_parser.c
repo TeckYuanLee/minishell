@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input_parser.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/17 01:30:13 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:30:14 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 //	check for word tokens and turn them into cmd /////
@@ -51,16 +63,6 @@ t_err	redir_pass(t_token *list, t_tree **root)
 	return (NO_ERROR);
 }
 
-//	create a root node: PIPE or NOPIPE /////
-// t_err	root_pass(t_token *list, t_tree **root)
-// {
-// 	if (next_branch(list))
-// 		add_root_node(PIPE, root);
-// 	else
-// 		add_root_node(NO_PIPE, root);
-// 	return (NO_ERROR);
-// }
-
 //	check if lnr angles is input correctly, break if there is pipe /////
 t_err	redir_syn_root_pass(t_token *list, t_tree **root)
 {
@@ -79,6 +81,8 @@ t_err	redir_syn_root_pass(t_token *list, t_tree **root)
 			else
 				list = list->next;
 		}
+		else if (list->type == TOK_WORD)
+			(void)list;
 		list = list->next;
 	}
 	if (next_branch(temp))
@@ -114,15 +118,12 @@ t_err	parser(t_input *input)
 
 	list = input->lexer;
 	root = &input->tree;
-	if (!list)
-		return (printf(BHRED "[parser] Empty t_token\n" BHWHT));
 	if (pipe_syntax_pass(list) != NO_ERROR)
 		return (SYNTAX_ERR);
 	while (list)
 	{	
 		if (redir_syn_root_pass(list, root) != NO_ERROR)
 			return (SYNTAX_ERR);
-		// root_pass(list, root);
 		redir_pass(list, root);
 		cmd_pass(list, root);
 		list = next_branch(list);

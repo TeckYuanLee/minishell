@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens.c                                           :+:      :+:    :+:   */
+/*   tokens_tokenize.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/25 09:24:45 by telee             #+#    #+#             */
-/*   Updated: 2022/07/25 09:24:45 by telee            ###   ########.fr       */
+/*   Created: 2022/08/17 01:31:52 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:31:52 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//	check for spaces in readline /////
+//	check for spaces in readline
 t_err	spaces(char *input, int *i, t_token **list)
 {
 	t_token	*new_token;
@@ -29,7 +29,7 @@ t_err	spaces(char *input, int *i, t_token **list)
 	return (NO_ERROR);
 }
 
-//	check for words and save them for parser /////
+//	check for words and save them for parser
 t_err	words(char *input, int *i, t_token **list)
 {
 	t_token	*new_token;
@@ -56,7 +56,7 @@ t_err	words(char *input, int *i, t_token **list)
 	return (NO_ERROR);
 }
 
-//	check for pipes in readline /////
+//	check for pipes in readline
 t_err	pipes(char *input, int *i, t_token **list)
 {
 	t_token	*new_token;
@@ -72,7 +72,7 @@ t_err	pipes(char *input, int *i, t_token **list)
 	return (NO_ERROR);
 }
 
-//	check for left and right angular brackets in readline /////
+//	check for left and right angular brackets in readline
 t_err	lnr_angles(char *input, int *i, t_token **list)
 {
 	t_token	*new_token;
@@ -99,7 +99,7 @@ t_err	lnr_angles(char *input, int *i, t_token **list)
 	return (NO_ERROR);
 }
 
-//	tokenize symbols /////
+//	tokenize symbols
 t_err	tokenize(char *input, int *i, t_token **list)
 {
 	if (*input == '<' || *input == '>')

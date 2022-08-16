@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens_utils.c                                     :+:      :+:    :+:   */
+/*   tokens_modify_tokens_utils.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/25 09:25:15 by telee             #+#    #+#             */
-/*   Updated: 2022/07/25 09:25:15 by telee            ###   ########.fr       */
+/*   Created: 2022/08/17 01:31:35 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:31:35 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//	handle '$?' /////
+//	handle '$?'
 t_err	exitcode_token(const char *dquote, int *j, t_token **list)
 {
 	char	*question;
@@ -35,18 +35,7 @@ t_err	exitcode_token(const char *dquote, int *j, t_token **list)
 	return (NO_ERROR);
 }
 
-//  create new string /////
-void	create_full_string(char **str, char *data, int len)
-{
-	(*str)[0] = '$';
-	while (len >= 0)
-	{
-		(*str)[len + 1] = data[len];
-		len--;
-	}
-}
-
-//  create the remaining part of the token /////
+//  create the remaining part of the token
 t_token	*create_tailpart(char *key, char *data)
 {
 	char	*str;
@@ -100,7 +89,7 @@ t_err	sub_head_token(t_token **head, char *key, char *value, char *data)
 		return (MALLOC_FAIL);
 	}
 	temp = var_token;
-	replace_head_token(head, var_token);
+	replace_token(*head, var_token);
 	if (ft_strlen(data) > ft_strlen(key))
 	{
 		var_token = create_tailpart(key, data);

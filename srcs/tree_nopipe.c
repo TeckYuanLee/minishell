@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tree_nopipe.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/17 01:32:53 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:32:55 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 //	wait for signal at end of nopipe instructions
@@ -56,32 +68,6 @@ int	ft_nopipe_end(t_tree *tree, t_env *ms_env, t_exec *exec)
 	if (ft_nopipe_end_util(tree, pid, status) == 33)
 		return (33);
 	ft_close_fd(exec->fd_in);
-	return (0);
-}
-
-//	check for export, cd, unset, exit
-int	ft_start_builtin(t_tree *tree, t_env *ms_env, t_exec *exec)
-{
-	if (!ft_strncmp(tree->data[0], "export", 7) && tree->data[1])
-	{
-		ms_env->exitcode = ms_export(tree->data, ms_env);
-		exec->builtin_check = 1;
-	}
-	else if (!ft_strncmp(tree->data[0], "cd", 3))
-	{
-		ms_env->exitcode = ms_cd(tree->data, ms_env);
-		exec->builtin_check = 1;
-	}
-	else if (!ft_strncmp(tree->data[0], "unset", 6))
-	{
-		ms_env->exitcode = ms_unset(tree->data, ms_env);
-		exec->builtin_check = 1;
-	}
-	else if (!ft_strncmp(tree->data[0], "exit", 5))
-	{
-		ms_env->exitcode = ft_exit(tree, ms_env);
-		exec->builtin_check = 1;
-	}
 	return (0);
 }
 

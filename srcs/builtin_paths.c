@@ -1,4 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_paths.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/17 01:28:19 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:28:19 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+//	make edits to the paths
+char	**ft_edit_paths(char **paths, char **arg, int i)
+{
+	char	**exec_paths;
+	char	*extension;
+	int		j;
+
+	exec_paths = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!exec_paths)
+		return (ft_free_paths(paths, NULL, NULL));
+	j = 0;
+	extension = ft_strjoin("/", arg[0]);
+	if (!extension)
+		return (ft_free_paths(paths, exec_paths, NULL));
+	while (paths[j])
+	{
+		exec_paths[j] = ft_strjoin(paths[j], extension);
+		if (!exec_paths[j])
+			return (ft_free_paths(paths, exec_paths, extension));
+		j++;
+	}
+	exec_paths[j] = NULL;
+	ft_free_paths(paths, NULL, extension);
+	return (exec_paths);
+}
 
 //	check for dir input commands
 int	ft_parse_dir(char **envp, char **arg, t_env *ms_env, char **paths)

@@ -1,12 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tree_handle_tree.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/17 01:32:37 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:32:37 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-//	handle heredoc function
-void	ft_handle_heredoc(t_exec *exec, t_env *ms_env)
-{
-	ms_env->exitcode = ft_wait_on_children(exec, ms_env);
-	ft_close_fd(exec->fd_out);
-	ft_close_fd(exec->fd_in);
-}
+#include "minishell.h"
 
 //	close fd in and out
 void	ft_close_all(t_exec *exec)

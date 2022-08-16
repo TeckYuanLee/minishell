@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/17 01:30:24 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:35:19 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 //	check if the char is allowed /////
@@ -35,7 +47,8 @@ char	**create_cmd_split(t_token *list, int word_count)
 	return (split);
 }
 
-//	copy data and store in 2d array || essentially just strdup for redir_pass /////
+//	copy data and store in 2d array || 
+//	essentially just strdup for redir_pass
 char	**make_split(t_token *list, int word_amount)
 {
 	char	**split;

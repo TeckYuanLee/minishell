@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokens_dollars.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/17 01:30:47 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:35:42 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 //  create remaining part of the token else remove token /////
@@ -16,19 +28,14 @@ t_err	expand_d_tailbit(t_token **head, char *key, char *data)
 		replace_token(*head, var_token);
 	}
 	else
-	{
-		if ((*head)->prev)
-			cut_token(*head);
-		else
-			cut_head_token(head);
-	}
+		remove_token(*head);
 	return (NO_ERROR);
 }
 
 //  expand $ and words /////
 t_err	expand_d(t_token **head, t_env *info, char *key, char *data)
 {
-	char    *value;
+	char	*value;
 
 	if (get_env_key(data, &key) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
@@ -59,10 +66,10 @@ t_err	prep_expand_d(t_token **head, t_env *info, char *key)
 	next = (*head)->next;
 	if ((*head)->prev)
 	{
-		cut_token(*head);
+		remove_token(*head);
 		return (expand_d(&next, info, key, data));
 	}	
-	cut_head_token(head);
+	remove_token(*head);
 	return (expand_d(head, info, key, data));
 }
 

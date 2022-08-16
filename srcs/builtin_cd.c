@@ -1,24 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/17 01:26:52 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:26:52 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-//	replace values of both old and new pwd
-t_err	update_both_pwds(t_env *ms_env, char *curr_pwd, char *new_pwd)
-{
-	if (ms_env_key("PWD", ms_env->item))
-	{
-		update_value("PWD", new_pwd, ms_env->item);
-	}
-	else
-		if (update_ms_env("PWD", new_pwd, &ms_env->item) == MALLOC_FAIL)
-			return (MALLOC_FAIL);
-	if (ms_env_key("OLDPWD", ms_env->item))
-	{
-		update_value("OLDPWD", curr_pwd, ms_env->item);
-		return (NO_ERROR);
-	}
-	else if (update_ms_env("OLDPWD", curr_pwd, &ms_env->item) == 1)
-		return (MALLOC_FAIL);
-	return (NO_ERROR);
-}
+#include "minishell.h"
 
 //	copy path contents to parse path
 int	add_path_chunk(char parse_path[512], char *path)
@@ -37,43 +29,32 @@ int	add_path_chunk(char parse_path[512], char *path)
 	return (j);
 }
 
-//	remove parse path contents
-void	remove_dir(char parse_path[512])
-{
-	int	i;
-
-	i = 0;
-	while (i < 255 && parse_path[i])
-		i++;
-	while (parse_path[i] != '/')
-		parse_path[i--] = '\0';
-	parse_path[i] = '\0';
-}
-
 //	combine old pwd with path
 char	*parse_path(char *path, char *old_pwd)
 {
-	int			i;
-	char		parse_path[512];
+	int		i;
+	int		j;
+	char	parse_path[512];
 
 	ft_bzero(&parse_path, 512);
 	ft_strlcpy(parse_path, old_pwd, ft_strlen(old_pwd) + 1);
 	i = 0;
 	while (path[i])
 	{
-		if (path[i] == '.' && path[i + 1] == '.')
+		if (path[i] == '.' && path[i++ + 1] == '.')
 		{
-			remove_dir(parse_path);
-			i += 2;
+			j = 0;
+			while (j < 255 && parse_path[j])
+				j++;
+			while (parse_path[j] != '/')
+				parse_path[j--] = '\0';
+			parse_path[j] = '\0';
 		}
 		else if (path[i] == '.' && path[i + 1] == '/')
-			i += 2;
-		else if (path[i] == '/')
 			i++;
 		else if (ft_isprint(path[i]))
-			i += add_path_chunk(parse_path, &path[i]);
-		else
-			printf(BHRED "[parse_path] something rly wrong..." BHWHT);
+			i += add_path_chunk(parse_path, &path[i]) - 1;
+		i++;
 	}
 	return (ft_strdup(parse_path));
 }
@@ -111,17 +92,20 @@ t_err	update_pwd_oldpwd(char *path, t_env *ms_env)
 		free(curr_pwd);
 		return (MALLOC_FAIL);
 	}
-	update_both_pwds(ms_env, curr_pwd, new_pwd);
+	if (ms_env_key("PWD", ms_env->item))
+		update_value("PWD", new_pwd, ms_env->item);
+	else if (update_ms_env("PWD", new_pwd, &ms_env->item) == MALLOC_FAIL)
+		return (MALLOC_FAIL);
+	if (ms_env_key("OLDPWD", ms_env->item))
+		return (update_value("OLDPWD", curr_pwd, ms_env->item));
+	else if (update_ms_env("OLDPWD", curr_pwd, &ms_env->item) == 1)
+		return (MALLOC_FAIL);
 	return (NO_ERROR);
 }
 
 //	handle cd command
 t_err	ms_cd(char **argv, t_env *ms_env)
 {
-	if (!argv)
-		return (printf(BHRED "[ms_cd] NULL-pointing argv..\n" BHWHT));
-	if (!*argv)
-		return (printf(BHRED "[ms_cd] empty argv..\n" BHWHT));
 	if (!argv[1])
 		return (0);
 	if (chdir(argv[1]))

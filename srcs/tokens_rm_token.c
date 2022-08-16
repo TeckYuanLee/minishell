@@ -1,36 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokens_rm_token.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/17 01:31:46 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:31:47 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-//  replace current token with new token /////
+//  replace current/first token with new token
 void	replace_token(t_token *list, t_token *new)
 {
-	if (!list)
-		return ((void)printf(BHRED "[replace_token] no token_list..\n" BHWHT));
-	if (!list->prev)
-		return ((void)printf(BHRED "[replace_token] no prev in \
-			token_list..\n" BHWHT));
-	new->next = list->next;
-	if (new->next)
-		list->next->prev = new;
-	new->prev = list->prev;
-	if (new->prev)
-		list->prev->next = new;
-	del_token(list);
-}
-
-//  replace first token with new token /////
-void	replace_head_token(t_token **head, t_token *new)
-{
-	if (!*head)
-		return ((void)printf(BHRED "[replace_head_token] no head..\n" BHWHT));
-	if ((*head)->prev)
-		return ((void)printf(BHRED "[replace_head_token] not a head?\n" BHWHT));
-	if ((*head)->next)
+	if (list->prev)
 	{
-		new->next = (*head)->next;
-		(*head)->next->prev = new;
+		new->next = list->next;
+		if (new->next)
+			list->next->prev = new;
+		new->prev = list->prev;
+		if (new->prev)
+			list->prev->next = new;
+		del_token(list);
 	}
-	del_token(*head);
-	*head = new;
+	else
+	{
+		if ((list)->next)
+		{
+			new->next = (list)->next;
+			(list)->next->prev = new;
+		}
+		del_token(list);
+		list = new;
+	}
 }
 
 //	remove space tokens /////
@@ -44,12 +48,7 @@ t_err	rm_token_type(t_token **list, t_token_t type)
 	{
 		temp = node->next;
 		if (node->type == type)
-		{
-			if (node->prev)
-				cut_token(node);
-			else
-				cut_head_token(list);
-		}
+			remove_token(node);
 		node = temp;
 	}
 	return (NO_ERROR);
@@ -68,12 +67,7 @@ t_err	rm_double_tokens(t_token **list, t_token_t type)
 	{
 		temp = node->next;
 		if (node->type == type && node->next->type == type)
-		{
-			if (node->prev)
-				cut_token(node);
-			else
-				cut_head_token(list);
-		}
+			remove_token(node);
 		node = temp;
 	}
 	return (NO_ERROR);

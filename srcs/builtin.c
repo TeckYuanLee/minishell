@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/17 01:28:31 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:28:31 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 //	check for child process's builtin
@@ -25,7 +37,7 @@ int	ft_check_builtin_child(t_tree *tree, t_env *ms_env)
 }
 
 //	print all env values retrieved by minishell
-int	ms_envp(char **argv, t_env *ms_env)
+int	print_ms_env(char **argv, t_env *ms_env)
 {
 	t_item	*item;
 
@@ -63,7 +75,7 @@ int	ft_check_builtin_add(t_tree *tree, t_env *ms_env, int i)
 	}
 	else if (!ft_strncmp(tree->data[0], "env", 4))
 	{
-		ms_env->exitcode = ms_envp(tree->data, ms_env);
+		ms_env->exitcode = print_ms_env(tree->data, ms_env);
 		i++;
 	}
 	return (i);
@@ -74,6 +86,7 @@ int	ft_check_builtin(t_tree *tree, t_env *ms_env)
 {
 	int	i;
 
+	printf("%s\n", tree->data[0]);
 	i = 0;
 	if (!ft_strncmp(tree->data[0], "echo", 5))
 		i = ft_builtin_echo(ms_env, tree);
@@ -90,10 +103,36 @@ int	ft_check_builtin(t_tree *tree, t_env *ms_env)
 		i = 33;
 	if (!ft_strncmp(tree->data[0], "env", 4))
 	{
-		ms_env->exitcode = ms_envp(tree->data, ms_env);
+		ms_env->exitcode = print_ms_env(tree->data, ms_env);
 		i++;
 	}
 	if (i != 0)
 		free_envi(ms_env, ms_env->exitcode);
 	return (i);
+}
+
+//	check for export, cd, unset, exit
+int	ft_start_builtin(t_tree *tree, t_env *ms_env, t_exec *exec)
+{
+	if (!ft_strncmp(tree->data[0], "export", 7) && tree->data[1])
+	{
+		ms_env->exitcode = ms_export(tree->data, ms_env);
+		exec->builtin_check = 1;
+	}
+	else if (!ft_strncmp(tree->data[0], "cd", 3))
+	{
+		ms_env->exitcode = ms_cd(tree->data, ms_env);
+		exec->builtin_check = 1;
+	}
+	else if (!ft_strncmp(tree->data[0], "unset", 6))
+	{
+		ms_env->exitcode = ms_unset(tree->data, ms_env);
+		exec->builtin_check = 1;
+	}
+	else if (!ft_strncmp(tree->data[0], "exit", 5))
+	{
+		ms_env->exitcode = ft_exit(tree, ms_env);
+		exec->builtin_check = 1;
+	}
+	return (0);
 }

@@ -1,13 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tree_nodes.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/17 01:32:49 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:32:51 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 //	simply get next node
 t_tree	*get_next_node(t_tree *tree)
 {
 	if (!tree)
-	{
-		printf(BHRED "Empty forrest?!?!?\n");
 		return (NULL);
-	}
 	if (tree->leaf)
 		tree = tree->leaf;
 	else
@@ -24,8 +33,6 @@ t_tree	*get_next_node(t_tree *tree)
 //	check next branch for pipe else return null list /////
 t_token	*next_branch(t_token *list)
 {
-	if (!list)
-		printf(BHRED "[next_branch] Empty t_token ?\n" BHWHT);
 	while (list)
 	{
 		list = list->next;
@@ -33,21 +40,6 @@ t_token	*next_branch(t_token *list)
 			return (list);
 	}
 	return (list);
-}
-
-//	traverse right of pipe or no pipe, else traverse leftmost
-//	to search for pipe or no pipe /////
-t_tree	*last_root_node(t_tree *tree)
-{
-	if (tree->type == PIPE || tree->type == NO_PIPE)
-	{
-		while (tree->next_root)
-			tree = tree->next_root;
-		return (tree);
-	}
-	while (tree->leaf)
-		tree = tree->leaf;
-	return (last_root_node(tree));
 }
 
 //	create new branch id if token type is pipe, else leave id /////
@@ -79,8 +71,6 @@ t_err	add_leaf_node(t_node type, char **data, t_tree *parent)
 {
 	t_tree	*new_node;
 
-	if (!parent)
-		return (printf(BHRED "[add_child_node] No parent tree!?!?!\n" BHWHT));
 	new_node = create_tree_node(type, data);
 	if (!new_node)
 		return (MALLOC_FAIL);
@@ -101,10 +91,8 @@ t_err	add_leaf_node(t_node type, char **data, t_tree *parent)
 //	create root node // put new node after root node /////
 t_err	add_root_node(t_node type, t_tree **head_tree)
 {
-	t_tree	*node;
 	t_tree	*new_node;
 
-	node = *head_tree;
 	new_node = create_tree_node(type, NULL);
 	if (!new_node)
 		return (MALLOC_FAIL);
@@ -113,8 +101,18 @@ t_err	add_root_node(t_node type, t_tree **head_tree)
 		*head_tree = new_node;
 		return (NO_ERROR);
 	}
-	node = last_root_node(node);
-	new_node->prev = node;
-	node->next_root = new_node;
+	while (1)
+	{
+		if ((*head_tree)->type == PIPE || (*head_tree)->type == NO_PIPE)
+		{
+			while ((*head_tree)->next_root)
+				(*head_tree) = (*head_tree)->next_root;
+			break ;
+		}
+		while ((*head_tree)->leaf)
+			(*head_tree) = (*head_tree)->leaf;
+	}
+	new_node->prev = (*head_tree);
+	(*head_tree)->next_root = new_node;
 	return (NO_ERROR);
 }

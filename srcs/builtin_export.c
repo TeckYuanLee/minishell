@@ -1,52 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_export.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/17 01:27:30 by telee             #+#    #+#             */
+/*   Updated: 2022/08/17 01:27:30 by telee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-//	if key doesn't exist, add to envp, else update value
-t_err	add_value_to_envp(t_item **item, char *key, char *value)
-{
-	if (!ms_env_key(key, *item))
-	{
-		if (update_ms_env(key, value, item) == MALLOC_FAIL)
-		{
-			free(key);
-			return (MALLOC_FAIL);
-		}
-		return (NO_ERROR);
-	}
-	update_value(key, value, *item);
-	free (key);
-	return (NO_ERROR);
-}
-
-//	join old value with value
-t_err	get_plusis_value(char *value, char *key, t_item *item, \
-		char **joined)
-{
-	char	*old_value;
-	char	*temp;
-
-	temp = NULL;
-	if (get_env_value(item, key, &old_value) == MALLOC_FAIL)
-	{
-		free(key);
-		free(value);
-		return (MALLOC_FAIL);
-	}
-	if (old_value && value)
-	{
-		temp = ft_strjoin(old_value, value);
-		free(old_value);
-		free(value);
-		if (!temp)
-			return (MALLOC_FAIL);
-	}
-	else if (!old_value)
-		temp = value;
-	*joined = temp;
-	return (NO_ERROR);
-}
-
 //	extract value and add to list of envp
-t_err	parse_and_add_to_envp(char *str, t_item **item, char *key)
+t_err	extract_to_ms_env(char *str, t_item **item, char *key)
 {
 	char	*value;
 
@@ -64,15 +31,15 @@ t_err	parse_and_add_to_envp(char *str, t_item **item, char *key)
 		}
 	}
 	if (str[ft_strlen(key)] == '+')
-		if (get_plusis_value(value, key, *item, &value) == MALLOC_FAIL)
+		if (join_values(value, key, *item, &value) == MALLOC_FAIL)
 			return (MALLOC_FAIL);
 	if (str[ft_strlen(key)] == '=' || str[ft_strlen(key)] == '\0')
-		return (add_value_to_envp(item, key, value));
+		return (add_to_ms_env(item, key, value));
 	return (NO_ERROR);
 }
 
 //	identify if it is an export key
-int	is_export_key(char *key)
+int	export_key(char *key)
 {
 	size_t	i;
 
@@ -89,7 +56,7 @@ int	is_export_key(char *key)
 }
 
 //	copy str to return key
-t_err	export_get_env_key(const char *str, char **return_key)
+t_err	dup_env_key(const char *str, char **return_key)
 {
 	int		i;
 
@@ -109,7 +76,7 @@ t_err	export_get_env_key(const char *str, char **return_key)
 }
 
 //	check if export is ready
-t_err	single_export(t_item *item)
+t_err	ready_export(t_item *item)
 {
 	int	arr_len;
 	int	*arr;
@@ -120,8 +87,6 @@ t_err	single_export(t_item *item)
 		item++;
 		arr_len++;
 	}
-	if (!item)
-		return (printf(BHRED "[single_export] item pointing to (null)..\n"));
 	arr = ft_calloc(arr_len, sizeof(int));
 	if (!arr)
 		return (MALLOC_FAIL);
@@ -145,20 +110,20 @@ int	ms_export(char **argv, t_env *ms_env)
 	int		exitcode;
 
 	if (!argv[1])
-		return (single_export(ms_env->item));
+		return (ready_export(ms_env->item));
 	exitcode = 0;
 	i = 0;
 	while (argv[++i])
 	{
-		if (export_get_env_key(argv[i], &key) == MALLOC_FAIL)
+		if (dup_env_key(argv[i], &key) == MALLOC_FAIL)
 			return (-1);
-		if (!is_export_key(key))
+		if (!export_key(key))
 		{
 			free(key);
 			exitcode = export_error_msg(argv[i]);
 		}
 		else
-			parse_and_add_to_envp(argv[i], &ms_env->item, key);
+			extract_to_ms_env(argv[i], &ms_env->item, key);
 	}
 	if (ms_env_to_envp(ms_env->item, &ms_env->envp) == MALLOC_FAIL)
 		return (-1);
