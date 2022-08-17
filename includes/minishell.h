@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 16:12:55 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/17 21:29:01 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,7 +274,7 @@ int		unset_error_msg(char *str);
 
 //	tree_exit.c - OK
 void	ft_exit_multi_arg(t_tree *tree, t_env *ms_env, int i);
-void	ft_exit_numeric(t_tree *tree, t_env *ms_env);
+void	ft_exit_numeric(t_tree *tree, t_env *ms_env, char c);
 void	ft_exit_one_arg(t_tree *tree, t_env *ms_env, int i);
 void	ft_exit_one_range(t_tree *tree, t_env *ms_env);
 int		ft_exit(t_tree *tree, t_env *ms_env);
@@ -304,6 +304,7 @@ int		add_path_chunk(char parse_path[512], char *path);
 //	builtin_cd_utils.c - OK
 int		ms_perror(char *perror_str, char *string, char *string2, int rv);
 int		add_str(char *perror_str, char *string2, int rv);
+void	remove_dir(char parse_path[512]);
 
 //	builtin_paths.c - OK
 int		ft_get_paths(t_env *ms_env, char **arg);

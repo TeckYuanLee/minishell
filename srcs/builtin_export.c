@@ -112,8 +112,8 @@ int	ms_export(char **argv, t_env *ms_env)
 	if (!argv[1])
 		return (ready_export(ms_env->item));
 	exitcode = 0;
-	i = 0;
-	while (argv[++i])
+	i = 1;
+	while (argv[i])
 	{
 		if (dup_env_key(argv[i], &key) == MALLOC_FAIL)
 			return (-1);
@@ -124,6 +124,7 @@ int	ms_export(char **argv, t_env *ms_env)
 		}
 		else
 			extract_to_ms_env(argv[i], &ms_env->item, key);
+		i++;
 	}
 	if (ms_env_to_envp(ms_env->item, &ms_env->envp) == MALLOC_FAIL)
 		return (-1);

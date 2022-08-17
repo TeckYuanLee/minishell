@@ -12,6 +12,18 @@
 
 #include "minishell.h"
 
+void	remove_dir(char parse_path[512])
+{
+	int	i;
+
+	i = 0;
+	while (i < 255 && parse_path[i])
+		i++;
+	while (parse_path[i] != '/')
+		parse_path[i--] = '\0';
+	parse_path[i] = '\0';
+}
+
 //	join two strings together
 int	add_str(char *perror_str, char *string2, int rv)
 {

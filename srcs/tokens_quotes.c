@@ -76,7 +76,7 @@ t_err	d_quote_dollars(const char *dquote, int *j, t_token **list)
 	if (ft_isdigit(dquote[*j]))
 		return ((*j)++ | NO_ERROR);
 	if (dquote[*j] == '?')
-		return (exitcode_token(dquote, ++j, list) == MALLOC_FAIL);
+		return ((*j)++ | (exitcode_token(dquote, j, list) == MALLOC_FAIL));
 	if (get_env_key(&dquote[*j], &key) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	if (key)

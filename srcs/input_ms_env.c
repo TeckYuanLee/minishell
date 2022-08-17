@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:08 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 01:30:10 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/17 21:05:45 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,16 @@ t_err	update_ms_env(char *key, char *value, t_item **head)
 	int		i;
 
 	i = 0;
-	while ((head[i])->key)
+	while ((&(*head)[i])->key)
 		i++;
 	new_envp = ft_calloc(i + 2, sizeof(t_item));
 	if (!new_envp)
 		return (MALLOC_FAIL);
 	i = -1;
-	while (head[++i]->key)
+	while ((*head)[++i].key)
 	{
-		new_envp[i].key = head[i]->key;
-		new_envp[i].value = head[i]->value;
+		new_envp[i].key = (*head)[i].key;
+		new_envp[i].value = (*head)[i].value;
 	}
 	new_envp[i].key = key;
 	new_envp[i].value = value;

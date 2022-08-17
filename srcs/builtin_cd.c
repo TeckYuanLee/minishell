@@ -33,7 +33,6 @@ int	add_path_chunk(char parse_path[512], char *path)
 char	*parse_path(char *path, char *old_pwd)
 {
 	int		i;
-	int		j;
 	char	parse_path[512];
 
 	ft_bzero(&parse_path, 512);
@@ -41,20 +40,17 @@ char	*parse_path(char *path, char *old_pwd)
 	i = 0;
 	while (path[i])
 	{
-		if (path[i] == '.' && path[i++ + 1] == '.')
+		if (path[i] == '.' && path[i + 1] == '.')
 		{
-			j = 0;
-			while (j < 255 && parse_path[j])
-				j++;
-			while (parse_path[j] != '/')
-				parse_path[j--] = '\0';
-			parse_path[j] = '\0';
+			remove_dir(parse_path);
+			i += 2;
 		}
 		else if (path[i] == '.' && path[i + 1] == '/')
+			i += 2;
+		else if (path[i] == '/')
 			i++;
 		else if (ft_isprint(path[i]))
-			i += add_path_chunk(parse_path, &path[i]) - 1;
-		i++;
+			i += add_path_chunk(parse_path, &path[i]);
 	}
 	return (ft_strdup(parse_path));
 }

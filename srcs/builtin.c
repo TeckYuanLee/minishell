@@ -107,7 +107,6 @@ int	ft_check_builtin(t_tree *tree, t_env *ms_env)
 	}
 	if (i != 0)
 		free_envi(ms_env, ms_env->exitcode);
-	printf("[check_builtin]%s\n", tree->data[1]);
 	return (i);
 }
 
