@@ -86,7 +86,6 @@ int	ft_check_builtin(t_tree *tree, t_env *ms_env)
 {
 	int	i;
 
-	printf("%s\n", tree->data[0]);
 	i = 0;
 	if (!ft_strncmp(tree->data[0], "echo", 5))
 		i = ft_builtin_echo(ms_env, tree);
@@ -108,6 +107,7 @@ int	ft_check_builtin(t_tree *tree, t_env *ms_env)
 	}
 	if (i != 0)
 		free_envi(ms_env, ms_env->exitcode);
+	printf("[check_builtin]%s\n", tree->data[1]);
 	return (i);
 }
 

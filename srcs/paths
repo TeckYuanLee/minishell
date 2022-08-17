@@ -1,3 +1,4 @@
+pwd
 main
 - init variables -> count no of env -> calloc ms_env -> copy env to ms_env -> assign key "OLDPWD" if non-existent in env
 - ms_env to variables -> combine key and value & store into variables

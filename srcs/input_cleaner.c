@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 18:06:38 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 01:28:39 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/17 16:12:55 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	free_ms_env(t_item *item)
 //	free env variables
 void	free_envi(t_env *ms_env, int exitcode)
 {
+	clean_tree(ms_env->tree_addr);
 	free(ms_env->exec);
 	ft_free_split(&ms_env->envp);
 	free_ms_env(ms_env->item);

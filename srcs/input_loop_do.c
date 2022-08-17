@@ -22,10 +22,12 @@ void	ft_start_tree(t_env *ms_env, t_tree **tree)
 		ft_error_exec(5, 0, ms_env);
 	ms_env->exec->index = 0;
 	ms_env->exec->builtin_check = 0;
+	ms_env->tree_addr = tree;
 	i = ft_handle_tree(ms_env, *tree, ms_env->exec);
 	if (i == 34 || i == 33)
 		ms_env->exitcode = 1;
 	unlink(".heredoc");
+	clean_tree(ms_env->tree_addr);
 	free(ms_env->exec);
 }
 

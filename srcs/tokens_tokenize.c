@@ -73,7 +73,7 @@ t_err	pipes(char *input, int *i, t_token **list)
 }
 
 //	check for left and right angular brackets in readline
-t_err	lnr_angles(char *input, int *i, t_token **list)
+t_err	redir_input(char *input, int *i, t_token **list)
 {
 	t_token	*new_token;
 
@@ -103,7 +103,7 @@ t_err	lnr_angles(char *input, int *i, t_token **list)
 t_err	tokenize(char *input, int *i, t_token **list)
 {
 	if (*input == '<' || *input == '>')
-		return (lnr_angles(input, i, list));
+		return (redir_input(input, i, list));
 	else if (*input == '|')
 		return (pipes(input, i, list));
 	else if (*input == '$')

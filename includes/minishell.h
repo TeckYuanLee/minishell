@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 01:36:13 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/17 16:12:55 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ typedef struct s_env
 	char			**envp;
 	struct termios	termios_p;
 	int				exitcode;
+	t_tree			**tree_addr;
 	t_exec			*exec;
 }		t_env;
 
@@ -155,12 +156,41 @@ int		ft_exit_sig(t_env *ms_env);
 void	process_signal(int sig, int *exitcode, int fd[2]);
 void	set_term_settings(void);
 
+//	input_tokenize.c - OK
+t_err	tokenize(char *input, int *i, t_token **list);
+t_err	redir_input(char *input, int *i, t_token **list);
+t_err	pipes(char *input, int *i, t_token **list);
+t_err	words(char *input, int *i, t_token **list);
+t_err	spaces(char *input, int *i, t_token **list);
+
+//	input_parser.c - OK
+t_err	parser(t_input *input);
+t_err	pipe_syntax_pass(t_token *list);
+t_err	redir_syn_root_pass(t_token *list, t_tree **root);
+t_err	redir_pass(t_token *list, t_tree **root);
+t_err	cmd_pass(t_token *list, t_tree **root);
+
+//	input_utils.c - OK
+char	**make_split(t_token *list, int word_amount);
+char	**create_cmd_split(t_token *list, int word_count);
+int		allowed_char(int c, char *not_allowed);
+
+//	input_expander.c - OK
+t_err	expander(t_input *input, t_env *info);
+t_err	quotes_to_words(t_token **list);
+t_err	expand_dollars(t_token **list, t_env *info);
+t_err	word_join(t_token **list);
+
 //	input_cleaner.c - OK
 void	clean_tree(t_tree **head_tree);
 void	clean_lexer(t_token **list);
 void	free_envi(t_env *ms_env, int exitcode);
 void	free_ms_env(t_item *item);
 void	ft_free_split(char ***split);
+
+//	input_error.c - OK
+t_err	syntax_err(t_token_t type);
+t_err	syntax_err_lexer(char token);
 
 //	tokens_create_token.c - OK
 t_token	*create_token(t_token_t type, char *data);
@@ -186,16 +216,18 @@ t_err	rm_double_tokens(t_token **list, t_token_t type);
 t_err	rm_token_type(t_token **list, t_token_t type);
 void	replace_token(t_token *list, t_token *new);
 
-//	input_error.c - OK
-t_err	syntax_err(t_token_t type);
-t_err	syntax_err_lexer(char token);
-
 //	tokens_dollars.c - OK
 t_err	dollars(char *input, int *i, t_token **list);
 t_err	add_dollar_sign(t_token	**list);
 t_err	prep_expand_d(t_token **head, t_env *info, char *key);
 t_err	expand_d(t_token **head, t_env *info, char *key, char *data);
 t_err	expand_d_tailbit(t_token **head, char *key, char *data);
+
+//	tokens_quotes.c - OK
+t_err	quotes(char *input, int *i, t_token **list);
+t_err	save_quote(const char *line, char **quote, char *input);
+t_err	d_quote_dollars(const char *dquote, int *j, t_token **list);
+t_err	expand_d_quote(const char *dquote, t_token **list);
 
 //	tree_nodes.c - OK
 t_tree	*create_tree_node(t_node type, char **data);
@@ -204,36 +236,11 @@ t_err	add_leaf_node(t_node type, char **data, t_tree *parent);
 t_token	*next_branch(t_token *list);
 t_tree	*get_next_node(t_tree *tree);
 
-//	tokens_quotes.c - OK
-t_err	quotes(char *input, int *i, t_token **list);
-t_err	save_quote(const char *line, char **quote, char *input);
-t_err	d_quote_dollars(const char *dquote, int *j, t_token **list);
-t_err	expand_d_quote(const char *dquote, t_token **list);
-
-//	input_tokenize.c - OK
-t_err	tokenize(char *input, int *i, t_token **list);
-t_err	lnr_angles(char *input, int *i, t_token **list);
-t_err	pipes(char *input, int *i, t_token **list);
-t_err	words(char *input, int *i, t_token **list);
-t_err	spaces(char *input, int *i, t_token **list);
-
-//	input_parser.c - OK
-t_err	parser(t_input *input);
-t_err	pipe_syntax_pass(t_token *list);
-t_err	redir_syn_root_pass(t_token *list, t_tree **root);
-t_err	redir_pass(t_token *list, t_tree **root);
-t_err	cmd_pass(t_token *list, t_tree **root);
-
-//	input_utils.c - OK
-char	**make_split(t_token *list, int word_amount);
-char	**create_cmd_split(t_token *list, int word_count);
-int		allowed_char(int c, char *not_allowed);
-
-//	input_expander.c - OK
-t_err	expander(t_input *input, t_env *info);
-t_err	quotes_to_words(t_token **list);
-t_err	expand_dollars(t_token **list, t_env *info);
-t_err	word_join(t_token **list);
+//	tree_handle_tree.c - OK
+int		ft_handle_tree(t_env *ms_env, t_tree *tree, t_exec *exec);
+int		ft_wait_on_children(t_exec *exec, t_env *ms_env);
+int		ft_close_fd(int fd[2]);
+void	ft_close_all(t_exec *exec);
 
 //	tree_pipe.c - OK
 int		ft_pipe_start(t_env *ms_env, t_tree *tree, t_exec *exec);
@@ -347,11 +354,5 @@ int		ft_check_builtin(t_tree *tree, t_env *ms_env);
 int		ft_check_builtin_add(t_tree *tree, t_env *ms_env, int i);
 int		print_ms_env(char **argv, t_env *ms_env);
 int		ft_check_builtin_child(t_tree *tree, t_env *ms_env);
-
-//	tree_handle_tree.c - OK
-int		ft_handle_tree(t_env *ms_env, t_tree *tree, t_exec *exec);
-int		ft_wait_on_children(t_exec *exec, t_env *ms_env);
-int		ft_close_fd(int fd[2]);
-void	ft_close_all(t_exec *exec);
 
 #endif
