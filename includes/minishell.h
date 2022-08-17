@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 21:29:01 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/18 01:35:14 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,6 +342,7 @@ char	*first_available(t_item *item, int *arr, int arr_len);
 int		is_smallest_key(char *key, t_item *item, int *arr);
 void	print_key(char *key, t_item *item);
 void	mark_array(char *key, t_item *item, int *arr);
+int		get_ms_envp_len(t_item *item);
 
 //	builtin_unset.c - OK
 int		ms_unset(char **argv, t_env *ms_env);

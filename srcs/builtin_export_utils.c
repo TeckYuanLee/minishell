@@ -31,20 +31,21 @@ t_err	print_smallest_and_mark_arr(t_item *item, int *arr, int arr_len)
 	static char	*smallest_key = NULL;
 	static char	full_key[255];
 
-	i = -1;
+	i = 0;
 	ft_memchr(full_key, '~', 256);
 	if (smallest_key == NULL)
 		smallest_key = full_key;
 	else
 		smallest_key = first_available(item, arr, arr_len);
-	while (++i < arr_len)
+	while (i < arr_len)
 	{
 		if (is_smallest_key(smallest_key, item + i, arr + i))
 		{
 			smallest_key = (item + i)->key;
-			i = -1;
+			i = 0;
 			continue ;
 		}
+		i++;
 	}
 	print_key(smallest_key, item);
 	mark_array(smallest_key, item, arr);

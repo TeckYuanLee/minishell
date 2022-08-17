@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+int	get_ms_envp_len(t_item *item)
+{
+	int	i;
+
+	i = 0;
+	while (item->key)
+	{
+		item++;
+		i++;
+	}
+	return (i);
+}
+
 //	if keys are match, fill array
 void	mark_array(char *key, t_item *item, int *arr)
 {
@@ -38,9 +51,21 @@ void	print_key(char *key, t_item *item)
 		if (ft_strncmp(key, item->key, ft_strlen(key) + 1) == 0)
 		{
 			if (item->value)
-				printf("declare -x %s=\"%s\"\n", item->key, item->value);
+			{
+				ft_putstr_fd("declare -x ", 2);
+				ft_putstr_fd(item->key, 2);
+				ft_putstr_fd("=\"", 2);
+				ft_putstr_fd(item->value, 2);
+				ft_putstr_fd("\"\n", 2);
+				// printf("declare -x %s=\"%s\"\n", item->key, item->value);
+			}
 			else
-				printf("declare -x %s\n", item->key);
+			{
+				ft_putstr_fd("declare -x ", 2);
+				ft_putstr_fd(item->key, 2);
+				ft_putstr_fd("\n", 2);
+				// printf("declare -x %s\n", item->key);
+			}
 		}
 		item++;
 	}

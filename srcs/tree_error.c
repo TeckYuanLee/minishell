@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:31:57 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 01:31:59 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/18 00:40:55 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	ft_error_exec(int code, int *fd, t_env *ms_env)
 	if (fd != 0)
 		close(*fd);
 	free_envi(ms_env, -100);
-	ft_putstr_fd("minishell: ", 2);
+	// ft_putstr_fd("minishell: ", 2);
 	if (code == 1)
 		ft_putstr_fd("fork error\n", 2);
 	else if (code == 3)
@@ -82,8 +82,9 @@ int	ft_error_exec(int code, int *fd, t_env *ms_env)
 		exit(71);
 	if (code == 4)
 	{
-		ft_putstr_fd("execve error\n", 2);
-		exit(126);
+		// ft_putstr_fd("execve error\n", 2);
+		// exit(126);
+		exit(0);
 	}
 	else if (code == 5)
 		ft_putstr_fd("malloc error\n", 2);

@@ -81,12 +81,13 @@ t_err	ready_export(t_item *item)
 	int	arr_len;
 	int	*arr;
 
-	arr_len = 0;
-	while (item->key)
-	{
-		item++;
-		arr_len++;
-	}
+	// arr_len = 0;
+	// while (item->key)
+	// {
+	// 	item++;
+	// 	arr_len++;
+	// }
+	arr_len = get_ms_envp_len(item);
 	arr = ft_calloc(arr_len, sizeof(int));
 	if (!arr)
 		return (MALLOC_FAIL);
