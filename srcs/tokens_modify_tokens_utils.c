@@ -89,7 +89,7 @@ t_err	sub_head_token(t_token **head, char *key, char *value, char *data)
 		return (MALLOC_FAIL);
 	}
 	temp = var_token;
-	replace_token(*head, var_token);
+	replace_head_token(head, var_token);
 	if (ft_strlen(data) > ft_strlen(key))
 	{
 		var_token = create_tailpart(key, data);

@@ -20,10 +20,10 @@ t_err	extract_to_ms_env(char *str, t_item **item, char *key)
 	value = NULL;
 	if (str[ft_strlen(key)] == '=' || str[ft_strlen(key)] == '+')
 	{
-		str = ft_strchr(str, '=');
-		if (str)
-			str++;
-		value = ft_strdup(str);
+		value = ft_strchr(str, '=');
+		if (value)
+			value++;
+		value = ft_strdup(value);
 		if (!value)
 		{
 			free(key);
@@ -81,12 +81,6 @@ t_err	ready_export(t_item *item)
 	int	arr_len;
 	int	*arr;
 
-	// arr_len = 0;
-	// while (item->key)
-	// {
-	// 	item++;
-	// 	arr_len++;
-	// }
 	arr_len = get_ms_envp_len(item);
 	arr = ft_calloc(arr_len, sizeof(int));
 	if (!arr)

@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:32:53 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 22:49:28 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/18 20:57:24 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	ft_check_nonwriteable(t_tree *tree, t_env *ms_env, t_exec *exec)
 }
 
 //	start tree roots when type is nopipe
-int	ft_nopipe_start(t_env *ms_env, t_tree *tree, t_exec *exec)
+int	start_nopipe(t_env *ms_env, t_tree *tree, t_exec *exec)
 {
 	pid_t	pid;
 

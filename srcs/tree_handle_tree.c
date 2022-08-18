@@ -61,7 +61,7 @@ int	ft_handle_tree(t_env *ms_env, t_tree *tree, t_exec *exec)
 	{
 		if (tree->type == NO_PIPE && exec->index == 0)
 		{
-			ft_nopipe_start(ms_env, tree, exec);
+			start_nopipe(ms_env, tree, exec);
 			ms_env->exitcode = ft_wait_on_children(exec, ms_env);
 			return (0);
 		}

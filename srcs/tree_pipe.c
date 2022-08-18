@@ -6,14 +6,14 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:32:56 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 01:32:57 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/18 20:57:29 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //	
-void	ft_helper_pipe_inbetween(t_tree *tree, t_env *ms_env, t_exec *exec)
+void	mid_pipe_utils(t_tree *tree, t_env *ms_env, t_exec *exec)
 {
 	while (tree->leaf)
 	{
@@ -39,7 +39,7 @@ void	ft_helper_pipe_inbetween(t_tree *tree, t_env *ms_env, t_exec *exec)
 }
 
 //	when pipe is in the middle of readline
-int	ft_pipe_inbetween(t_env *ms_env, t_tree *tree, t_exec *exec)
+int	mid_pipe(t_env *ms_env, t_tree *tree, t_exec *exec)
 {
 	pid_t	pid;
 	int		status;
@@ -53,7 +53,7 @@ int	ft_pipe_inbetween(t_env *ms_env, t_tree *tree, t_exec *exec)
 	if (pid < 0)
 		ft_error_exec(1, exec->fd_out, ms_env);
 	if (!pid)
-		ft_helper_pipe_inbetween(tree, ms_env, exec);
+		mid_pipe_utils(tree, ms_env, exec);
 	if (tree->leaf && tree->leaf->type == HERE_DOC)
 	{
 		waitpid(pid, &status, 0);
@@ -65,7 +65,7 @@ int	ft_pipe_inbetween(t_env *ms_env, t_tree *tree, t_exec *exec)
 }
 
 //	do pipe command, builtin, and get path
-void	ft_helper_pipe_start(t_tree *tree, t_env *ms_env, t_exec *exec)
+void	start_pipe_utils(t_tree *tree, t_env *ms_env, t_exec *exec)
 {
 	while (tree->leaf)
 	{
@@ -93,7 +93,7 @@ void	ft_helper_pipe_start(t_tree *tree, t_env *ms_env, t_exec *exec)
 }
 
 //	start the pipe command
-int	ft_pipe_start(t_env *ms_env, t_tree *tree, t_exec *exec)
+int	start_pipe(t_env *ms_env, t_tree *tree, t_exec *exec)
 {
 	pid_t	pid;
 	int		status;
@@ -107,7 +107,7 @@ int	ft_pipe_start(t_env *ms_env, t_tree *tree, t_exec *exec)
 	if (!pid)
 	{
 		ms_signals("restore");
-		ft_helper_pipe_start(tree, ms_env, exec);
+		start_pipe_utils(tree, ms_env, exec);
 	}
 	status = 0;
 	if (tree->leaf && tree->leaf->type == HERE_DOC)

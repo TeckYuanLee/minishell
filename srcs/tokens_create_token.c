@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:42 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 01:30:44 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 01:04:02 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,8 @@ t_token	*create_token(t_token_t type, char *data)
 	{
 		new_token->type = type;
 		new_token->data = data;
-		new_token->id = id++;
-		new_token->next = NULL;
-		new_token->prev = NULL;
+		new_token->id = id;
+		id++;
 	}
 	return (new_token);
 }

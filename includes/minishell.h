@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/18 01:35:14 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 01:37:34 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,8 @@ void	add_to_tokenlist(t_token **head, t_token *new);
 t_err	insert_tokens(t_token **head, char *key, char *value, char *data);
 
 //	tokens_modify_token.c - OK
-void	remove_token(t_token *head);
+void	cut_head_token(t_token **head);
+void	cut_token(t_token *list);
 t_err	join_head_token(t_token **list, t_token_t resulting_type);
 t_err	join_token(t_token *list, t_token_t resulting_type);
 t_err	insert_full_string(t_token **head, char *key, char *data);
@@ -215,6 +216,7 @@ void	del_token(t_token *list);
 t_err	rm_double_tokens(t_token **list, t_token_t type);
 t_err	rm_token_type(t_token **list, t_token_t type);
 void	replace_token(t_token *list, t_token *new);
+void	replace_head_token(t_token **head, t_token *new);
 
 //	tokens_dollars.c - OK
 t_err	dollars(char *input, int *i, t_token **list);
@@ -243,13 +245,13 @@ int		ft_close_fd(int fd[2]);
 void	ft_close_all(t_exec *exec);
 
 //	tree_pipe.c - OK
-int		ft_pipe_start(t_env *ms_env, t_tree *tree, t_exec *exec);
-void	ft_helper_pipe_start(t_tree *tree, t_env *ms_env, t_exec *exec);
-int		ft_pipe_inbetween(t_env *ms_env, t_tree *tree, t_exec *exec);
-void	ft_helper_pipe_inbetween(t_tree *tree, t_env *ms_env, t_exec *exec);
+int		start_pipe(t_env *ms_env, t_tree *tree, t_exec *exec);
+void	start_pipe_utils(t_tree *tree, t_env *ms_env, t_exec *exec);
+int		mid_pipe(t_env *ms_env, t_tree *tree, t_exec *exec);
+void	mid_pipe_utils(t_tree *tree, t_env *ms_env, t_exec *exec);
 
 //	tree_nopipe.c - OK
-int		ft_nopipe_start(t_env *ms_env, t_tree *tree, t_exec *exec);
+int		start_nopipe(t_env *ms_env, t_tree *tree, t_exec *exec);
 int		ft_check_nonwriteable(t_tree *tree, t_env *ms_env, t_exec *exec);
 int		ft_nopipe_end(t_tree *tree, t_env *ms_env, t_exec *exec);
 void	ft_nopipe_child(t_tree *tree, t_env *ms_env, t_exec *exec);

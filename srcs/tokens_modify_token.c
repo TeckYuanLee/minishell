@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:31:27 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 01:31:29 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 01:40:54 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ t_err	insert_full_string(t_token **head, char *key, char *data)
 		free(str);
 		return (MALLOC_FAIL);
 	}
-	replace_token(*head, var_token);
+	if ((*head)->prev)
+		replace_token(*head, var_token);
+	else
+		replace_head_token(head, var_token);
 	return (NO_ERROR);
 }
 
@@ -87,30 +90,56 @@ t_err	join_head_token(t_token **list, t_token_t resulting_type)
 }
 
 //  remove the current/first token on the list
-void	remove_token(t_token *head)
+// void	remove_token(t_token *head)
+// {
+// 	t_token	*new_head;
+
+// 	if (head->prev)
+// 	{
+// 		if (head->next)
+// 			head->next->prev = head->prev;
+// 		head->prev->next = head->next;
+// 		del_token(head);
+// 	}
+// 	else
+// 	{	
+// 		if ((head)->next)
+// 		{
+// 			new_head = (head)->next;
+// 			new_head->prev = NULL;
+// 			del_token(head);
+// 			head = new_head;
+// 		}
+// 		else
+// 		{
+// 			del_token(head);
+// 			head = NULL;
+// 		}
+// 	}
+// }
+
+void	cut_head_token(t_token **head)
 {
 	t_token	*new_head;
 
-	if (head->prev)
+	if ((*head)->next)
 	{
-		if (head->next)
-			head->next->prev = head->prev;
-		head->prev->next = head->next;
-		del_token(head);
+		new_head = (*head)->next;
+		new_head->prev = NULL;
+		del_token(*head);
+		*head = new_head;
 	}
 	else
-	{	
-		if ((head)->next)
-		{
-			new_head = (head)->next;
-			new_head->prev = NULL;
-			del_token(head);
-			head = new_head;
-		}
-		else
-		{
-			del_token(head);
-			head = NULL;
-		}
+	{
+		del_token(*head);
+		*head = NULL;
 	}
+}
+
+void	cut_token(t_token *list)
+{
+	if (list->next)
+		list->next->prev = list->prev;
+	list->prev->next = list->next;
+	del_token(list);
 }

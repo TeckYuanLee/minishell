@@ -125,6 +125,5 @@ int	do_loop(t_input *input, t_env *ms_env)
 		}
 		ms_signals("ignore");
 		ft_start_tree(ms_env, &input->tree);
-		// printf("%d\n", ms_env->exitcode);
 	}
 }

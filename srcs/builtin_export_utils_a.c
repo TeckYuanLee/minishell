@@ -52,18 +52,18 @@ void	print_key(char *key, t_item *item)
 		{
 			if (item->value)
 			{
-				ft_putstr_fd("declare -x ", 2);
-				ft_putstr_fd(item->key, 2);
-				ft_putstr_fd("=\"", 2);
-				ft_putstr_fd(item->value, 2);
-				ft_putstr_fd("\"\n", 2);
+				ft_putstr_fd("declare -x ", 1);
+				ft_putstr_fd(item->key, 1);
+				ft_putstr_fd("=\"", 1);
+				ft_putstr_fd(item->value, 1);
+				ft_putstr_fd("\"\n", 1);
 				// printf("declare -x %s=\"%s\"\n", item->key, item->value);
 			}
 			else
 			{
-				ft_putstr_fd("declare -x ", 2);
-				ft_putstr_fd(item->key, 2);
-				ft_putstr_fd("\n", 2);
+				ft_putstr_fd("declare -x ", 1);
+				ft_putstr_fd(item->key, 1);
+				ft_putstr_fd("\n", 1);
 				// printf("declare -x %s\n", item->key);
 			}
 		}

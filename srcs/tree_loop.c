@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:32:45 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 01:32:47 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 02:02:45 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	ft_handle_loop_two(t_env *ms_env, t_exec *exec, t_tree *tree)
 	i = 0;
 	if (tree->type == PIPE && exec->index == 0)
 	{
-		i = ft_pipe_start(ms_env, tree, exec);
+		i = start_pipe(ms_env, tree, exec);
 		if (i == 33)
 		{
 			ft_handle_heredoc(exec, ms_env);
@@ -102,7 +102,7 @@ int	ft_handle_loop(t_env *ms_env, t_exec *exec, t_tree *tree)
 	}
 	if (tree->type == PIPE && exec->index > 0)
 	{
-		i = ft_pipe_inbetween(ms_env, tree, exec);
+		i = mid_pipe(ms_env, tree, exec);
 		if (i == 33)
 		{
 			ft_handle_heredoc(exec, ms_env);
