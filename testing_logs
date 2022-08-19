@@ -1,0 +1,1049 @@
+minisiao$ echo 'hi'
+hi
+minisiao$ echo "hi"
+hi
+minisiao$
+minisiao$ exit
+Process:         minishell [5010]
+Path:            /Volumes/VOLUME/*/minishell
+Load Address:    0x10c39f000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Parent Process:  zsh [97593]
+
+Date/Time:       2022-08-19 15:20:20.370 +0800
+Launch Time:     2022-08-19 15:20:13.168 +0800
+OS Version:      Mac OS X 10.15.7 (19H1922)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.3 (12C33)
+
+Physical footprint:         700K
+Physical footprint (peak):  700K
+----
+
+leaks Report Version: 4.0
+Process 5010: 371 nodes malloced for 307 KB
+Process 5010: 0 leaks for 0 total leaked bytes.
+
+telee@u91z08s01 minishell % ./minishell
+minisiao$ cat << "$USER"
+> haha
+> $USER
+> telee
+haha
+$USER
+minisiao$ exit
+telee@u91z08s01 minishell % ./minishell
+minisiao$ cat << "$USER"
+> aha
+> user
+> telee
+aha
+user
+minisiao$
+minisiao$ exit
+Process:         minishell [5119]
+Path:            /Volumes/VOLUME/*/minishell
+Load Address:    0x10a388000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Parent Process:  zsh [97593]
+
+Date/Time:       2022-08-19 15:21:44.464 +0800
+Launch Time:     2022-08-19 15:21:28.577 +0800
+OS Version:      Mac OS X 10.15.7 (19H1922)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.3 (12C33)
+
+Physical footprint:         696K
+Physical footprint (peak):  696K
+----
+
+leaks Report Version: 4.0
+Process 5119: 369 nodes malloced for 307 KB
+Process 5119: 1 leak for 16 total leaked bytes.
+
+    1 (16 bytes) ROOT LEAK: 0x7fa9ec4074b0 [16]  length: 5  "$USER"
+
+telee@u91z08s01 minishell % ./minishell
+minisiao$ env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+_=/Users/telee/minishellworkspace/minishell/./minishell
+minisiao$ unset PATH
+minisiao$ asdasd
+minishell: asdasd: command not found
+minisiao$ echo hi
+hi
+minisiao$ env
+USER=telee
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+_=/Users/telee/minishellworkspace/minishell/./minishell
+minisiao$ env
+USER=telee
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+_=/Users/telee/minishellworkspace/minishell/./minishell
+minisiao$
+minisiao$ exit
+Process:         minishell [5280]
+Path:            /Volumes/VOLUME/*/minishell
+Load Address:    0x100805000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Parent Process:  zsh [97593]
+
+Date/Time:       2022-08-19 15:24:21.796 +0800
+Launch Time:     2022-08-19 15:23:19.053 +0800
+OS Version:      Mac OS X 10.15.7 (19H1922)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.3 (12C33)
+
+Physical footprint:         696K
+Physical footprint (peak):  696K
+----
+
+leaks Report Version: 4.0
+Process 5280: 383 nodes malloced for 308 KB
+Process 5280: 0 leaks for 0 total leaked bytes.
+
+telee@u91z08s01 minishell % ./minishell
+minisiao$ " "
+minishell:  : command not found
+minisiao$ env | env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+_=/Users/telee/minishellworkspace/minishell/./minishell
+minisiao$ cat | env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+_=/Users/telee/minishellworkspace/minishell/./minishell
+
+minisiao$
+minisiao$
+minisiao$ cat | env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+_=/Users/telee/minishellworkspace/minishell/./minishell
+
+minisiao$ export _hi=hi
+minisiao$ env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+_=/Users/telee/minishellworkspace/minishell/./minishell
+_hi=hi
+minisiao$ export @=hi
+minishell: export: '@=hi': not a valid identifier
+minisiao$ export !=hi
+minishell: export: '!=hi': not a valid identifier
+minisiao$ export £=hi
+minisiao$ env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+_=/Users/telee/minishellworkspace/minishell/./minishell
+_hi=hi
+£=hi
+minisiao$ export export=export
+minisiao$ $export export=$export
+minisiao$ env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+_=/Users/telee/minishellworkspace/minishell/./minishell
+_hi=hi
+£=hi
+export=export
+minisiao$ $export export=env
+minisiao$ env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+_=/Users/telee/minishellworkspace/minishell/./minishell
+_hi=hi
+£=hi
+export=env
+minisiao$ $export export=env
+minishell: env: argument(s) unsupported
+minisiao$
+minisiao$ exit
+Process:         minishell [5366]
+Path:            /Volumes/VOLUME/*/minishell
+Load Address:    0x10f4a9000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Parent Process:  zsh [97593]
+
+Date/Time:       2022-08-19 15:28:23.531 +0800
+Launch Time:     2022-08-19 15:24:23.055 +0800
+OS Version:      Mac OS X 10.15.7 (19H1922)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.3 (12C33)
+
+Physical footprint:         708K
+Physical footprint (peak):  708K
+----
+
+leaks Report Version: 4.0
+Process 5366: 422 nodes malloced for 309 KB
+Process 5366: 0 leaks for 0 total leaked bytes.
+
+telee@u91z08s01 minishell % ./minishell
+minisiao$ env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+_=/Users/telee/minishellworkspace/minishell/./minishell
+minisiao$ echo hi | export hi=bye
+minisiao$ env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+_=/Users/telee/minishellworkspace/minishell/./minishell
+minisiao$ unset _
+minisiao$ unset @
+minishell: unset: '@': not a valid identifier
+minisiao$ unset £
+minisiao$ export hi=bye
+minisiao$ unset bye
+minisiao$ env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+hi=bye
+minisiao$ unset " hi "
+minisiao$ env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+hi=bye
+minisiao$ export bye=hi
+minisiao$ unset '$bye'
+minisiao$ env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+hi=bye
+bye=hi
+minisiao$ unset '$bye'
+minisiao$ unset '$bye'
+minisiao$ unset '
+minishell: open-ended quote (unsupported)
+minisiao$ unset ''
+minisiao$ unset ""
+minisiao$ env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+hi=bye
+bye=hi
+minisiao$ unset "bye"
+minisiao$ env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=/Users/telee/minishellworkspace/minishell
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+hi=bye
+minisiao$ pwd
+/Users/telee/minishellworkspace/minishell
+minisiao$ cd ../../../../usr/
+X11            bin/           local/         standalone/
+X11R6          lib/           sbin/
+appleinternal/ libexec/       share/
+minisiao$ cd ../../../../usr/bin/../
+X11            bin/           local/         standalone/
+X11R6          lib/           sbin/
+appleinternal/ libexec/       share/
+minisiao$ cd ../../../../usr/bin/../lib
+minisiao$ env
+USER=telee
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+LOGNAME=telee
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.H1DNw2C5PA/Listeners
+HOME=/Users/telee
+SHELL=/bin/zsh
+__CF_USER_TEXT_ENCODING=0x18AA9:0:0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000c_n40032n9/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+C_INCLUDE_PATH=/usr/local/opt/readline/include:/Users/telee/.brew/include:/usr/local/opt/readline/include:/Users/telee/.brew/include:
+LIBRARY_PATH=/usr/local/opt/readline/lib:/Users/telee/.brew/lib:/usr/local/opt/readline/lib:/Users/telee/.brew/lib:
+OLDPWD=/Users/telee/minishellworkspace/minishell
+PWD=usr/lib
+SHLVL=2
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.29.0
+LANG=en_GB.UTF-8
+TERM=xterm-256color
+hi=bye
+minisiao$ pwd
+usr/lib
+minisiao$ cd
+minisiao$ pwd
+usr/lib
+minisiao$ cd $HOME
+minisiao$ pwd
+/Users/telee
+minisiao$ unset HOME
+minisiao$ cd $HOME
+minisiao$ pwd
+/Users/telee
+minisiao$ cd ..
+minisiao$ cd $HOME
+minisiao$ pwd
+/Users
+minisiao$
+minisiao$ exit
+Process:         minishell [5747]
+Path:            /Volumes/VOLUME/*/minishell
+Load Address:    0x1087fc000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Parent Process:  zsh [97593]
+
+Date/Time:       2022-08-19 15:34:09.438 +0800
+Launch Time:     2022-08-19 15:28:24.449 +0800
+OS Version:      Mac OS X 10.15.7 (19H1922)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.3 (12C33)
+
+Physical footprint:         732K
+Physical footprint (peak):  732K
+----
+
+leaks Report Version: 4.0
+Process 5747: 477 nodes malloced for 310 KB
+Process 5747: 0 leaks for 0 total leaked bytes.
+
+telee@u91z08s01 minishell % ./minishell
+minisiao$ unset PATH
+minisiao$ /bin/ls
+Eval.txt                libft
+Makefile                minishell
+Minishell.pdf           minishell_tester
+README.md               obj
+includes                srcs
+minisiao$ <
+minishell: syntax error near unexpected token '<'
+minisiao$ >
+minishell: syntax error near unexpected token '>'
+minisiao$ < hi
+minishell: hi: No such file or directory
+minisiao$ cat hi > hi
+minishell: cat: command not found
+minisiao$ ech hi > hi
+minishell: ech: command not found
+minisiao$ echo hi > hi
+minisiao$ cat hi
+minishell: cat: command not found
+minisiao$ export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+minisiao$ cat himinisiao$ cat hi
+hi
+minisiao$ < hi
+minisiao$ < cat hi
+minishell: cat: No such file or directory
+minisiao$ < hi cat
+hi
+minisiao$ <<
+minishell: syntax error near unexpected token '<<'
+minisiao$ << hi
+> aa
+> aa
+> hi
+minisiao$ cat | << hi cat
+>
+>
+>
+>
+> hi
+
+
+
+
+
+minisiao$ cat << hi | cat << hi2
+>
+>
+>
+>
+>
+> jasdasd
+> asd
+> asd
+> asd
+> hi
+> a;lsdas;d
+> asdaksdhasld
+> hi2
+a;lsdas;d
+asdaksdhasld
+minisiao$ |
+minishell: syntax error near unexpected token '|'
+minisiao$ cat |
+minishell: syntax error near unexpected token '|'
+minisiao$ cat | hi
+minishell: hi: command not found
+
+minisiao$ cat | ls | cat
+Eval.txt
+Makefile
+Minishell.pdf
+README.md
+hi
+includes
+libft
+minishell
+minishell_tester
+obj
+srcs
+
+minisiao$ cat | ls | cat | cat | ls
+Eval.txt                libft
+Makefile                minishell
+Minishell.pdf           minishell_tester
+README.md               obj
+hi                      srcs
+includes
+
+minisiao$
+minisiao$ echo hi
+hi
+minisiao$ cat hi < hi2
+minishell: hi2: No such file or directory
+minisiao$ cat < hi > hi2
+minisiao$ cat hi2
+hi
+minisiao$ cat hi
+hi
+minisiao$
+minisiao$
+minisiao$
+minisiao$ exit
+Process:         minishell [6220]
+Path:            /Volumes/VOLUME/*/minishell
+Load Address:    0x109799000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Parent Process:  zsh [97593]
+
+Date/Time:       2022-08-19 15:40:19.496 +0800
+Launch Time:     2022-08-19 15:34:10.570 +0800
+OS Version:      Mac OS X 10.15.7 (19H1922)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.3 (12C33)
+
+Physical footprint:         704K
+Physical footprint (peak):  704K
+----
+
+leaks Report Version: 4.0
+Process 6220: 469 nodes malloced for 310 KB
+Process 6220: 0 leaks for 0 total leaked bytes.
+
+telee@u91z08s01 minishell % ./minishell
+dasd | cat | ls | cat << h4 >> o1 at << h3 > o2 as
+> aa
+> aa
+> h1
+> bb
+> bb
+> h2
+> cc
+> cc
+> h3
+cat: asdasd: No such file or directory
+> dd
+> dd
+> h4
+minisiao$ cat o1
+aa
+aa
+h1
+bb
+bb
+dd
+dd
+minisiao$ ls
+Eval.txt                libft
+Makefile                minishell
+Minishell.pdf           minishell_tester
+README.md               o1
+hi                      o2
+hi2                     obj
+includes                srcs
+minisiao$ cat o1
+aa
+aa
+h1
+bb
+bb
+dd
+dd
+minisiao$ cat o2
+minisiao$ rm o1 rm o2
+rm: rm: No such file or directory
+minisiao$ rm o1 o2
+rm: o1: No such file or directory
+rm: o2: No such file or directory
+minisiao$ ls
+Eval.txt                includes
+Makefile                libft
+Minishell.pdf           minishell
+README.md               minishell_tester
+hi                      obj
+hi2                     srcs
+minisiao$
+minisiao$
+minisiao$ exit
+Process:         minishell [6845]
+Path:            /Volumes/VOLUME/*/minishell
+Load Address:    0x10f569000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Parent Process:  zsh [97593]
+
+Date/Time:       2022-08-19 15:44:01.741 +0800
+Launch Time:     2022-08-19 15:40:20.272 +0800
+OS Version:      Mac OS X 10.15.7 (19H1922)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.3 (12C33)
+
+Physical footprint:         708K
+Physical footprint (peak):  708K
+----
+
+leaks Report Version: 4.0
+Process 6845: 391 nodes malloced for 308 KB
+Process 6845: 0 leaks for 0 total leaked bytes.
+
+telee@u91z08s01 minishell % rm o2 o1
+rm: o2: No such file or directory
+rm: o1: No such file or directory
+telee@u91z08s01 minishell % rm o2
+rm: o2: No such file or directory
+telee@u91z08s01 minishell % ls -l
+total 2720
+-rw-r--r--    1 telee  2021_kuala-lumpur     7109 19 Aug 13:57 Eval.txt
+-rw-r--r--    1 telee  2021_kuala-lumpur      614 30 Jul 10:55 Makefile
+-rw-r--r--    1 telee  2021_kuala-lumpur  1273406 30 Jul 10:55 Minishell.pdf
+-rw-r--r--    1 telee  2021_kuala-lumpur       11 30 Jul 10:55 README.md
+-rw-r--r--    1 telee  2021_kuala-lumpur        3 19 Aug 15:35 hi
+-rw-r--r--    1 telee  2021_kuala-lumpur        3 19 Aug 15:39 hi2
+drwxr-xr-x    3 telee  2021_kuala-lumpur      102 19 Aug 13:57 includes
+drwxr-xr-x    7 telee  2021_kuala-lumpur      238 19 Aug 13:58 libft
+-rwxr-xr-x    1 telee  2021_kuala-lumpur    93200 19 Aug 14:49 minishell
+drwxr-xr-x   22 telee  2021_kuala-lumpur      748 19 Aug 14:00 minishell_tester
+drwxr-xr-x  133 telee  2021_kuala-lumpur     4522 19 Aug 14:49 obj
+drwxr-xr-x   41 telee  2021_kuala-lumpur     1394 19 Aug 13:57 srcs
+telee@u91z08s01 minishell % ls
+Eval.txt                includes
+Makefile                libft
+Minishell.pdf           minishell
+README.md               minishell_tester
+hi                      obj
+hi2                     srcs
+telee@u91z08s01 minishell % rm hi hi2
+telee@u91z08s01 minishell % ./minishell
+minisiao$ cat << h1 << h2 > o1
+> a
+> a
+> h1
+> b
+> b
+> h2
+minisiao$ cat o1
+a
+a
+h1
+b
+b
+minisiao$ cat < Makefile < Makefile > o2
+minisiao$ cat o2
+NAME    =       minishell
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -I/usr/local/opt/readline/include -Iincludes #-fsanitize=address -g3
+LDFLAGS = -L/usr/include -L/usr/local/opt/readline/lib -lreadline
+ARFLAGS =       rcs
+
+LIBFT_PATH = libft/
+LIBFT = libft/libft.a
+
+SRCS    =       $(wildcard srcs/*.c)
+OBJS    =       $(SRCS:srcs/%.c=obj/%.o)
+
+all: $(NAME)
+
+$(NAME): $(OBJS) $(LIBFT)
+                $(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(LDFLAGS)
+
+$(LIBFT):
+        @make re -C $(LIBFT_PATH)
+
+obj/%.o:        srcs/%.c
+                @mkdir -p obj
+                $(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+                @rm -f $(OBJS)
+
+fclean: clean
+                @rm -f $(NAME)
+
+re:             fclean all
+
+.PHONY: all clean fclean reminisiao$
+minisiao$
+minisiao$
+minisiao$ echo hi
+hi
+minisiao$ echo '"$USER"'
+"$USER"
+minisiao$ echo "'"$USER"'"
+'telee'
+minisiao$ echo '"'"$USER"'"'
+"telee"
+minisiao$ echo "'"'"$USER"'"'"
+'"$USER"'
+minisiao$ echo ""'"'"$USER"'"'""
+"telee"
+minisiao$
+
+
+1  ls wtf
+    2  echo $?
+    3  $? + $?
+    4  ls '-a'
+    5  ls ' '
+    6  ' '
+    7  env
+    8  echo $hiar
+    9  export hiar=hi
+   10  echo $hiar
+   11  exit
+   12  $$
+   13  exit
+   14  $
+   15  exit
+   16  echo "'$USER'"
+   17  echo $?
+   18  echo "''"
+   19  echo $?
+   20  echo "'$USER'" "" '' $USER $USERr '"$USER"'
+   21  echo $?
+   22  echo $?
+   23  echo $=$=$= $=  $=
+   24  echo $?
+   25  echo $+$+$+  $
+   26  echo $?
+   27  echo -n
+   28  exit
+   29  echo 'hello
+   30  '
+   31  "echo" hello world
+   32  "pwd"
+   33  "pwd
+   34  "
+   35  pwd
+   36  cd ..
+   37  ls
+   38  exit
+   39  ls
+   40  exit
+   41  jwhrbfwhbf
+   42  echo $?
+   43  exit jernrf
+   44  whbfjwhbf
+   45  exit khbvkherbgjkhbe
+   46  exit 256
+   47  cat << a << b | cat
+   48  cat << a << b | cat
+   49  cat << a << b | cat
+   50  Export
+   51  export
+   52  env
+   53  export
+   54  export hello
+   55  export hello=kwjfb
+   56  env
+   57  export
+   58  export bye=$hello
+   59  env
+   60  export bye= 'ekjfbw$PATH'
+   61  export bye='ekjfbw$PATH'
+   62  env
+   63  export bye='"ekjfbw$PATH"
+   64  export bye="ekjfbw$PATH"
+   65  env
+   66  export 1wjbf
+   67  export _wjbf
+   68  export ?ejrbf
+   69  export @ejrbf
+   70  cat <<EOF
+   71  exit kwjbfkwbf
+   72  unset ?
+   73  unset ?ekbwbg
+   74  make
+   75  make
+   76  ./minisiao
+   77  ls -l
+   78  make
+   79  ./minishell
+   80  exit 1a
+   81  exit a1
+   82  exit a1
+   83  exit a1 1
+   84  exit 1 a1
+   85  exit 1a a1
+   86  exit | exit
+   87  echo $?
+   88  exit | exit | asdasd
+   89  echo $
+   90  exit | exit | asdasd | echo hi
+   91  echo$?
+   92  exit | exit | asdasd | echo hi
+   93  echo $?
+   94  exit | exit | asdasd | echo hi | exit
+   95  echo $?
+   96  exit | asdasd | echo hi | exit
+   97  echo $?
+   98  bash
+   99  echo " hi "
+  100  ec'h'"o" "-n"" hi "
+  101  echo "-""n" "hi"
+  102  $$
+  103  echo $a hi
+  104  echo $?
+  105  echo $?
+  106  env
+  107  export _=hi
+  108  env
+  109  env
+  110  unset env
+  111  unset PATH
+  112  env
+  113  env | env
+  114  env | env
+  115  cat | env
+  116  clean
+  117  clear
+  118  cat | env
+  119  export _hi=hi
+  120  env
+  121  export £=hi
+  122  env
+  123  echo hi=bye
+  124  export hi=bye bye=hi
+  125  env
+  126  export hi=bye bye=hi | grep hi
+  127  export hi=bye bye=hi | grep =
+  128  env | grep hi
+  129  unset '$bye'
+  130  unset '
+  131  unset '"
+  132  unset '"
+
+  133  unset ''
+  134  unset ""
+  135  unset "bye"
+  136  env | grep hi
+  137  unset ""
+  138  < hi
+  139  < cat hi
+  140  < hi cat
+  141  <<
+  142  << hi
+  143  cat | << cat
+  144  cat | ls | cat | cat | ls
+  145  rm o1
+  146  cat << hi << h2 > o1
+  147  cat o1
+  148  history
