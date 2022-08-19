@@ -54,7 +54,7 @@ t_err	save_quote(const char *line, char **quote, char *input)
 			i++;
 	if (!(line[i] == '\'' || line[i] == '"'))
 	{
-		ft_putstr_fd("minishell: syntax error open-ended ", 2);
+		ft_putstr_fd("minishell: open-ended ", 2);
 		ft_putstr_fd("quote (unsupported)\n", 2);
 		return (SYNTAX_ERR);
 	}

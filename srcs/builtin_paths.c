@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 //	make edits to the paths
-char	**ft_edit_paths(char **paths, char **arg, int i)
+char	**edit_paths(char **paths, char **arg, int i)
 {
 	char	**exec_paths;
 	char	*extension;
@@ -21,51 +21,51 @@ char	**ft_edit_paths(char **paths, char **arg, int i)
 
 	exec_paths = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!exec_paths)
-		return (ft_free_paths(paths, NULL, NULL));
+		return (free_paths(paths, NULL, NULL));
 	j = 0;
 	extension = ft_strjoin("/", arg[0]);
 	if (!extension)
-		return (ft_free_paths(paths, exec_paths, NULL));
+		return (free_paths(paths, exec_paths, NULL));
 	while (paths[j])
 	{
 		exec_paths[j] = ft_strjoin(paths[j], extension);
 		if (!exec_paths[j])
-			return (ft_free_paths(paths, exec_paths, extension));
+			return (free_paths(paths, exec_paths, extension));
 		j++;
 	}
 	exec_paths[j] = NULL;
-	ft_free_paths(paths, NULL, extension);
+	free_paths(paths, NULL, extension);
 	return (exec_paths);
 }
 
 //	check for dir input commands
-int	ft_parse_dir(char **envp, char **arg, t_env *ms_env, char **paths)
+int	parse_dir(char **envp, char **arg, t_env *ms_env, char **paths)
 {
 	if (!ft_strncmp(arg[0], ".", 2))
 	{
 		ft_putstr_fd("minishell: .: filename argument required\n", 2);
 		ft_putstr_fd(".: usage: . filename [arguments]\n", 2);
 		free_envi(ms_env, -100);
-		ft_free_paths(paths, NULL, NULL);
+		free_paths(paths, NULL, NULL);
 		exit(2);
 	}
 	if ((!ft_strncmp(arg[0], "/", 1)) || (!ft_strncmp(arg[0], "./", 2))
 		|| (!ft_strncmp(arg[0], "../", 3)))
-		if (ft_parse_dir_loop(arg[0]))
-			ft_dir_exit(arg, ms_env, paths);
+		if (parse_dir_utils(arg[0]))
+			dir_exit(arg, ms_env, paths);
 	if ((!ft_strncmp(arg[0], "/", 1)) || (!ft_strncmp(arg[0], "./", 2))
 		|| (!ft_strncmp(arg[0], "../", 3)))
-		ft_is_dir(envp, arg, ms_env, paths);
+		is_dir(envp, arg, ms_env, paths);
 	if (!ft_strncmp(arg[0], "..", 3))
 	{
-		ft_free_paths(paths, NULL, NULL);
-		ft_cmd_exit(arg, ms_env, NULL);
+		free_paths(paths, NULL, NULL);
+		cmd_not_found(arg, ms_env, NULL);
 	}
 	return (0);
 }
 
 //	check access and execute command
-int	ft_acces_and_exec(t_env *ms_env, char **arg, char **paths)
+int	access_exec(t_env *ms_env, char **arg, char **paths)
 {
 	char	**exec_paths;
 	char	*path;
@@ -73,28 +73,28 @@ int	ft_acces_and_exec(t_env *ms_env, char **arg, char **paths)
 
 	i = 0;
 	exec_paths = NULL;
-	ft_parse_dir(ms_env->envp, arg, ms_env, paths);
+	parse_dir(ms_env->envp, arg, ms_env, paths);
 	while (paths && paths[i])
 		i++;
 	if (paths)
-		exec_paths = ft_edit_paths(paths, arg, i);
+		exec_paths = edit_paths(paths, arg, i);
 	if (!exec_paths)
-		ft_error_exec(5, 0, ms_env);
-	path = ft_search_bins(exec_paths);
+		exec_error(5, 0, ms_env);
+	path = search_bins(exec_paths);
 	if (path)
 	{
-		i = ft_check_access(path, ms_env->envp, arg, ms_env);
+		i = check_access(path, ms_env->envp, arg, ms_env);
 		if (execve(path, arg, ms_env->envp) < 0)
-			ft_error_exec(4, 0, ms_env);
+			exec_error(4, 0, ms_env);
 	}
-	ft_free_paths(exec_paths, NULL, NULL);
+	free_paths(exec_paths, NULL, NULL);
 	if (!path)
-		ft_cmd_exit(arg, ms_env, paths);
+		cmd_not_found(arg, ms_env, paths);
 	return (0);
 }
 
 //	find path from env
-char	*find_path_env(char **envp, t_env *ms_env)
+char	*get_path_env(char **envp, t_env *ms_env)
 {
 	int		i;
 	int		len;
@@ -109,7 +109,7 @@ char	*find_path_env(char **envp, t_env *ms_env)
 			len = ft_strlen(envp[i]);
 			temp = (char *)malloc(sizeof(char) * (len + 1));
 			if (!temp)
-				ft_error_exec(5, 0, ms_env);
+				exec_error(5, 0, ms_env);
 			temp = ft_memcpy(temp, envp[i], ft_strlen(envp[i]));
 			temp[len] = '\0';
 			path = ft_strtrim(temp, "PATH=");
@@ -121,13 +121,13 @@ char	*find_path_env(char **envp, t_env *ms_env)
 }
 
 //	get path from env then access and execute
-int	ft_get_paths(t_env *ms_env, char **arg)
+int	get_paths(t_env *ms_env, char **arg)
 {
 	char	*path;
 	char	**paths;
 
 	paths = NULL;
-	path = find_path_env(ms_env->envp, ms_env);
+	path = get_path_env(ms_env->envp, ms_env);
 	if (path)
 	{
 		paths = ft_split(path, ':');
@@ -136,7 +136,7 @@ int	ft_get_paths(t_env *ms_env, char **arg)
 	else
 		paths = ft_split("", ' ');
 	if (!paths)
-		ft_error_exec(5, 0, ms_env);
-	ft_acces_and_exec(ms_env, arg, paths);
+		exec_error(5, 0, ms_env);
+	access_exec(ms_env, arg, paths);
 	return (0);
 }

@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 //	look for first available key
-char	*first_available(t_item *item, int *arr, int arr_len)
+char	*first_ms_env(t_item *item, int *arr, int arr_len)
 {
 	int	i;
 
@@ -25,7 +25,7 @@ char	*first_available(t_item *item, int *arr, int arr_len)
 }
 
 //	print first available envp and mark array
-t_err	print_smallest_and_mark_arr(t_item *item, int *arr, int arr_len)
+t_err	print_first_ms_env(t_item *item, int *arr, int arr_len)
 {
 	int			i;
 	static char	*smallest_key = NULL;
@@ -36,10 +36,10 @@ t_err	print_smallest_and_mark_arr(t_item *item, int *arr, int arr_len)
 	if (smallest_key == NULL)
 		smallest_key = full_key;
 	else
-		smallest_key = first_available(item, arr, arr_len);
+		smallest_key = first_ms_env(item, arr, arr_len);
 	while (i < arr_len)
 	{
-		if (is_smallest_key(smallest_key, item + i, arr + i))
+		if (smallest_ms_env(smallest_key, item + i, arr + i))
 		{
 			smallest_key = (item + i)->key;
 			i = 0;
@@ -53,7 +53,7 @@ t_err	print_smallest_and_mark_arr(t_item *item, int *arr, int arr_len)
 }
 
 //	check for next position in array
-int	not_ready(int *arr, int arr_len)
+int	export_not_ready(int *arr, int arr_len)
 {
 	int	i;
 

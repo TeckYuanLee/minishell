@@ -77,7 +77,7 @@ t_err	sub_token(t_token *list, char *key, char *value, char *data)
 }
 
 //  create new token to replace head token
-t_err	sub_head_token(t_token **head, char *key, char *value, char *data)
+t_err	sub_token_head(t_token **head, char *key, char *value, char *data)
 {
 	t_token	*var_token;
 	t_token	*temp;
@@ -89,7 +89,7 @@ t_err	sub_head_token(t_token **head, char *key, char *value, char *data)
 		return (MALLOC_FAIL);
 	}
 	temp = var_token;
-	replace_head_token(head, var_token);
+	replace_token_head(head, var_token);
 	if (ft_strlen(data) > ft_strlen(key))
 	{
 		var_token = create_tailpart(key, data);

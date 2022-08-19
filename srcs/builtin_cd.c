@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 //	copy path contents to parse path
-int	add_path_chunk(char parse_path[512], char *path)
+int	copy_paths(char parse_path[512], char *path)
 {
 	int	i;
 	int	j;
@@ -50,13 +50,13 @@ char	*parse_path(char *path, char *old_pwd)
 		else if (path[i] == '/')
 			i++;
 		else if (ft_isprint(path[i]))
-			i += add_path_chunk(parse_path, &path[i]);
+			i += copy_paths(parse_path, &path[i]);
 	}
 	return (ft_strdup(parse_path));
 }
 
 //	update old pwd with current pwd
-t_err	only_update_oldpwd(t_env *ms_env, char *curr_pwd)
+t_err	update_oldpwd(t_env *ms_env, char *curr_pwd)
 {
 	char	*key;
 
@@ -70,7 +70,7 @@ t_err	only_update_oldpwd(t_env *ms_env, char *curr_pwd)
 }
 
 //	update current pwd and new pwd values
-t_err	update_pwd_oldpwd(char *path, t_env *ms_env)
+t_err	update_pwds(char *path, t_env *ms_env)
 {
 	char	*new_pwd;
 	char	*curr_pwd;
@@ -78,7 +78,7 @@ t_err	update_pwd_oldpwd(char *path, t_env *ms_env)
 	if (get_env_value(ms_env->item, "PWD", &curr_pwd) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	if (!ft_strncmp(path, ".", 2))
-		return (only_update_oldpwd(ms_env, curr_pwd));
+		return (update_oldpwd(ms_env, curr_pwd));
 	if (path[0] == '/')
 		new_pwd = ft_strdup(path);
 	else
@@ -106,7 +106,7 @@ t_err	ms_cd(char **argv, t_env *ms_env)
 		return (0);
 	if (chdir(argv[1]))
 		return (ms_perror("Minishell: cd", argv[1], NULL, 1));
-	if (update_pwd_oldpwd(argv[1], ms_env) == MALLOC_FAIL)
+	if (update_pwds(argv[1], ms_env) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	if (ms_env_to_envp(ms_env->item, &ms_env->envp) == MALLOC_FAIL)
 		return (MALLOC_FAIL);

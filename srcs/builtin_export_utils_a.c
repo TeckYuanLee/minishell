@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	get_ms_envp_len(t_item *item)
+int	ms_env_len(t_item *item)
 {
 	int	i;
 
@@ -57,14 +57,12 @@ void	print_key(char *key, t_item *item)
 				ft_putstr_fd("=\"", 1);
 				ft_putstr_fd(item->value, 1);
 				ft_putstr_fd("\"\n", 1);
-				// printf("declare -x %s=\"%s\"\n", item->key, item->value);
 			}
 			else
 			{
 				ft_putstr_fd("declare -x ", 1);
 				ft_putstr_fd(item->key, 1);
 				ft_putstr_fd("\n", 1);
-				// printf("declare -x %s\n", item->key);
 			}
 		}
 		item++;
@@ -72,7 +70,7 @@ void	print_key(char *key, t_item *item)
 }
 
 //	check for the smallest key
-int	is_smallest_key(char *key, t_item *item, int *arr)
+int	smallest_ms_env(char *key, t_item *item, int *arr)
 {
 	if (*(arr) == 1)
 		return (0);

@@ -6,21 +6,21 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:32:45 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 02:02:45 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 10:51:54 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //	handle append and heredoc
-int	ft_redirs_loop_two(t_tree *tree, t_exec *exec, t_env *ms_env)
+int	handle_app_heredoc(t_tree *tree, t_exec *exec, t_env *ms_env)
 {
 	if (tree->type == REDIR_APP)
 	{
 		exec->fd_out[1] = open(tree->data[0], \
 			O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (access(tree->data[0], W_OK))
-			ft_redir_error(tree, exec->fd_out[1], ms_env);
+			redir_error(tree, exec->fd_out[1], ms_env);
 		dup2(exec->fd_out[1], STDOUT_FILENO);
 		close(exec->fd_out[1]);
 	}
@@ -40,15 +40,15 @@ int	ft_redirs_loop_two(t_tree *tree, t_exec *exec, t_env *ms_env)
 }
 
 //	handle in and out redirection
-int	ft_redirs_loop(t_tree *tree, t_exec *exec, t_env *ms_env)
+int	handle_redir_io(t_tree *tree, t_exec *exec, t_env *ms_env)
 {
 	if (tree->type == REDIR_IN)
 	{
 		exec->fd_in[0] = open(tree->data[0], O_RDONLY);
 		if (access(tree->data[0], F_OK))
-			ft_redir_error(tree, 100, ms_env);
+			redir_error(tree, 100, ms_env);
 		if (access(tree->data[0], R_OK))
-			ft_redir_error(tree, exec->fd_in[0], ms_env);
+			redir_error(tree, exec->fd_in[0], ms_env);
 		dup2(exec->fd_in[0], STDIN_FILENO);
 		close(exec->fd_in[0]);
 	}
@@ -57,16 +57,16 @@ int	ft_redirs_loop(t_tree *tree, t_exec *exec, t_env *ms_env)
 		exec->fd_out[1] = open(tree->data[0], \
 			O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (access(tree->data[0], W_OK))
-			ft_redir_error(tree, exec->fd_out[1], ms_env);
+			redir_error(tree, exec->fd_out[1], ms_env);
 		dup2(exec->fd_out[1], STDOUT_FILENO);
 		close(exec->fd_out[1]);
 	}
-	ft_redirs_loop_two(tree, exec, ms_env);
+	handle_app_heredoc(tree, exec, ms_env);
 	return (0);
 }
 
 //	handle heredoc for pipe when execute index == 0
-int	ft_handle_loop_two(t_env *ms_env, t_exec *exec, t_tree *tree)
+int	handle_start_pipe(t_env *ms_env, t_exec *exec, t_tree *tree)
 {
 	int	i;
 
@@ -76,7 +76,7 @@ int	ft_handle_loop_two(t_env *ms_env, t_exec *exec, t_tree *tree)
 		i = start_pipe(ms_env, tree, exec);
 		if (i == 33)
 		{
-			ft_handle_heredoc(exec, ms_env);
+			handle_heredoc(exec, ms_env);
 			return (i);
 		}
 		if (i == 34)
@@ -86,17 +86,17 @@ int	ft_handle_loop_two(t_env *ms_env, t_exec *exec, t_tree *tree)
 }
 
 //	handle heredoc for pipe and nopipe
-int	ft_handle_loop(t_env *ms_env, t_exec *exec, t_tree *tree)
+int	handle_end_nopipe(t_env *ms_env, t_exec *exec, t_tree *tree)
 {
 	int	i;
 
 	i = 0;
 	if (tree->type == NO_PIPE && exec->index > 0)
 	{
-		i = ft_nopipe_end(tree, ms_env, exec);
+		i = end_nopipe(tree, ms_env, exec);
 		if (i == 33)
 		{
-			ft_handle_heredoc(exec, ms_env);
+			handle_heredoc(exec, ms_env);
 			return (i);
 		}
 	}
@@ -105,7 +105,7 @@ int	ft_handle_loop(t_env *ms_env, t_exec *exec, t_tree *tree)
 		i = mid_pipe(ms_env, tree, exec);
 		if (i == 33)
 		{
-			ft_handle_heredoc(exec, ms_env);
+			handle_heredoc(exec, ms_env);
 			return (i);
 		}
 		if (i == 666)

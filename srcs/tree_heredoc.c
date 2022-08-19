@@ -51,9 +51,9 @@ int	make_heredoc(char *delim)
 }
 
 //	handle heredoc function
-void	ft_handle_heredoc(t_exec *exec, t_env *ms_env)
+void	handle_heredoc(t_exec *exec, t_env *ms_env)
 {
-	ms_env->exitcode = ft_wait_on_children(exec, ms_env);
-	ft_close_fd(exec->fd_out);
-	ft_close_fd(exec->fd_in);
+	ms_env->exitcode = wait_child(exec, ms_env);
+	close_fd(exec->fd_out);
+	close_fd(exec->fd_in);
 }

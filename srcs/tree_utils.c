@@ -6,14 +6,14 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:33:00 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 01:33:02 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 10:59:15 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //	size_t atoi for exit command
-size_t	ft_atoi_exit(const char *str)
+size_t	atoi_exit(const char *str)
 {
 	size_t	value;
 	size_t	i;
@@ -36,7 +36,7 @@ size_t	ft_atoi_exit(const char *str)
 }
 
 //	check for digits within the string
-int	ft_check_isdigit(char *str)
+int	check_isdigit(char *str)
 {
 	int	i;
 
@@ -48,7 +48,7 @@ int	ft_check_isdigit(char *str)
 }
 
 //	check for alphabets or single quotes
-int	ft_check_isalpha(char *str)
+int	check_isalpha(char *str)
 {
 	int	i;
 
@@ -60,7 +60,7 @@ int	ft_check_isalpha(char *str)
 }
 
 //	check for + and - signs
-int	ft_check_minus_plus(char *str)
+int	check_signs(char *str)
 {
 	int	i;
 	int	check;

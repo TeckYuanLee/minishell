@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:42 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 01:04:02 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 10:34:30 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_err	insert_tokens(t_token **head, char *key, char *value, char *data)
 	if ((*head)->prev)
 		err = sub_token(*head, key, value, data_dup);
 	else
-		err = sub_head_token(head, key, value, data_dup);
+		err = sub_token_head(head, key, value, data_dup);
 	free(data_dup);
 	return (err);
 }

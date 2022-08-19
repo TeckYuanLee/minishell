@@ -76,18 +76,18 @@ t_err	dup_env_key(const char *str, char **return_key)
 }
 
 //	check if export is ready
-t_err	ready_export(t_item *item)
+t_err	export_ready(t_item *item)
 {
 	int	arr_len;
 	int	*arr;
 
-	arr_len = get_ms_envp_len(item);
+	arr_len = ms_env_len(item);
 	arr = ft_calloc(arr_len, sizeof(int));
 	if (!arr)
 		return (MALLOC_FAIL);
-	while (not_ready(arr, arr_len))
+	while (export_not_ready(arr, arr_len))
 	{
-		if (print_smallest_and_mark_arr(item, arr, arr_len) == MALLOC_FAIL)
+		if (print_first_ms_env(item, arr, arr_len) == MALLOC_FAIL)
 		{
 			free(arr);
 			return (MALLOC_FAIL);
@@ -105,7 +105,7 @@ int	ms_export(char **argv, t_env *ms_env)
 	int		exitcode;
 
 	if (!argv[1])
-		return (ready_export(ms_env->item));
+		return (export_ready(ms_env->item));
 	exitcode = 0;
 	i = 1;
 	while (argv[i])

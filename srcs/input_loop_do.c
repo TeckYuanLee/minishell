@@ -13,17 +13,17 @@
 #include "minishell.h"
 
 //  start building tree
-void	ft_start_tree(t_env *ms_env, t_tree **tree)
+void	start_tree(t_env *ms_env, t_tree **tree)
 {
 	int	i;
 
 	ms_env->exec = ft_calloc(sizeof(t_exec), 1);
 	if (!ms_env->exec)
-		ft_error_exec(5, 0, ms_env);
+		exec_error(5, 0, ms_env);
 	ms_env->exec->index = 0;
 	ms_env->exec->builtin_check = 0;
 	ms_env->tree_addr = tree;
-	i = ft_handle_tree(ms_env, *tree, ms_env->exec);
+	i = build_tree(ms_env, *tree, ms_env->exec);
 	if (i == 34 || i == 33)
 		ms_env->exitcode = 1;
 	unlink(".heredoc");
@@ -96,7 +96,7 @@ t_err	get_input(t_env *ms_env, char **input_ptr)
 		add_history(*input_ptr);
 	}
 	else if (!*input_ptr)
-		ft_exit_sig(ms_env);
+		exit_signal(ms_env);
 	return (NO_ERROR);
 }
 
@@ -124,6 +124,6 @@ int	do_loop(t_input *input, t_env *ms_env)
 			continue ;
 		}
 		ms_signals("ignore");
-		ft_start_tree(ms_env, &input->tree);
+		start_tree(ms_env, &input->tree);
 	}
 }

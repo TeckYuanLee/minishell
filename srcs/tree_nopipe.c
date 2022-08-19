@@ -6,14 +6,14 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:32:53 by telee             #+#    #+#             */
-/*   Updated: 2022/08/18 20:57:24 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 11:40:35 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //	wait for signal at end of nopipe instructions
-int	ft_nopipe_end_util(t_tree *tree, pid_t pid, int status)
+int	end_nopipe_utils(t_tree *tree, pid_t pid, int status)
 {
 	if (tree->leaf && tree->leaf->type == HERE_DOC)
 	{
@@ -25,31 +25,31 @@ int	ft_nopipe_end_util(t_tree *tree, pid_t pid, int status)
 }
 
 //	child process of nopipe
-void	ft_nopipe_child(t_tree *tree, t_env *ms_env, t_exec *exec)
+void	nopipe_child(t_tree *tree, t_env *ms_env, t_exec *exec)
 {
 	while (tree->leaf)
 	{
-		ft_redirs_loop(tree, exec, ms_env);
+		handle_redir_io(tree, exec, ms_env);
 		tree = get_next_node(tree);
 	}
 	if (tree->type == CMD)
 	{
 		if (!tree->data[0] || !ft_strncmp(tree->data[0], "", 1))
 		{
-			ft_close_fd(exec->fd_in);
-			ft_close_fd(exec->fd_out);
+			close_fd(exec->fd_in);
+			close_fd(exec->fd_out);
 			free_envi(ms_env, 0);
 		}
 		dup2(exec->fd_in[0], STDIN_FILENO);
-		ft_close_fd(exec->fd_in);
-		ft_close_fd(exec->fd_out);
-		ft_check_builtin_child(tree, ms_env);
-		ft_get_paths(ms_env, tree->data);
+		close_fd(exec->fd_in);
+		close_fd(exec->fd_out);
+		check_builtin_child(tree, ms_env);
+		get_paths(ms_env, tree->data);
 	}
 }
 
 //	process the end of nopipe instructions
-int	ft_nopipe_end(t_tree *tree, t_env *ms_env, t_exec *exec)
+int	end_nopipe(t_tree *tree, t_env *ms_env, t_exec *exec)
 {
 	pid_t	pid;
 	int		status;
@@ -62,17 +62,17 @@ int	ft_nopipe_end(t_tree *tree, t_env *ms_env, t_exec *exec)
 		wait(&status);
 	pid = fork();
 	if (pid < 0)
-		ft_error_exec(1, 0, ms_env);
+		exec_error(1, 0, ms_env);
 	if (!pid)
-		ft_nopipe_child(tree, ms_env, exec);
-	if (ft_nopipe_end_util(tree, pid, status) == 33)
+		nopipe_child(tree, ms_env, exec);
+	if (end_nopipe_utils(tree, pid, status) == 33)
 		return (33);
-	ft_close_fd(exec->fd_in);
+	close_fd(exec->fd_in);
 	return (0);
 }
 
 //	if command and no data to write, return
-int	ft_check_nonwriteable(t_tree *tree, t_env *ms_env, t_exec *exec)
+int	check_cmd_data(t_tree *tree, t_env *ms_env, t_exec *exec)
 {
 	exec->builtin_check = 0;
 	while (tree)
@@ -81,7 +81,7 @@ int	ft_check_nonwriteable(t_tree *tree, t_env *ms_env, t_exec *exec)
 		{
 			if (!tree->data[0])
 				break ;
-			ft_start_builtin(tree, ms_env, exec);
+			start_builtin(tree, ms_env, exec);
 			break ;
 		}
 		tree = get_next_node(tree);
@@ -97,23 +97,23 @@ int	start_nopipe(t_env *ms_env, t_tree *tree, t_exec *exec)
 	exec->index++;
 	pid = fork();
 	if (pid < 0)
-		ft_error_exec(1, 0, ms_env);
+		exec_error(1, 0, ms_env);
 	if (!pid)
 	{
 		ms_signals("restore");
 		while (tree->leaf)
 		{
-			ft_redirs_loop(tree, exec, ms_env);
+			handle_redir_io(tree, exec, ms_env);
 			tree = get_next_node(tree);
 		}
 		if (tree->type == CMD)
 		{
 			if (!tree->data[0] || !ft_strncmp(tree->data[0], "", 1))
 				free_envi(ms_env, 0);
-			ft_check_builtin(tree, ms_env);
-			ft_get_paths(ms_env, tree->data);
+			check_builtin(tree, ms_env);
+			get_paths(ms_env, tree->data);
 		}
 	}
-	ft_check_nonwriteable(tree, ms_env, exec);
+	check_cmd_data(tree, ms_env, exec);
 	return (0);
 }

@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 //	echo readline
-int	ft_print_echo(t_tree *tree, int i, int err)
+int	print_echo(t_tree *tree, int i, int err)
 {
 	int	j;
 
@@ -31,7 +31,7 @@ int	ft_print_echo(t_tree *tree, int i, int err)
 }
 
 //	check if there is '-n' for echo
-int	ft_handle_echo(t_tree *tree, int i, int check, int err)
+int	handle_echo(t_tree *tree, int i, int check, int err)
 {
 	int	ret;
 	int	j;
@@ -48,7 +48,7 @@ int	ft_handle_echo(t_tree *tree, int i, int check, int err)
 			break ;
 		i++;
 	}
-	err = ft_print_echo(tree, i, err);
+	err = print_echo(tree, i, err);
 	if (err == -1)
 		return (err);
 	if (!check)
@@ -57,7 +57,7 @@ int	ft_handle_echo(t_tree *tree, int i, int check, int err)
 }
 
 //	execute echo command
-int	ft_builtin_echo(t_env *ms_env, t_tree *tree)
+int	builtin_echo(t_env *ms_env, t_tree *tree)
 {
 	int	i;
 	int	check;
@@ -65,7 +65,7 @@ int	ft_builtin_echo(t_env *ms_env, t_tree *tree)
 
 	i = 1;
 	check = 0;
-	err = ft_handle_echo(tree, i, check, 0);
+	err = handle_echo(tree, i, check, 0);
 	if (err == -1)
 	{
 		ft_putstr_fd("minishell: error in echo.\n", 2);

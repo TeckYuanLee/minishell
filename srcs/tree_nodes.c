@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:32:49 by telee             #+#    #+#             */
-/*   Updated: 2022/08/18 20:51:11 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 12:05:53 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ t_err	add_leaf_node(t_node type, char **data, t_tree *parent)
 }
 
 //	create root node // put new node after root node /////
-t_err	add_root_node(t_node type, t_tree **head_tree)
+void	add_root_node(t_node type, t_tree **head_tree)
 {
 	t_tree	*new_node;
 	t_tree	*node;
@@ -97,24 +97,23 @@ t_err	add_root_node(t_node type, t_tree **head_tree)
 	node = *head_tree;
 	new_node = create_tree_node(type, NULL);
 	if (!new_node)
-		return (MALLOC_FAIL);
-	if (!*head_tree)
+		return ;
+	if (*head_tree)
 	{
-		*head_tree = new_node;
-		return (NO_ERROR);
-	}
-	while (1)
-	{
-		if ((node)->type == PIPE || (node)->type == NO_PIPE)
+		while (1)
 		{
-			while ((node)->next_root)
-				(node) = (node)->next_root;
-			break ;
+			if ((node)->type == PIPE || (node)->type == NO_PIPE)
+			{
+				while ((node)->next_root)
+					(node) = (node)->next_root;
+				break ;
+			}
+			while ((node)->leaf)
+				(node) = (node)->leaf;
 		}
-		while ((node)->leaf)
-			(node) = (node)->leaf;
+		new_node->prev = (node);
+		(node)->next_root = new_node;
 	}
-	new_node->prev = (node);
-	(node)->next_root = new_node;
-	return (NO_ERROR);
+	else
+		*head_tree = new_node;
 }

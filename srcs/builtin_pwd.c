@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 //	look for pwd from list of envp
-char	*ft_get_pwd(char **envp)
+char	*pwd_get(char **envp)
 {
 	int		i;
 	int		len;
@@ -40,13 +40,13 @@ char	*ft_get_pwd(char **envp)
 }
 
 //	execute pwd command
-int	ft_pwd_builtin(t_env *ms_env)
+int	builtin_pwd(t_env *ms_env)
 {
 	char	*pwd;
 
-	pwd = ft_get_pwd(ms_env->envp);
+	pwd = pwd_get(ms_env->envp);
 	if (!pwd)
-		ft_error_exec(5, 0, ms_env);
+		exec_error(5, 0, ms_env);
 	ft_putstr_fd(pwd, 1);
 	ft_putstr_fd("\n", 1);
 	free (pwd);

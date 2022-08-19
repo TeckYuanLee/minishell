@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:31:57 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 02:25:27 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 12:50:28 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	unset_error_msg(char *str)
 	{
 		ft_putstr_fd("minishell: unset: -", 2);
 		ft_putchar_fd(str[1], 2);
-		ft_putstr_fd(": invalid option\n", 2);
-		ft_putstr_fd("unset: usage: unset [name ...]\n", 2);
+		ft_putstr_fd(": option (unsupported)\n", 2);
 		return (2);
 	}
 	ft_putstr_fd("minishell: unset: '", 2);
@@ -36,8 +35,7 @@ int	export_error_msg(char *str)
 	{
 		ft_putstr_fd("minishell: export: -", 2);
 		ft_putchar_fd(str[1], 2);
-		ft_putstr_fd(": invalid option\n", 2);
-		ft_putstr_fd("export: usage: export [name[=value] ...]\n", 2);
+		ft_putstr_fd(": option (unsupported)\n", 2);
 		return (2);
 	}
 	ft_putstr_fd("minishell: export: '", 2);
@@ -47,7 +45,7 @@ int	export_error_msg(char *str)
 }
 
 //	lnr angles usage error message
-int	ft_redir_error(t_tree *tree, int fd, t_env *ms_env)
+int	redir_error(t_tree *tree, int fd, t_env *ms_env)
 {
 	if (fd == 100)
 	{
@@ -68,12 +66,12 @@ int	ft_redir_error(t_tree *tree, int fd, t_env *ms_env)
 }
 
 //	function execution error message
-int	ft_error_exec(int code, int *fd, t_env *ms_env)
+int	exec_error(int code, int *fd, t_env *ms_env)
 {
 	if (fd != 0)
 		close(*fd);
 	free_envi(ms_env, -100);
-	// ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd("minishell:", 2);
 	if (code == 1)
 		ft_putstr_fd("fork error\n", 2);
 	else if (code == 3)
@@ -82,14 +80,12 @@ int	ft_error_exec(int code, int *fd, t_env *ms_env)
 		exit(71);
 	if (code == 4)
 	{
-		// ft_putstr_fd("execve error\n", 2);
-		// exit(126);
 		exit(0);
 	}
 	else if (code == 5)
 		ft_putstr_fd("malloc error\n", 2);
 	else if (code == 6)
-		ft_putstr_fd("acces error\n", 2);
+		ft_putstr_fd("access error\n", 2);
 	exit(1);
 	return (-1);
 }

@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 //	look for alphabets
-int	ft_parse_dir_loop(char *str)
+int	parse_dir_utils(char *str)
 {
 	int	i;
 
@@ -25,7 +25,7 @@ int	ft_parse_dir_loop(char *str)
 }
 
 //	error message for command not found
-void	ft_cmd_exit(char **arg, t_env *ms_env, char **paths)
+void	cmd_not_found(char **arg, t_env *ms_env, char **paths)
 {
 	(void)paths;
 	ft_putstr_fd("minishell: ", 2);
@@ -35,7 +35,7 @@ void	ft_cmd_exit(char **arg, t_env *ms_env, char **paths)
 }
 
 //	free all paths
-void	*ft_free_paths(char **first, char **second, char *third)
+void	*free_paths(char **first, char **second, char *third)
 {
 	int	i;
 
@@ -48,12 +48,12 @@ void	*ft_free_paths(char **first, char **second, char *third)
 	if (third)
 		free (third);
 	if (second)
-		ft_free_paths(second, NULL, NULL);
+		free_paths(second, NULL, NULL);
 	return (NULL);
 }
 
 //	check if have permission to execute
-int	ft_check_access(char *path, char **envp, char **arg, t_env *ms_env)
+int	check_access(char *path, char **envp, char **arg, t_env *ms_env)
 {
 	int	check;
 
@@ -69,7 +69,7 @@ int	ft_check_access(char *path, char **envp, char **arg, t_env *ms_env)
 }
 
 //	return information on file status
-char	*ft_search_bins(char **exec_paths)
+char	*search_bins(char **exec_paths)
 {
 	struct stat	stat;
 	int			i;

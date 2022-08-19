@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:31:46 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 01:43:13 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 12:07:36 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 // 	}
 // }
 
-void	replace_head_token(t_token **head, t_token *new)
+void	replace_token_head(t_token **head, t_token *new)
 {	
 	if ((*head)->next)
 	{
@@ -73,9 +73,9 @@ t_err	rm_token_type(t_token **list, t_token_t type)
 		if (node->type == type)
 		{
 			if (node->prev)
-				cut_token(node);
+				remove_token(node);
 			else
-				cut_head_token(list);
+				remove_token_head(list);
 		}
 		node = temp;
 	}
@@ -97,33 +97,24 @@ t_err	rm_double_tokens(t_token **list, t_token_t type)
 		if (node->type == type && node->next->type == type)
 		{
 			if (node->prev)
-				cut_token(node);
+				remove_token(node);
 			else
-				cut_head_token(list);
+				remove_token_head(list);
 		}
 		node = temp;
 	}
 	return (NO_ERROR);
 }
 
-void	ft_free_str(char **str)
-{
-	if (!*str)
-		return ;
-	free(*str);
-	*str = NULL;
-}
-
 //  delete the current token from list /////
 void	del_token(t_token *list)
 {
-	// char	**str;
-	
+	char	**str;
+
 	if (!list)
 		return ;
-	ft_free_str(&list->data);
-	// str = &list->data;
-	// free(*str);
-	// *str = NULL;
+	str = &list->data;
+	free(*str);
+	*str = NULL;
 	free (list);
 }

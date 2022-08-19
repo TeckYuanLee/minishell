@@ -6,14 +6,14 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 18:06:38 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 02:18:24 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 10:38:18 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //	free 2D array
-void	ft_free_split(char ***split)
+void	free_split(char ***split)
 {
 	int	i;
 
@@ -50,7 +50,7 @@ void	free_envi(t_env *ms_env, int exitcode)
 {
 	clean_tree(ms_env->tree_addr);
 	free(ms_env->exec);
-	ft_free_split(&ms_env->envp);
+	free_split(&ms_env->envp);
 	free_ms_env(ms_env->item);
 	close(0);
 	close(1);
@@ -74,7 +74,7 @@ void	clean_tree(t_tree **head_tree)
 		while (node)
 		{
 			next_leave = node->leaf;
-			ft_free_split(&node->data);
+			free_split(&node->data);
 			free (node);
 			node = next_leave;
 		}

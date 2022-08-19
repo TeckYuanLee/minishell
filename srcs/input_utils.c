@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:24 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 01:35:19 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 10:38:18 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	**create_cmd_split(t_token *list, int word_count)
 			split[i] = ft_strdup(list->data);
 			if (!split[i])
 			{
-				ft_free_split(&split);
+				free_split(&split);
 				return (NULL);
 			}
 			i++;
@@ -64,7 +64,7 @@ char	**make_split(t_token *list, int word_amount)
 		split[i] = ft_strdup(list->data);
 		if (!split[i])
 		{
-			ft_free_split(&split);
+			free_split(&split);
 			return (NULL);
 		}
 		list = list->next;

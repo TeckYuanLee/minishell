@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:47 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 01:40:04 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 10:27:24 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ t_err	expand_d_tailbit(t_token **head, char *key, char *data)
 	else
 	{
 		if ((*head)->prev)
-			cut_token(*head);
+			remove_token(*head);
 		else
-			cut_head_token(head);
+			remove_token_head(head);
 	}
 	return (NO_ERROR);
 }
@@ -71,10 +71,10 @@ t_err	prep_expand_d(t_token **head, t_env *info, char *key)
 	next = (*head)->next;
 	if ((*head)->prev)
 	{
-		cut_token(*head);
+		remove_token(*head);
 		return (expand_d(&next, info, key, data));
 	}	
-	cut_head_token(head);
+	remove_token_head(head);
 	return (expand_d(head, info, key, data));
 }
 

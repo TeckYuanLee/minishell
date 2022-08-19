@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:31:27 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 01:40:54 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 10:28:15 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_err	insert_full_string(t_token **head, char *key, char *data)
 	if ((*head)->prev)
 		replace_token(*head, var_token);
 	else
-		replace_head_token(head, var_token);
+		replace_token_head(head, var_token);
 	return (NO_ERROR);
 }
 
@@ -118,7 +118,7 @@ t_err	join_head_token(t_token **list, t_token_t resulting_type)
 // 	}
 // }
 
-void	cut_head_token(t_token **head)
+void	remove_token_head(t_token **head)
 {
 	t_token	*new_head;
 
@@ -136,7 +136,7 @@ void	cut_head_token(t_token **head)
 	}
 }
 
-void	cut_token(t_token *list)
+void	remove_token(t_token *list)
 {
 	if (list->next)
 		list->next->prev = list->prev;

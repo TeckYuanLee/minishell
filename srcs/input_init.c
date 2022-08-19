@@ -44,7 +44,7 @@ t_err	ms_env_to_envp(t_item *item, char ***envp)
 	while (item[i].key)
 		i++;
 	if (*envp)
-		ft_free_split(envp);
+		free_split(envp);
 	*envp = ft_calloc(i + 1, sizeof(char *));
 	if (!*envp)
 		return (MALLOC_FAIL);
@@ -53,7 +53,7 @@ t_err	ms_env_to_envp(t_item *item, char ***envp)
 	{
 		if (key_and_value(&item[j], &(*envp)[j]) == MALLOC_FAIL)
 		{
-			ft_free_split(envp);
+			free_split(envp);
 			return (MALLOC_FAIL);
 		}
 	}

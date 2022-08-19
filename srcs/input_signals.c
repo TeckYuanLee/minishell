@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:20 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 21:18:36 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 10:39:55 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	process_signal(int sig, int *exitcode, int fd[2])
 	if (sig == SIGINT)
 	{
 		if (fd)
-			ft_close_fd(fd);
+			close_fd(fd);
 		*exitcode = 130;
 		write(1, "\n", 1);
 		rl_on_new_line();
@@ -38,7 +38,7 @@ void	process_signal(int sig, int *exitcode, int fd[2])
 	else if (sig == SIGQUIT)
 	{
 		if (fd)
-			ft_close_fd(fd);
+			close_fd(fd);
 		*exitcode = 131;
 		ft_putstr_fd("Quit: 3\n", 2);
 		rl_on_new_line();
@@ -47,14 +47,14 @@ void	process_signal(int sig, int *exitcode, int fd[2])
 }
 
 //  ctrl-D
-int	ft_exit_sig(t_env *ms_env)
+int	exit_signal(t_env *ms_env)
 {
 	tcsetattr(2, TCSANOW, &ms_env->termios_p);
 	rl_replace_line("exit", 0);
 	rl_on_new_line();
 	rl_redisplay();
 	write(1, "\n", 1);
-	ft_free_split(&ms_env->envp);
+	free_split(&ms_env->envp);
 	free_ms_env(ms_env->item);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);

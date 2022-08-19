@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:28:41 by telee             #+#    #+#             */
-/*   Updated: 2022/08/17 01:28:43 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 12:52:25 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 //	disallowed char from lexer /////
 t_err	syntax_err_lexer(char token)
 {
-	ft_putstr_fd("minishell: syntax error unexpected token '", 2);
+	ft_putstr_fd("minishell: unexpected token '", 2);
 	if (token == (char)DOUBLE_PIPE)
 		ft_putstr_fd("||", 2);
 	else
