@@ -26,7 +26,7 @@ t_err	word_join(t_token **list)
 		if (node->type == TOK_WORD && node->next->type == TOK_WORD)
 		{
 			if (node->prev == NULL)
-				err = join_head_token(list, TOK_WORD);
+				err = join_token_head(list, TOK_WORD);
 			else
 				err = join_token(node, TOK_WORD);
 			if (err == MALLOC_FAIL)
@@ -40,7 +40,7 @@ t_err	word_join(t_token **list)
 }
 
 //	search list for $ and words, expand this combination /////
-t_err	expand_dollars(t_token **list, t_env *info)
+t_err	expand_dollars_words(t_token **list, t_env *info)
 {
 	char	*key;
 	t_token	*node;
@@ -55,9 +55,9 @@ t_err	expand_dollars(t_token **list, t_env *info)
 		{
 			temp = node->next->next;
 			if (node->prev)
-				err = prep_expand_d(&node, info, key);
+				err = expand_dollars(&node, info, key);
 			else
-				err = prep_expand_d(list, info, key);
+				err = expand_dollars(list, info, key);
 			if (err == MALLOC_FAIL)
 				return (MALLOC_FAIL);
 			node = temp;
@@ -98,7 +98,7 @@ t_err	expander(t_input *input, t_env *info)
 	if (err == NO_ERROR)
 		err = quotes_to_words(list);
 	if (err == NO_ERROR)
-		err = expand_dollars(list, info);
+		err = expand_dollars_words(list, info);
 	if (err == NO_ERROR)
 		err = word_join(list);
 	if (err == NO_ERROR)

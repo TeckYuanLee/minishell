@@ -6,14 +6,14 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:31:27 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 10:28:15 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 12:58:45 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //  create new token with new string
-t_err	insert_full_string(t_token **head, char *key, char *data)
+t_err	newstr_token(t_token **head, char *key, char *data)
 {
 	int		len;
 	char	*str;
@@ -66,7 +66,7 @@ t_err	join_token(t_token *list, t_token_t resulting_type)
 }
 
 //  create new token with first and second token
-t_err	join_head_token(t_token **list, t_token_t resulting_type)
+t_err	join_token_head(t_token **list, t_token_t resulting_type)
 {
 	t_token	*new_token;
 	char	*new_data;

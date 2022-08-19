@@ -6,20 +6,20 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:47 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 10:27:24 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 13:09:25 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //  create remaining part of the token else remove token /////
-t_err	expand_d_tailbit(t_token **head, char *key, char *data)
+t_err	expand_dollars_tail(t_token **head, char *key, char *data)
 {
 	t_token	*var_token;
 
 	if (ft_strlen(data) > ft_strlen(key))
 	{
-		var_token = create_tailpart(key, data);
+		var_token = token_tail(key, data);
 		if (!var_token)
 		{
 			free (key);
@@ -38,7 +38,7 @@ t_err	expand_d_tailbit(t_token **head, char *key, char *data)
 }
 
 //  expand $ and words /////
-t_err	expand_d(t_token **head, t_env *info, char *key, char *data)
+t_err	expand_d_utils(t_token **head, t_env *info, char *key, char *data)
 {
 	char	*value;
 
@@ -47,7 +47,7 @@ t_err	expand_d(t_token **head, t_env *info, char *key, char *data)
 	if (ft_strncmp(data, "?", 1) == 0)
 		value = ft_itoa(info->exitcode);
 	else if (!allowed_char(data[0], "/=."))
-		return (insert_full_string(head, key, data));
+		return (newstr_token(head, key, data));
 	else if (get_env_value(info->item, key, &value) == MALLOC_FAIL)
 	{
 		free(key);
@@ -55,14 +55,14 @@ t_err	expand_d(t_token **head, t_env *info, char *key, char *data)
 	}
 	if (value)
 		return (insert_tokens(head, key, value, data));
-	if (expand_d_tailbit(head, key, data) == MALLOC_FAIL)
+	if (expand_dollars_tail(head, key, data) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	free (key);
 	return (NO_ERROR);
 }
 
 //  preparation to expand $ and words /////
-t_err	prep_expand_d(t_token **head, t_env *info, char *key)
+t_err	expand_dollars(t_token **head, t_env *info, char *key)
 {
 	t_token	*next;
 	char	*data;
@@ -72,10 +72,10 @@ t_err	prep_expand_d(t_token **head, t_env *info, char *key)
 	if ((*head)->prev)
 	{
 		remove_token(*head);
-		return (expand_d(&next, info, key, data));
+		return (expand_d_utils(&next, info, key, data));
 	}	
 	remove_token_head(head);
-	return (expand_d(head, info, key, data));
+	return (expand_d_utils(head, info, key, data));
 }
 
 //	treat single dollar as word token /////

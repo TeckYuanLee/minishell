@@ -101,7 +101,7 @@ t_err	get_input(t_env *ms_env, char **input_ptr)
 }
 
 //  keep programm running
-int	do_loop(t_input *input, t_env *ms_env)
+int	ms_loop(t_input *input, t_env *ms_env)
 {
 	char	*curr_input;
 	t_err	err;

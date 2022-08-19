@@ -26,7 +26,7 @@ t_err	quotes(char *input, int *i, t_token **list)
 	if (*input == '"')
 	{
 		if (ft_strchr(quote, '$'))
-			return (expand_d_quote(quote, list));
+			return (expand_dquote_dollars(quote, list));
 		new_token = create_token(TOK_DQUOTE, quote);
 	}
 	else
@@ -66,7 +66,7 @@ t_err	save_quote(const char *line, char **quote, char *input)
 }
 
 //	handle dollar sign during double quote /////
-t_err	d_quote_dollars(const char *dquote, int *j, t_token **list)
+t_err	dquote_dollars(const char *dquote, int *j, t_token **list)
 {
 	char	*key;
 
@@ -89,7 +89,7 @@ t_err	d_quote_dollars(const char *dquote, int *j, t_token **list)
 }
 
 //	expand double quote when there is a dollar sign /////
-t_err	expand_d_quote(const char *dquote, t_token **list)
+t_err	expand_dquote_dollars(const char *dquote, t_token **list)
 {
 	int		j;
 	char	*word;
@@ -111,7 +111,7 @@ t_err	expand_d_quote(const char *dquote, t_token **list)
 			}
 		}
 		if (dquote[j] == '$')
-			if (d_quote_dollars(dquote, &j, list) == MALLOC_FAIL)
+			if (dquote_dollars(dquote, &j, list) == MALLOC_FAIL)
 				return (MALLOC_FAIL);
 		dquote += j;
 	}

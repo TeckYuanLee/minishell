@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 12:05:40 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 13:09:25 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ t_err	update_value(char *key, char *value, t_item *envp);
 int		ms_env_key(char *key, t_item *item);
 
 //	input_loop_do.c - OK
-int		do_loop(t_input *curr_input, t_env *ms_env);
+int		ms_loop(t_input *curr_input, t_env *ms_env);
 t_err	get_input(t_env *ms_env, char **input_ptr);
 t_err	process_input(char *line, t_input *input, t_env *info);
 t_err	lexer(char *line, t_input *input);
@@ -174,11 +174,13 @@ t_err	cmd_pass(t_token *list, t_tree **root);
 char	**make_split(t_token *list, int word_amount);
 char	**create_cmd_split(t_token *list, int word_count);
 int		allowed_char(int c, char *not_allowed);
+t_err	syntax_err(t_token_t type);
+t_err	syntax_err_lexer(char token);
 
 //	input_expander.c - OK
 t_err	expander(t_input *input, t_env *info);
 t_err	quotes_to_words(t_token **list);
-t_err	expand_dollars(t_token **list, t_env *info);
+t_err	expand_dollars_words(t_token **list, t_env *info);
 t_err	word_join(t_token **list);
 
 //	input_cleaner.c - OK
@@ -187,10 +189,6 @@ void	clean_lexer(t_token **list);
 void	free_envi(t_env *ms_env, int exitcode);
 void	free_ms_env(t_item *item);
 void	free_split(char ***split);
-
-//	input_error.c - OK
-t_err	syntax_err(t_token_t type);
-t_err	syntax_err_lexer(char token);
 
 //	tokens_create_token.c - OK
 t_token	*create_token(t_token_t type, char *data);
@@ -201,14 +199,14 @@ t_err	insert_tokens(t_token **head, char *key, char *value, char *data);
 //	tokens_modify_token.c - OK
 void	remove_token_head(t_token **head);
 void	remove_token(t_token *list);
-t_err	join_head_token(t_token **list, t_token_t resulting_type);
+t_err	join_token_head(t_token **list, t_token_t resulting_type);
 t_err	join_token(t_token *list, t_token_t resulting_type);
-t_err	insert_full_string(t_token **head, char *key, char *data);
+t_err	newstr_token(t_token **head, char *key, char *data);
 
 //	tokens_modify_tokens_utils.c - OK
 t_err	sub_token_head(t_token **head, char *key, char *value, char *data);
 t_err	sub_token(t_token *list, char *key, char *value, char *data);
-t_token	*create_tailpart(char *key, char *data);
+t_token	*token_tail(char *key, char *data);
 t_err	exitcode_token(const char *dquote, int *j, t_token **list);
 
 //	tokens_rm_token.c - OK
@@ -221,15 +219,15 @@ void	replace_token_head(t_token **head, t_token *new);
 //	tokens_dollars.c - OK
 t_err	dollars(char *input, int *i, t_token **list);
 t_err	add_dollar_sign(t_token	**list);
-t_err	prep_expand_d(t_token **head, t_env *info, char *key);
-t_err	expand_d(t_token **head, t_env *info, char *key, char *data);
-t_err	expand_d_tailbit(t_token **head, char *key, char *data);
+t_err	expand_dollars(t_token **head, t_env *info, char *key);
+t_err	expand_d_utils(t_token **head, t_env *info, char *key, char *data);
+t_err	expand_dollars_tail(t_token **head, char *key, char *data);
 
 //	tokens_quotes.c - OK
 t_err	quotes(char *input, int *i, t_token **list);
 t_err	save_quote(const char *line, char **quote, char *input);
-t_err	d_quote_dollars(const char *dquote, int *j, t_token **list);
-t_err	expand_d_quote(const char *dquote, t_token **list);
+t_err	dquote_dollars(const char *dquote, int *j, t_token **list);
+t_err	expand_dquote_dollars(const char *dquote, t_token **list);
 
 //	tree_nodes.c - OK
 t_tree	*create_tree_node(t_node type, char **data);

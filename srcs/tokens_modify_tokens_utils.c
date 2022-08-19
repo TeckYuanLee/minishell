@@ -36,7 +36,7 @@ t_err	exitcode_token(const char *dquote, int *j, t_token **list)
 }
 
 //  create the remaining part of the token
-t_token	*create_tailpart(char *key, char *data)
+t_token	*token_tail(char *key, char *data)
 {
 	char	*str;
 
@@ -63,7 +63,7 @@ t_err	sub_token(t_token *list, char *key, char *value, char *data)
 	replace_token(list, var_token);
 	if (ft_strlen(data) > ft_strlen(key))
 	{
-		var_token = create_tailpart(key, data);
+		var_token = token_tail(key, data);
 		if (!var_token)
 			return (MALLOC_FAIL);
 		var_token->next = temp->next;
@@ -92,7 +92,7 @@ t_err	sub_token_head(t_token **head, char *key, char *value, char *data)
 	replace_token_head(head, var_token);
 	if (ft_strlen(data) > ft_strlen(key))
 	{
-		var_token = create_tailpart(key, data);
+		var_token = token_tail(key, data);
 		if (!var_token)
 			return (MALLOC_FAIL);
 		var_token->next = temp->next;

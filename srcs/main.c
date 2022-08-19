@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:33 by telee             #+#    #+#             */
-/*   Updated: 2022/08/18 18:12:57 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 12:55:50 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,5 @@ int	main(int argc, char **argv, char **envp)
 		return (MALLOC_FAIL);
 	tcgetattr(2, (&(&ms_env)->termios_p));
 	ft_bzero(&input, sizeof(t_input));
-	return (do_loop(&input, &ms_env));
+	return (ms_loop(&input, &ms_env));
 }
