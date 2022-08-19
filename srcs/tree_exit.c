@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:32:34 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 12:17:23 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 20:33:19 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	exit_one_range(t_tree *tree, t_env *ms_env)
 	else if (!(ft_strcmp(tree->data[1], "-9223372036854775808")))
 		exit_numeric(tree, ms_env, 'e');
 	else if (range > 9223372036854775806)
-		exit_numeric(tree, ms_env, 'b');
+		exit_numeric(tree, ms_env, 'z');
 }
 
 //	handle exit with only one argument
@@ -77,7 +77,7 @@ void	exit_one_arg(t_tree *tree, t_env *ms_env, int i)
 		else if (check == 0 || (tree->data[1][0] == '+'))
 		{
 			ms_env->exitcode = (atoi_exit(tree->data[1]) % 256);
-			// ft_putstr_fd("exit\n", 2);
+			ft_putstr_fd("exit\n", 2);
 			free_envi(ms_env, ms_env->exitcode);
 		}
 	}
@@ -87,20 +87,28 @@ void	exit_one_arg(t_tree *tree, t_env *ms_env, int i)
 void	exit_numeric(t_tree *tree, t_env *ms_env, char c)
 {
 	(void)tree;
-	// ft_putstr_fd("exit\n", 2);
-	// ft_putstr_fd("minishell: ", 2);
-	// ft_putstr_fd(tree->data[1], 2);
-	ms_env->exitcode = 156;
-	// ms_env->exitcode = 255;
-	if (c == 'a' || c == 'c')
+	// printf("%c\n", c);
+	ft_putstr_fd("exit\n", 2);
+	if (c == 'z')
+		ms_env->exitcode = 156;
+	else
 	{
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(tree->data[1], 2);
+		ms_env->exitcode = 255;
 		ft_putstr_fd(": numeric argument required\n", 2);
-		ms_env->exitcode = 2;
 	}
-	else if (c == 'd')
-		ms_env->exitcode = 1;
-	else if (c == 'e')
-		ms_env->exitcode = 0;
+	(void)c;
+	// ms_env->exitcode = 156;
+	// if (c == 'a' || c == 'c')
+	// {
+	// 	ft_putstr_fd(": numeric argument required\n", 2);
+	// 	ms_env->exitcode = 2;
+	// }
+	// else if (c == 'd')
+	// 	ms_env->exitcode = 1;
+	// else if (c == 'e')
+	// 	ms_env->exitcode = 0;
 	free_envi(ms_env, ms_env->exitcode);
 }
 
@@ -117,7 +125,8 @@ void	exit_multi_arg(t_tree *tree, t_env *ms_env, int i)
 			exit_numeric(tree, ms_env, 'b');
 		else
 		{
-			ft_putstr_fd("minishell: too many arguments\n", 2);
+			ft_putstr_fd("exit\n", 2);
+			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 			ms_env->exitcode = 1;
 		}
 	}

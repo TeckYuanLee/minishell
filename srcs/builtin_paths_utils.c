@@ -62,7 +62,7 @@ int	check_access(char *path, char **envp, char **arg, t_env *ms_env)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(arg[0], 2);
-		ft_putstr_fd(": Permission denied\n", 2);
+		ft_putstr_fd(": permission denied\n", 2);
 		free_envi(ms_env, 126);
 	}
 	return (check);

@@ -43,7 +43,7 @@ void	dir_exit(char **arg, t_env *ms_env, char **paths)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(arg[0], 2);
-	ft_putstr_fd(": Is a directory\n", 2);
+	ft_putstr_fd(": is a directory\n", 2);
 	free_envi(ms_env, -100);
 	free_paths(paths, NULL, NULL);
 	exit(126);

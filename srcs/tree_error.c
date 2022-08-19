@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:31:57 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 12:50:28 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/19 17:01:00 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	redir_error(t_tree *tree, int fd, t_env *ms_env)
 		close(fd);
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(tree->data[0], 2);
-		ft_putstr_fd(": Permission denied\n", 2);
+		ft_putstr_fd(": permission denied\n", 2);
 		free_envi(ms_env, 1);
 	}
 	return (-1);
