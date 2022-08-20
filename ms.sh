@@ -122,46 +122,46 @@ echo -e "cd 123123\necho \$?q" | ./minishell
 echo -e ""
 
 echo -e "exit 123\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
 
 echo -e "exit 298\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
 
 echo -e "exit +100\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
 
 echo -e "exit \"+100\"\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
 
 echo -e "exit +\"100\"\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
 
 echo -e "exit -100\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
 
 echo -e "exit \"-100\"\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
 
 echo -e "exit -\"100\"\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
 
 echo -e "exit hello\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
 
 echo -e "exit 42 world\necho \$?q" | ./minishell
 echo -e ""
 
 echo -e "exit 9223372036854775807\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
 
 echo -e "exit 9223372036854775808\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
 
 echo -e "exit -9223372036854775807\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
 
 echo -e "exit -9223372036854775808\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
 
 echo -e "exit -9223372036854775809\necho \$?q" | ./minishell
-echo -e ""
+echo -e "$?q\n"
