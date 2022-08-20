@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:32:45 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 10:51:54 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/20 12:25:08 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	handle_redir_io(t_tree *tree, t_exec *exec, t_env *ms_env)
 	{
 		exec->fd_out[1] = open(tree->data[0], \
 			O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (access(tree->data[0], F_OK))
+			redir_error(tree, 100, ms_env);
 		if (access(tree->data[0], W_OK))
 			redir_error(tree, exec->fd_out[1], ms_env);
 		dup2(exec->fd_out[1], STDOUT_FILENO);
