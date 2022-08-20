@@ -84,7 +84,7 @@ t_err	get_input(t_env *ms_env, char **input_ptr)
 
 	set_term_settings();
 	rl_replace_line("", 0);
-	*input_ptr = readline(BHYEL PROMPT BHWHT);
+	*input_ptr = readline("");//(BHYEL PROMPT BHWHT);
 	tcsetattr(2, TCSANOW, &ms_env->termios_p);
 	if (*input_ptr && (*input_ptr)[0])
 	{

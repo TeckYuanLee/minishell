@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:32:34 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 22:00:45 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/20 18:32:36 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	exit_cmd(t_tree *tree, t_env *ms_env)
 		i++;
 	if (!ft_strncmp(tree->data[0], "exit", 5) && i == 1)
 	{
-		// ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("exit\n", 2);
 		ms_env->exitcode = 0;
 		free_envi(ms_env, ms_env->exitcode);
 	}

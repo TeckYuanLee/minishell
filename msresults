@@ -1,0 +1,243 @@
+echo hello world
+hello world
+echo $?q
+0q
+
+echo "hello world"
+hello world
+echo $?q
+0q
+
+echo 'hello world'
+hello world
+echo $?q
+0q
+
+echo hello'world'
+helloworld
+echo $?q
+0q
+
+echo helloworld
+helloworld
+echo $?q
+0q
+
+echo ''
+
+echo $?q
+0q
+
+echo "$PWD"
+/Users/telee/minishellworkspace/minishell
+echo $?q
+0q
+
+echo '$PWD'
+$PWD
+echo $?q
+0q
+
+echo "aspas ->'"
+aspas ->'
+echo $?q
+0q
+
+echo "aspas -> ' "
+aspas -> ' 
+echo $?q
+0q
+
+echo 'aspas ->"'
+aspas ->"
+echo $?q
+0q
+
+echo 'aspas -> " '
+aspas -> " 
+echo $?q
+0q
+
+echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"
+> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<
+echo $?q
+0q
+
+echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'
+> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<
+echo $?q
+0q
+
+echo "exit_code ->$? user ->$USER home -> $HOME"
+exit_code ->0 user ->telee home -> /Users/telee
+echo $?q
+0q
+
+echo 'exit_code ->$? user ->$USER home -> $HOME'
+exit_code ->$? user ->$USER home -> $HOME
+echo $?q
+0q
+
+echo "$"
+$
+echo $?q
+0q
+
+echo '$'
+$
+echo $?q
+0q
+
+echo $
+$
+echo $?q
+0q
+
+echo $?
+0
+echo $?q
+0q
+
+echo $?HELLO
+0HELLO
+echo $?q
+0q
+
+pwd
+/Users/telee/minishellworkspace/minishell
+echo $?q
+0q
+
+pwd oi
+/Users/telee/minishellworkspace/minishell
+echo $?q
+0q
+
+export hello
+echo $?q
+0q
+
+export HELLO=123
+echo $?q
+0q
+
+export A-
+minishell: export: 'A-': not a valid identifier
+echo $?q
+1q
+
+export HELLO=123 A
+echo $?q
+0q
+
+export HELLO="123 A-"
+echo $?q
+0q
+
+export hello world
+echo $?q
+0q
+
+export HELLO-=123
+minishell: export: 'HELLO-=123': not a valid identifier
+echo $?q
+1q
+
+export =
+minishell: export: '=': not a valid identifier
+echo $?q
+1q
+
+export 123
+minishell: export: '123': not a valid identifier
+echo $?q
+1q
+
+unset
+echo $?q
+0q
+
+unset HELLO
+echo $?q
+0q
+
+unset HELLO1 HELLO2
+echo $?q
+0q
+
+unset HOME
+echo $?q
+0q
+
+unset PATH
+echo $?q
+0q
+
+unset SHELL
+echo $?q
+0q
+
+cd $PWD
+echo $?q
+0q
+
+cd $PWD hi 
+echo $?q
+0q
+
+cd 123123
+Minishell: cd: 123123: No such file or directory
+echo $?q
+1q
+
+exit 123
+exit
+
+exit 298
+exit
+
+exit +100
+exit
+
+exit "+100"
+exit
+
+exit +"100"
+exit
+
+exit -100
+exit
+
+exit "-100"
+exit
+
+exit -"100"
+exit
+
+exit hello
+exit
+minishell: exit: hello: numeric argument required
+
+exit 42 world
+exit
+minishell: exit: too many arguments
+echo $?q
+1q
+
+exit 9223372036854775807
+exit
+
+exit 9223372036854775808
+exit
+minishell: exit: 9223372036854775808: numeric argument required
+
+exit -9223372036854775807
+exit
+
+exit -9223372036854775808
+exit
+
+exit -9223372036854775809
+exit
+minishell: exit: -9223372036854775809: numeric argument required
+
