@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:31:57 by telee             #+#    #+#             */
-/*   Updated: 2022/08/20 12:23:10 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/21 17:45:32 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	redir_error(t_tree *tree, int fd, t_env *ms_env)
 	}
 	else
 	{
-		printf("???\n");
 		close(fd);
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(tree->data[0], 2);

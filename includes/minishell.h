@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/20 19:04:57 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/21 17:46:18 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,9 +143,9 @@ t_err	update_value(char *key, char *value, t_item *envp);
 int		ms_env_key(char *key, t_item *item);
 
 //	input_loop_do.c - OK
-int		ms_loop(t_input *curr_input, t_env *ms_env);
+int		run_ms(t_input *curr_input, t_env *ms_env);
 t_err	get_input(t_env *ms_env, char **input_ptr);
-t_err	process_input(char *line, t_input *input, t_env *info);
+t_err	process_input(char *line, t_input *input, t_env *ms_env);
 t_err	lexer(char *line, t_input *input);
 void	start_tree(t_env *ms_env, t_tree **tree);
 
@@ -178,9 +178,9 @@ t_err	syntax_err(t_token_t type);
 t_err	syntax_err_lexer(char token);
 
 //	input_expander.c - OK
-t_err	expander(t_input *input, t_env *info);
+t_err	expander(t_input *input, t_env *ms_env);
 t_err	quotes_to_words(t_token **list);
-t_err	expand_dollars_words(t_token **list, t_env *info);
+t_err	expand_dollars_words(t_token **list, t_env *ms_env);
 t_err	word_join(t_token **list);
 
 //	input_cleaner.c - OK
@@ -219,8 +219,8 @@ void	replace_token_head(t_token **head, t_token *new);
 //	tokens_dollars.c - OK
 t_err	dollars(char *input, int *i, t_token **list);
 t_err	add_dollar_sign(t_token	**list);
-t_err	expand_dollars(t_token **head, t_env *info, char *key);
-t_err	expand_d_utils(t_token **head, t_env *info, char *key, char *data);
+t_err	expand_dollars(t_token **head, t_env *ms_env, char *key);
+t_err	expand_d_utils(t_token **head, t_env *ms_env, char *key, char *data);
 t_err	expand_dollars_tail(t_token **head, char *key, char *data);
 
 //	tokens_quotes.c - OK

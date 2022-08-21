@@ -1,0 +1,290 @@
+echo
+
+0
+
+echo echo
+echo
+0
+
+eCho 
+
+0
+
+eChO
+
+0
+
+eCHO
+
+0
+
+ECHO
+
+0
+
+echo rhobebou
+rhobebou
+0
+
+echo stop barking
+stop barking
+0
+
+echo "bonjour"
+bonjour
+0
+
+echo bonjour
+bonjour
+0
+
+echo 'bonjour'
+bonjour
+0
+
+echo -n bonjour
+bonjour0
+
+echo -nn bonjour
+bonjour0
+
+echo -n -n -n bonjour
+bonjour0
+
+echo -n -n -n bonjour
+bonjour0
+
+echo "-n" bonjour
+bonjour0
+
+echo -n"-n" bonjour
+-n-n bonjour
+0
+
+echo "-nnnn" bonjour
+bonjour
+0
+
+echo "-n -n -n"-n bonjour
+-n -n -n-n bonjour
+0
+
+echo "-n '-n'" bonjour
+-n '-n' bonjour
+0
+
+echo ~
+/Users/telee
+0
+
+echo "~"
+~
+0
+
+echo '~'
+~
+0
+
+echo ~123
+~123
+0
+
+echo 123~
+123~
+0
+
+echo ~/123
+/Users/telee/123
+0
+
+echo ~/123/456
+/Users/telee/123/456
+0
+
+echo $USER
+telee
+0
+
+echo "$USER"
+telee
+0
+
+echo "'$USER'"
+'telee'
+0
+
+echo " '$USER' "
+ 'telee' 
+0
+
+echo text"$USER"
+texttelee
+0
+
+echo text"'$USER'" ' $USER '
+text'telee'  $USER 
+0
+
+echo "text"   "$USER"    "$USER"
+text telee telee
+0
+
+echo '              $USER          '
+              $USER          
+0
+
+echo               text "$USER"            "$USER"text
+text telee teleetext
+0
+
+echo ''''''''''$USER''''''''''
+telee
+0
+
+echo """"""""$USER""""""""
+telee
+0
+
+echo $USER'$USER'text oui oui     oui  oui $USER oui      $USER ''
+telee$USERtext oui oui oui oui telee oui telee 
+0
+
+echo $USER '' $USER $USER '' $USER '' $USER -n $USER
+telee  telee telee  telee  telee -n telee
+0
+
+echo ' \' ' \'
+ \  \
+0
+
+echo '\" ' " \"\""
+\"   ""
+0
+
+echo \\\" \\\" \\\" \\\"\\\"\\\" \\\'\\\'\\\'
+bash: line 1: unexpected EOF while looking for matching `''
+bash: line 2: syntax error: unexpected end of file
+2
+
+echo "$USER""$USER""$USER"
+teleeteleetelee
+0
+
+echo text"$USER"test
+textteleetest
+0
+
+echo '$USER' "$USER" "text \' text"
+$USER telee text \' text
+0
+
+echo '$USER'
+$USER
+0
+
+echo $USER " "
+telee  
+0
+
+echo "$USER""Users/$USER/file""'$USER'"'$USER'
+teleeUsers/telee/file'telee'$USER
+0
+
+echo "$USER$USER$USER"
+teleeteleetelee
+0
+
+echo '$USER'"$USER"'$USER'
+$USERtelee$USER
+0
+
+echo '"$USER"''$USER'"""$USER"
+"$USER"$USERtelee
+0
+
+echo " $USER  "'$PWD'
+ telee  $PWD
+0
+
+echo " $USER  $ "'$PWD'
+ telee  $ $PWD
+0
+
+echo $USER=4
+telee=4
+0
+
+echo $USER=thallard
+telee=thallard
+0
+
+echo $USER
+telee
+0
+
+echo $?
+0
+0
+
+echo $USER213
+
+0
+
+echo $USER$12USER$USER=4$USER12
+telee2USERtelee=4
+0
+
+echo $USER $123456789USER $USER123456789
+telee 23456789USER
+0
+
+echo $USER $9999USER $8888USER $7777USER
+telee 999USER 888USER 777USER
+0
+
+echo $USER $USER9999 $USER8888 $USER7777
+telee
+0
+
+echo $USER $USER9999 $USER8888 $USER7777 "$USER"
+telee telee
+0
+
+echo "$USER=12$USER"
+telee=12telee
+0
+
+echo "$9USER" "'$USER=12$SOMETHING'"
+USER 'telee=12'
+0
+
+echo $PWD/file
+/Users/telee/minishellworkspace/minishell/testers/file
+0
+
+echo "$PWD/file"
+/Users/telee/minishellworkspace/minishell/testers/file
+0
+
+echo "text" "text$USER" ... "$USER"
+text texttelee ... telee
+0
+
+echo $PWD
+/Users/telee/minishellworkspace/minishell/testers
+0
+
+echo test tout
+test tout
+0
+
+echo test      tout
+test tout
+0
+
+echo -n test tout
+test tout0
+
+echo -n -n -n test tout
+test tout0
+

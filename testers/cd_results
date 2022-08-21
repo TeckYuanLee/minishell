@@ -1,0 +1,28 @@
+***** CD *****
+cd [need to chdir to $HOME]
+cd .. - OK
+cd . - OK
+cd /Users - OK
+cd // - OK
+cd '//' - OK
+cd ////// [need to truncate to '\']
+cd ./././ - OK
+cd / - OK
+cd '/////' 2>/dev/null [need to truncate to '\']
+cd '/etc' - OK
+cd '/var' - OK
+cd "$PWD/testers" - OK
+cd "doesntexist" - OK
+cd "doesntexist" 2>/dev/null - OK [bash doesnt print error]
+cd ../../.. - OK
+cd "wtf" 2>/dev/null - OK [bash doesnt print error]
+cd ? - OK
+cd + - OK
+cd _ - OK
+cd - [need to cd to OLDPWD]
+cd ~ - OK
+cd woof - OK
+cd bark bark - OK
+cd '/' - OK
+cd $PWD/testers - OK
+cd $OLDPWD/srcs - OK

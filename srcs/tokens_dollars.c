@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:47 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 13:09:25 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/21 17:32:58 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,17 @@ t_err	expand_dollars_tail(t_token **head, char *key, char *data)
 }
 
 //  expand $ and words /////
-t_err	expand_d_utils(t_token **head, t_env *info, char *key, char *data)
+t_err	expand_d_utils(t_token **head, t_env *ms_env, char *key, char *data)
 {
 	char	*value;
 
 	if (get_env_key(data, &key) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	if (ft_strncmp(data, "?", 1) == 0)
-		value = ft_itoa(info->exitcode);
+		value = ft_itoa(ms_env->exitcode);
 	else if (!allowed_char(data[0], "/=."))
 		return (newstr_token(head, key, data));
-	else if (get_env_value(info->item, key, &value) == MALLOC_FAIL)
+	else if (get_env_value(ms_env->item, key, &value) == MALLOC_FAIL)
 	{
 		free(key);
 		return (MALLOC_FAIL);
@@ -62,7 +62,7 @@ t_err	expand_d_utils(t_token **head, t_env *info, char *key, char *data)
 }
 
 //  preparation to expand $ and words /////
-t_err	expand_dollars(t_token **head, t_env *info, char *key)
+t_err	expand_dollars(t_token **head, t_env *ms_env, char *key)
 {
 	t_token	*next;
 	char	*data;
@@ -72,10 +72,10 @@ t_err	expand_dollars(t_token **head, t_env *info, char *key)
 	if ((*head)->prev)
 	{
 		remove_token(*head);
-		return (expand_d_utils(&next, info, key, data));
+		return (expand_d_utils(&next, ms_env, key, data));
 	}	
 	remove_token_head(head);
-	return (expand_d_utils(head, info, key, data));
+	return (expand_d_utils(head, ms_env, key, data));
 }
 
 //	treat single dollar as word token /////

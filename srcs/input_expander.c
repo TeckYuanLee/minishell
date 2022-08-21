@@ -40,7 +40,7 @@ t_err	word_join(t_token **list)
 }
 
 //	search list for $ and words, expand this combination /////
-t_err	expand_dollars_words(t_token **list, t_env *info)
+t_err	expand_dollars_words(t_token **list, t_env *ms_env)
 {
 	char	*key;
 	t_token	*node;
@@ -55,9 +55,9 @@ t_err	expand_dollars_words(t_token **list, t_env *info)
 		{
 			temp = node->next->next;
 			if (node->prev)
-				err = expand_dollars(&node, info, key);
+				err = expand_dollars(&node, ms_env, key);
 			else
-				err = expand_dollars(list, info, key);
+				err = expand_dollars(list, ms_env, key);
 			if (err == MALLOC_FAIL)
 				return (MALLOC_FAIL);
 			node = temp;
@@ -86,7 +86,7 @@ t_err	quotes_to_words(t_token **list)
 }
 
 //	expand tokens /////
-t_err	expander(t_input *input, t_env *info)
+t_err	expander(t_input *input, t_env *ms_env)
 {
 	t_err	err;
 	t_token	**list;
@@ -98,7 +98,7 @@ t_err	expander(t_input *input, t_env *info)
 	if (err == NO_ERROR)
 		err = quotes_to_words(list);
 	if (err == NO_ERROR)
-		err = expand_dollars_words(list, info);
+		err = expand_dollars_words(list, ms_env);
 	if (err == NO_ERROR)
 		err = word_join(list);
 	if (err == NO_ERROR)

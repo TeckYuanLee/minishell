@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 18:06:38 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 19:44:08 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/21 18:52:50 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,18 @@ void	free_envi(t_env *ms_env, int exitcode)
 	free(ms_env->exec);
 	free_split(&ms_env->envp);
 	free_ms_env(ms_env->item);
-	close(0);
-	close(1);
 	if (exitcode != -100)
+	{
+		ms_env->exitcode = exitcode;
+		close(0);
+		close(1);
 		exit(exitcode);
+	}
+	else
+	{
+		close(0);
+		close(1);
+	}
 }
 
 //  clean rows columns by columns and rows by rows

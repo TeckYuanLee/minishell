@@ -58,19 +58,19 @@ t_err	lexer(char *line, t_input *input)
 }
 
 //	process input into lexer, expander, parser
-t_err	process_input(char *line, t_input *input, t_env *info)
+t_err	process_input(char *line, t_input *input, t_env *ms_env)
 {
 	t_err	err;
 
 	err = lexer(line, input);
 	if (err == NO_ERROR)
-		err = expander(input, info);
+		err = expander(input, ms_env);
 	if (err == NO_ERROR)
 		err = parser(input);
 	if (err != NO_ERROR)
 	{
 		if (err == SYNTAX_ERR)
-			info->exitcode = 258;
+			ms_env->exitcode = 258;
 		return (err);
 	}
 	clean_lexer(&input->lexer);
@@ -101,7 +101,7 @@ t_err	get_input(t_env *ms_env, char **input_ptr)
 }
 
 //  keep programm running
-int	ms_loop(t_input *input, t_env *ms_env)
+int	run_ms(t_input *input, t_env *ms_env)
 {
 	char	*curr_input;
 	t_err	err;

@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:20 by telee             #+#    #+#             */
-/*   Updated: 2022/08/20 19:02:48 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/21 14:48:14 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ int	exit_signal(t_env *ms_env)
 	// write(1, "\n", 1);
 	free_split(&ms_env->envp);
 	free_ms_env(ms_env->item);
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
-	// system("leaks minishell");
+	// close(STDIN_FILENO);
+	// close(STDOUT_FILENO);
+	// close(STDERR_FILENO);
+	system("leaks minishell");
 	exit(0);
 }
 
