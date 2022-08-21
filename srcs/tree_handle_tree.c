@@ -75,9 +75,7 @@ int	build_tree(t_env *ms_env, t_tree *tree, t_exec *exec)
 		exec->fd_in[1] = exec->fd_out[1];
 		tree = get_next_node(tree);
 	}
-	printf("child %d\n", ms_env->exitcode);
-	if (!(ms_env->exitcode))
-		ms_env->exitcode = 86;//wait_child(exec, ms_env);
+	ms_env->exitcode = wait_child(exec, ms_env);
 	close_all(exec);
 	return (0);
 }

@@ -1,0 +1,18 @@
+total 2728
+drwxr-xr-x   17 telee  2021_kuala-lumpur      578 21 Aug 22:10 .
+drwxr-xr-x    8 telee  2021_kuala-lumpur      272 19 Aug 23:28 ..
+-rw-r--r--@   1 telee  2021_kuala-lumpur     6148 21 Aug 14:28 .DS_Store
+drwxr-xr-x   15 telee  2021_kuala-lumpur      510 21 Aug 18:56 .git
+drwxr-xr-x    6 telee  2021_kuala-lumpur      204 30 Jul 10:55 .vscode
+-rw-r--r--    1 telee  2021_kuala-lumpur     7109 19 Aug 13:57 Eval.txt
+-rw-r--r--    1 telee  2021_kuala-lumpur      614 30 Jul 10:55 Makefile
+-rw-r--r--    1 telee  2021_kuala-lumpur  1273406 30 Jul 10:55 Minishell.pdf
+-rw-r--r--    1 telee  2021_kuala-lumpur       11 30 Jul 10:55 README.md
+drwxr-xr-x    3 telee  2021_kuala-lumpur      102 19 Aug 13:57 includes
+drwxr-xr-x    7 telee  2021_kuala-lumpur      238 19 Aug 13:58 libft
+-rwxr-xr-x    1 telee  2021_kuala-lumpur    93200 21 Aug 21:55 minishell
+drwxr-xr-x   21 telee  2021_kuala-lumpur      714 19 Aug 23:29 minishell_tester
+drwxr-xr-x  133 telee  2021_kuala-lumpur     4522 21 Aug 21:55 obj
+drwxr-xr-x   41 telee  2021_kuala-lumpur     1394 21 Aug 22:13 srcs
+-rw-r--r--    1 telee  2021_kuala-lumpur       10 21 Aug 22:10 test
+drwxr-xr-x   15 telee  2021_kuala-lumpur      510 21 Aug 21:56 testers
