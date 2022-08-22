@@ -225,66 +225,55 @@ export = - OK
 export 1TEST= ; env | sort | grep -v SHLVL | grep -v _= - OK
 export TEST=LOL ; echo $TEST$TEST$TEST=lol$TEST - OK
 env | sort | grep -v SHLVL | grep -v _= - OK
-export TEST="ls       -l     - a" ; echo $TEST ; $LS ;  env | sort | grep -v SHLVL | grep -v _=
+export TEST="ls       -l     - a" ; echo $TEST ; $LS ;  env | sort | grep -v SHLVL | grep -v _= [didnt remove spaces within dquotes]
 
 
 ***** UNSET *****
-unset
-export TEST=100
-unset doesntexist
-unset PWD
-unset PWD 
-unset OLDPWD 
-unset PATH 
-unset PATH 
-unset PATH 
-unset TES\\\\T
-unset TES;T
-unset TES.T
-unset TES+T
-unset TES=T
-unset TES}T
-unset TES{T
-unset TES-T
-unset -TEST
-unset _TEST
-unset TES_T
-unset TEST_
-unset TE*ST
-unset TES#T
-unset TES@T
-unset TES!T
-unset TES$?T
-unset ============
-unset +++++++
-unset ________
-unset export
-unset echo
-unset pwd
-unset cd
-unset unset
-unset sudo
-unset TES^T
-unset TES!T
-unset TES\~T
+unset - OK
+unset doesntexist - OK
+unset PWD [doesnt work]
+unset OLDPWD - Ok
+unset PATH - OK
+unset TES\\\\T - OK
+unset TES;T - OK
+unset TES.T - OK
+unset TES+T - OK
+unset TES=T - OK
+unset TES}T - OK
+unset TES{T - OK
+unset TES-T - OK
+unset -TEST - OK
+unset _TEST - OK
+unset TES_T - OK
+unset TEST_ - OK
+unset TE*ST - OK
+unset TES#T - OK
+unset TES@T - OK
+unset TES!T - OK
+unset TES$?T - OK
+unset ============ - Ok
+unset +++++++ - OK
+unset ________ - OK
+unset export - OK
+unset echo - OK
+unset pwd - OK
+unset cd - OK
+unset unset - OK
+unset sudo - OK
+unset TES^T - OK
+unset TES\~T - OK
 
 
 ***** REDIRECTIONS *****
-echo test > ls ; cat ls
-echo test > ls >> ls >> ls ; echo test >> ls; cat ls
-> lol echo test lol; cat lol
+echo test > ls ; cat ls - OK
+echo test > ls >> ls >> ls ; echo test >> ls; cat ls - OK
+> lol echo test lol; cat lol - OK
 >lol echo > test>lol>test>>lol>test mdr >lol test >test; cat test
 cat < ls
 cat < ls > ls
 
-echo test > ls ; cat ls
-echo test > ls >> ls >> ls ; echo test >> ls ; cat ls
-> lol echo test lol ; cat lol
->lol echo > test>lol>test>>lol>test mdr >lol test >test ; cat test
-cat < ls
 rm -f ls; cat > ls < ls; rm -f ls
 ls > ls
-cat <ls
 pwd >pwd; cat pwd
 pwd >pwd; cat pwd | echo
 cat | <Makefile cat; hello
