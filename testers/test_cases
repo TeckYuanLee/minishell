@@ -251,7 +251,7 @@ unset TES#T - OK
 unset TES@T - OK
 unset TES!T - OK
 unset TES$?T - OK
-unset ============ - Ok
+unset ============ - O
 unset +++++++ - OK
 unset ________ - OK
 unset export - OK
