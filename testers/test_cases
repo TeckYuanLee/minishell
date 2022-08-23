@@ -268,93 +268,77 @@ unset TES\~T - OK
 echo test > ls ; cat ls - OK
 echo test > ls >> ls >> ls ; echo test >> ls; cat ls - OK
 > lol echo test lol; cat lol - OK
->lol echo > test>lol>test>>lol>test mdr >lol test >test; cat test
-cat < ls
-cat < ls > ls
+>lol echo > test>lol>test>>lol>test mdr >lol test >test; cat test - OK
+cat < ls - OK
+cat < ls > ls - OK
 
-rm -f ls; cat > ls < ls; rm -f ls
-ls > ls
-pwd >pwd; cat pwd
-pwd >pwd; cat pwd | echo
-cat | <Makefile cat; hello
-cat <test.sh <ls
-cat << stop;1;stop;
-cat << stop;1\EOF;stopa;stop
-cat <test.sh <<stop;1;stop
-cat <<stop<ls;1;stop
-cat <test.sh << stop1 <<stop2;a;;b;c;stop1; run2;stop2
-rm -f ls >ls
+rm -f ls; cat > ls < ls; rm -f ls - OK
+ls > ls - OK
+pwd >pwd; cat pwd - OK
+cat | <Makefile cat; hello - OK
+cat <Eval.txt <ls - OK
+cat << stop;1;stop; - OK
+cat << stop;1\EOF;stopa;stop - OK
+cat <ls <<stop;1;stop [should not expand ls file, should just go on as if cat << stop]
+cat <<stop<ls;1;stop - OK
+cat <ls << stop1 <<stop2;a;;b;c;stop1; run2;stop2 [should ignore the ls file, and print  run2 only]
+rm -f ls >ls - OK
 
 
 ***** ERROR *****
-test
-| test
-echo > <
-echo | |
-<
-|
-| | |
-hello world
-||||||||
-            
-cat wouaf wouaf
->
->>>>>>>>
-<<<<<<<<<
-> > > >
->> >> >> >>
-~
-<<
-/Users
- 
-.
-..
-/
-\\\
-EechoE
-.echo.
->echo>
-<echo<
->>echo>>
-echo
-|echo|
-echo -n
-echo -n
-echo
-echo something
-rm -f something
-cat something
-| echo -n oui
-echo -n oui
-trying to destroy your minishell
-trying something again echo if you see this message thats not a good new
-qewew
-wtf
-hi im thallard
-nice to meet you if these tests are green
-your minishell is perfect
-
-;; test
-| test
-echo > <
-echo | |
-<
-
-" echo" lol
-"echo " lol
-" echo" | " pwd"
-"echo " | "pwd "
-/bin/lsa
-./Makefile
-| test
-echo > <
-echo | |
-echo "||"
-<
-rm -f ls; cat < ls > ls
-grep -z
-ls'| 'wc -l
-/ls
+test - OK
+| test - OK
+echo > < [shud be < instead of >]
+echo | | - OK
+< [shud be newline instead of <]
+| - OK
+| | | - OK
+hello world - OK
+|||||||| - OK
+             - OK
+cat ls ls - OK
+> [shud be newline instead of >]
+>>>>>>>> - OK
+<<<<<<<<< - OK
+> > > > - OK
+>> >> >> >> - OK
+~ - OK
+<< [shud be newline instead of <<]
+/Users - OK
+  - OK
+. - OK
+.. - OK
+/ - OK
+\\\ - OK
+EechoE - OK
+.echo. - OK
+>echo> [shud be newline instead of >]
+<echo< [shud be newline instead of <]
+>>echo>> [shud be newline instead of >>]
+echo - OK
+|echo| - OK
+echo -n - OK
+rm -f something - OK
+cat something - OK
+| echo -n oui - OK
+echo -n oui - OK
+trying to destroy your minishell - OK
+trying something again echo if you see this message thats not a good new - OK
+qewew - OK
+wtf - OK
+hi im thallard - OK
+nice to meet you if these tests are green - OK
+your minishell is perfect - OK
+" echo" lol - OK
+"echo " lol - OK
+" echo" | " pwd" - OK
+"echo " | "pwd " [echo command not found not showing]
+/bin/lsa - OK
+./Makefile - OK
+echo "||" - Ok
+grep -z - OK
+ls'| 'wc -l - OK
+/ls - OK
 
 
 ***** EXIT *****
