@@ -399,8 +399,7 @@ exit  2 wrong_command - OK
 
 
 ***** MULTIPLE TESTS *****
-echo testing multi ; echo "test 1 ; | and 2" ; cat tests/lorem.txt | grep Lorem
-echo testing multi >lol ; echo <lol <lola ; echo "test 1  | and 2" >>lol ; cat <lol ; cat ../Makefile <lol | grep minishell
+echo testing multi >lol ; echo <lol <lola ; echo "test 1  | and 2" >>lol ; cat <lol ; cat ../Makefile <lol | grep minishell - OK
 unset PATH; /bin/ls
 unset PATH; ./Makefile
 echo 5 > ls; <5 cat; rm 5
@@ -409,9 +408,8 @@ cd; unset HOME; cd
 cd .. > 1; pwd
 cd .. > 1| pwd
 pwd > 1
-pwd > 1; cat 1
-pwd > 1; pwd
-pwd > 1| pwd
+pwd > 1; cat 1 - OK
+pwd > 1; pwd - OK
+pwd > 1| pwd - OK
 pwd; unset HOME; pwd; cd; pwd
-ls | export TEST=5; echo $TEST
-export TEST1=LOL TEST2=PIKAPIKA; unset TEST1 TEST2; echo $TEST1; echo $TEST2
+export TEST1=LOL TEST2=PIKAPIKA; unset TEST1 TEST2; echo $TEST1; echo $TEST2 - OK
