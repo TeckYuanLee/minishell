@@ -85,12 +85,14 @@ t_err	update_shlvl(t_env *ms_env)
 /*
 1. get key from envp_str
 2. get value from envp_str
+3. it should not get OLDPWD
 */
 t_err	envp_to_ms_env(char *envp_str, t_item *item)
 {
 	if (get_env_key(envp_str, &item->key) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
-	if (ft_strlen(item->key) < ft_strlen(envp_str))
+	if ((ft_strlen(item->key) < ft_strlen(envp_str))
+		&& ft_strncmp(item->key, "OLDPWD", 7))
 	{
 		item->value = ft_strdup(envp_str + ft_strlen(item->key) + 1);
 		if (!item->value)
