@@ -75,29 +75,37 @@ echo test      tout
 echo -n test tout
 echo -n -n -n test tout
 
+echo '"'"$USER"'"' - OK
+echo ""'"'"$USER"'"'"" - OK
+echo "$PWD" - OK
+echo "$PATH" - OK
+echo "$" - OK
+echo "$HELLO" - OK
+echo "$?" - OK
+echo "$1TEST" - OK
+echo "exit_code ->$? user ->$USER home -> $HOME"
+echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<" [LEAKS]
+
+
 
 ***** CD *****
-cd [need to chdir to $HOME]
 cd .. - OK
 cd . - OK
 cd /Users - OK
 cd // - OK
 cd '//' - OK
-cd ////// [need to truncate to '\']
 cd ./././ - OK
 cd / - OK
-cd '/////' 2>/dev/null [need to truncate to '\']
 cd '/etc' - OK
 cd '/var' - OK
 cd "$PWD/testers" - OK
 cd "doesntexist" - OK
-cd "doesntexist" 2>/dev/null - OK [bash doesnt print error]
 cd ../../.. - OK
-cd "wtf" 2>/dev/null - OK [bash doesnt print error]
+cd "doesntexist" 2>/dev/null - OK
+cd "wtf" 2>/dev/null - OK
 cd ? - OK
 cd + - OK
 cd _ - OK
-cd - [need to cd to OLDPWD]
 cd ~ - OK
 cd woof - OK
 cd bark bark - OK
@@ -105,9 +113,13 @@ cd '/' - OK
 cd $PWD/testers - OK
 cd $OLDPWD/srcs - OK
 
+cd [need to chdir to $HOME]
+cd ////// [need to truncate to '\']
+cd '/////' 2>/dev/null [need to truncate to '\']
+cd - [need to cd to OLDPWD]
+
 
 ***** PIPE *****
-env | grep "_=" [check why _= print different stuff]
 env | grep "SHLVL" - OK
 echo oui | cat -e - OK
 echo oui | echo non | echo Eval.txt | grep oui - OK
@@ -119,8 +131,6 @@ cd .. | pwd - OK
 ifconfig | grep ":" - OK
 ifconfig | grep nothing - OK
 whoami | grep $USER - OK
-whoami | grep $USER > tmp/file [exitcode in child unable to be retrieved, need to use global]
-whoami | cat -e | cat -e > tmp/file [exitcode in child unable to be retrieved, need to use global]
 whoami | cat -e | cat -e > testers/file - OK
 cat Makefile | grep "FLAGS" - OK
 cat Makefile | cat -e | cat -e - OK
@@ -135,11 +145,13 @@ whereis grep > testers/file - OK
 whereis grep > tmp/file - OK
 ls -la > tmp/file - OK
 ls -la > testers/file - OK
-
 cat testers/file | grep 2728 | cat -e - OK
 echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e - OK
 cat /dev/random | head -c 100 | wc -c - OK
 ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls - OK
+
+whoami | grep $USER > tmp/file [exitcode in child unable to be retrieved, need to use global]
+whoami | cat -e | cat -e > tmp/file [exitcode in child unable to be retrieved, need to use global]
 cat big_file | ls - OK
 cat big_file | echo lol [need to check why is this not grabbing exitcode from last pipe - look at above is OK]
 
@@ -167,9 +179,9 @@ echo "$T1TEST"
 
 
 ***** EXPORT *****
-env | grep "_=" [check why _= print different stuff]
+env | grep "_=" - OK [not supporting]
 export | grep "SHLVL" - OK
-export | grep "OLDPWD" [OLDPWD should not be on startup]
+export | grep "OLDPWD" - OK
 export | grep "PWD" - OK
 export $? - -OK
 export TEST - OK
@@ -217,22 +229,21 @@ export pwd - OK
 export unset - OK
 export TES^T=123 - OK
 export TES\~T=123 - OK
-export TEST+=100 [should append to existing env; didnt handle this]
-
-env | sort | grep -v SHLVL | grep -v _= [OLDPWD should not on startup]
+export TEST+=100 - OK [should append to existing env; didnt handle this]
+env | sort | grep -v SHLVL | grep -v _= - OK
 export | sort | grep -v SHLVL | grep -v _= | grep -v OLDPWD - OK
 export = - OK
 export 1TEST= ; env | sort | grep -v SHLVL | grep -v _= - OK
 export TEST=LOL ; echo $TEST$TEST$TEST=lol$TEST - OK
 env | sort | grep -v SHLVL | grep -v _= - OK
+
 export TEST="ls       -l     - a" ; echo $TEST ; $LS ;  env | sort | grep -v SHLVL | grep -v _= [didnt remove spaces within dquotes]
 
 
 ***** UNSET *****
 unset - OK
 unset doesntexist - OK
-unset PWD [doesnt work]
-unset OLDPWD - Ok
+unset OLDPWD - OK
 unset PATH - OK
 unset TES\\\\T - OK
 unset TES;T - OK
@@ -251,7 +262,7 @@ unset TES#T - OK
 unset TES@T - OK
 unset TES!T - OK
 unset TES$?T - OK
-unset ============ - O
+unset ============ - OK
 unset +++++++ - OK
 unset ________ - OK
 unset export - OK
@@ -263,6 +274,8 @@ unset sudo - OK
 unset TES^T - OK
 unset TES\~T - OK
 
+unset PWD [doesnt work]
+
 
 ***** REDIRECTIONS *****
 echo test > ls ; cat ls - OK
@@ -271,7 +284,6 @@ echo test > ls >> ls >> ls ; echo test >> ls; cat ls - OK
 >lol echo > test>lol>test>>lol>test mdr >lol test >test; cat test - OK
 cat < ls - OK
 cat < ls > ls - OK
-
 rm -f ls; cat > ls < ls; rm -f ls - OK
 ls > ls - OK
 pwd >pwd; cat pwd - OK
@@ -279,10 +291,16 @@ cat | <Makefile cat; hello - OK
 cat <Eval.txt <ls - OK
 cat << stop;1;stop; - OK
 cat << stop;1\EOF;stopa;stop - OK
-cat <ls <<stop;1;stop [should not expand ls file, should just go on as if cat << stop]
 cat <<stop<ls;1;stop - OK
-cat <ls << stop1 <<stop2;a;;b;c;stop1; run2;stop2 [should ignore the ls file, and print  run2 only]
 rm -f ls >ls - OK
+cat | << hi cat - OK
+cat << hi | cat << hi2 - OK
+cat < Makefile < Makefile > o2 - OK
+
+cat << "$USER" [shouldnt expand the dquote]
+cat << h1 << h2 > o1 [should just output inbetween h1 and h2]
+cat <ls <<stop;1;stop [should not expand ls file, should just go on as if cat << stop]
+cat <ls << stop1 <<stop2;a;;b;c;stop1; run2;stop2 [should ignore the ls file, and print  run2 only]
 
 
 ***** ERROR *****
@@ -332,13 +350,14 @@ your minishell is perfect - OK
 " echo" lol - OK
 "echo " lol - OK
 " echo" | " pwd" - OK
-"echo " | "pwd " [echo command not found not showing]
 /bin/lsa - OK
 ./Makefile - OK
-echo "||" - Ok
+echo "||" - OK
 grep -z - OK
 ls'| 'wc -l - OK
 /ls - OK
+
+"echo " | "pwd " [echo command not found not showing]
 
 
 ***** EXIT *****
@@ -373,7 +392,7 @@ exit 9223372036854775808 - OK
 exit -4 [exitcode shud be 252 instead of 156]
 exit wrong - OK
 exit wrong_command - OK
-exit something - Ok
+exit something - OK
 exit 1 - OK
 exit -1 [exitcode shud be 255 instead of 156]
 exit 42 - OK
@@ -392,10 +411,11 @@ exit something somethingv2 - OK
 exit 42 42 42 42 42 - OK
 exit exit - OK
 exit -9223372036854775808 - OK
+exit  2 wrong_command - OK
+
 exit -9223372036854775810 [shud be numeric argument required and exitcode 255]
 exit 99999999999999999999999 [shud be numeric argument required and exitcode 255]
 exit -99999999999999999999999 [shud be numeric argument required and exitcode 255]
-exit  2 wrong_command - OK
 
 
 ***** MULTIPLE TESTS *****

@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:33 by telee             #+#    #+#             */
-/*   Updated: 2022/08/21 17:46:18 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/24 17:13:49 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	print_header(void)
 	printf(BHCYN SPC"                      ━━━━━━━━━━━━━ "BHWHT"\n");
 }
 
+// rl_outstream = stderr;
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	ms_env;
@@ -36,7 +37,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	// print_header();
-	// rl_outstream = stderr;
 	if (init_ms_env(envp, &ms_env) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	if (ms_env_to_envp((&ms_env)->item, (&(&ms_env)->envp)) == MALLOC_FAIL)

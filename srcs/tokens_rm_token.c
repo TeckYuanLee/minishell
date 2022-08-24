@@ -6,37 +6,11 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:31:46 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 12:07:36 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/24 17:14:29 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//  replace current/first token with new token
-// void	replace_token(t_token **list, t_token *new)
-// {
-// 	if ((*list)->prev)
-// 	{
-// 		new->next = (*list)->next;
-// 		if (new->next)
-// 			(*list)->next->prev = new;
-// 		new->prev = (*list)->prev;
-// 		if (new->prev)
-// 			(*list)->prev->next = new;
-// 		del_token(*list);
-// 	}
-// 	else
-// 	{
-// 		if ((*list)->next)
-// 		{
-// 			new->next = (*list)->next;
-// 			(*list)->next->prev = new;
-// 		}
-// 		del_token(*list);
-// 		printf("%d %d\n", (*list)->type, new->type);
-// 		*list = new;
-// 	}
-// }
 
 void	replace_token_head(t_token **head, t_token *new)
 {	

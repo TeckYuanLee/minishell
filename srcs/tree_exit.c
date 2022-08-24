@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:32:34 by telee             #+#    #+#             */
-/*   Updated: 2022/08/20 18:32:36 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/24 17:14:14 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void	exit_one_arg(t_tree *tree, t_env *ms_env, int i)
 //	exit requires numeric argument
 void	exit_numeric(t_tree *tree, t_env *ms_env, char c)
 {
-	// printf("%c\n", c);
 	(void)tree;
 	ft_putstr_fd("exit\n", 2);
 	if (c == 'z')

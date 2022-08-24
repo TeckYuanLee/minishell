@@ -74,9 +74,15 @@ t_err	dquote_dollars(const char *dquote, int *j, t_token **list)
 	if (dquote[*j] == '\0' || ft_isspace(dquote[*j]))
 		return (add_dollar_sign(list));
 	if (ft_isdigit(dquote[*j]))
-		return ((*j)++ | NO_ERROR);
+	{
+		(*j)++;
+		return (NO_ERROR);
+	}
 	if (dquote[*j] == '?')
-		return ((*j)++ | (exitcode_token(dquote, j, list) == MALLOC_FAIL));
+	{
+		(*j)++;
+		return (exitcode_token(dquote, j, list));
+	}
 	if (get_env_key(&dquote[*j], &key) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	if (key)
@@ -92,8 +98,10 @@ t_err	dquote_dollars(const char *dquote, int *j, t_token **list)
 t_err	expand_dquote_dollars(const char *dquote, t_token **list)
 {
 	int		j;
+	int		f;
 	char	*word;
 
+	f = 0;
 	while (*dquote)
 	{
 		j = 0;
@@ -111,9 +119,14 @@ t_err	expand_dquote_dollars(const char *dquote, t_token **list)
 			}
 		}
 		if (dquote[j] == '$')
+		{
 			if (dquote_dollars(dquote, &j, list) == MALLOC_FAIL)
 				return (MALLOC_FAIL);
+			f = 1;
+		}
 		dquote += j;
 	}
+	// if (f)
+	// 	free ((char *)dquote);
 	return (NO_ERROR);
 }
