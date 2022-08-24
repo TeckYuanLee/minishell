@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:20 by telee             #+#    #+#             */
-/*   Updated: 2022/08/21 14:48:14 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/24 20:50:40 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,12 @@ void	process_signal(int sig, int *exitcode, int fd[2])
 int	exit_signal(t_env *ms_env)
 {
 	tcsetattr(2, TCSANOW, &ms_env->termios_p);
-	// rl_replace_line("exit", 0);
-	// ft_putstr_fd("exit", 1);
-	// rl_on_new_line();
-	// rl_redisplay();
-	// write(1, "\n", 1);
 	free_split(&ms_env->envp);
 	free_ms_env(ms_env->item);
-	// close(STDIN_FILENO);
-	// close(STDOUT_FILENO);
-	// close(STDERR_FILENO);
 	system("leaks minishell");
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 	exit(0);
 }
 

@@ -26,16 +26,17 @@ t_err	quotes(char *input, int *i, t_token **list)
 	if (*input == '"')
 	{
 		if (ft_strchr(quote, '$'))
-			return (expand_dquote_dollars(quote, list));
+		{
+			err = expand_dquote_dollars(quote, list);
+			free (quote);
+			return (err);
+		}
 		new_token = create_token(TOK_DQUOTE, quote);
 	}
 	else
 		new_token = create_token(TOK_QUOTE, quote);
-	if (!new_token)
-	{
-		free (quote);
+	if (rm_tokens(new_token, &quote) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
-	}
 	add_to_tokenlist(list, new_token);
 	return (NO_ERROR);
 }
@@ -98,10 +99,8 @@ t_err	dquote_dollars(const char *dquote, int *j, t_token **list)
 t_err	expand_dquote_dollars(const char *dquote, t_token **list)
 {
 	int		j;
-	int		f;
 	char	*word;
 
-	f = 0;
 	while (*dquote)
 	{
 		j = 0;
@@ -119,14 +118,9 @@ t_err	expand_dquote_dollars(const char *dquote, t_token **list)
 			}
 		}
 		if (dquote[j] == '$')
-		{
 			if (dquote_dollars(dquote, &j, list) == MALLOC_FAIL)
 				return (MALLOC_FAIL);
-			f = 1;
-		}
 		dquote += j;
 	}
-	// if (f)
-	// 	free ((char *)dquote);
 	return (NO_ERROR);
 }

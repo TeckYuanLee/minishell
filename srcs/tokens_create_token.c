@@ -6,11 +6,21 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:42 by telee             #+#    #+#             */
-/*   Updated: 2022/08/19 10:34:30 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/24 20:37:01 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_err	rm_tokens(t_token *new_token, char **str)
+{
+	if (!new_token)
+	{
+		free (*str);
+		return (MALLOC_FAIL);
+	}
+	return (NO_ERROR);
+}
 
 //  replace current token with new token: head or normal
 t_err	insert_tokens(t_token **head, char *key, char *value, char *data)

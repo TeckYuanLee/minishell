@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:30:33 by telee             #+#    #+#             */
-/*   Updated: 2022/08/24 17:13:49 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/24 20:50:23 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	// print_header();
+	print_header();
 	if (init_ms_env(envp, &ms_env) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	if (ms_env_to_envp((&ms_env)->item, (&(&ms_env)->envp)) == MALLOC_FAIL)

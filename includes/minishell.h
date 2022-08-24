@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/21 17:46:18 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/24 20:34:00 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,7 @@ t_token	*create_token(t_token_t type, char *data);
 t_err	add_new_token(t_token	**head, t_token_t type, char *data);
 void	add_to_tokenlist(t_token **head, t_token *new);
 t_err	insert_tokens(t_token **head, char *key, char *value, char *data);
+t_err	rm_tokens(t_token *new_token, char **str);
 
 //	tokens_modify_token.c - OK
 void	remove_token_head(t_token **head);

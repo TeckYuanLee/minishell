@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 01:32:34 by telee             #+#    #+#             */
-/*   Updated: 2022/08/24 17:14:14 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/24 20:52:11 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void	exit_one_arg(t_tree *tree, t_env *ms_env, int i)
 		{
 			check = (atoi_exit(tree->data[1]) % 256);
 			ms_env->exitcode = 256 - check;
-			// ft_putstr_fd("exit\n", 2);
 			free_envi(ms_env, ms_env->exitcode);
 		}
 		else if (check == 0 || (tree->data[1][0] == '+'))
@@ -103,16 +102,6 @@ void	exit_numeric(t_tree *tree, t_env *ms_env, char c)
 		ft_putstr_fd(": numeric argument required\n", 2);
 	}
 	(void)c;
-	// ms_env->exitcode = 156;
-	// if (c == 'a' || c == 'c')
-	// {
-	// 	ft_putstr_fd(": numeric argument required\n", 2);
-	// 	ms_env->exitcode = 2;
-	// }
-	// else if (c == 'd')
-	// 	ms_env->exitcode = 1;
-	// else if (c == 'e')
-	// 	ms_env->exitcode = 0;
 	free_envi(ms_env, ms_env->exitcode);
 }
 
