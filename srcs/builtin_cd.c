@@ -103,7 +103,13 @@ t_err	update_pwds(char *path, t_env *ms_env)
 t_err	ms_cd(char **argv, t_env *ms_env)
 {
 	if (!argv[1])
+	{
+		// if (get_env_value(ms_env->item, "HOME", &argv[1]) == MALLOC_FAIL)
+		// 	return (MALLOC_FAIL);
+		// chdir(argv[1]);
+		// printf("?\n");
 		return (0);
+	}
 	if (chdir(argv[1]))
 		return (ms_perror("Minishell: cd", argv[1], NULL, 1));
 	if (update_pwds(argv[1], ms_env) == MALLOC_FAIL)
