@@ -75,16 +75,16 @@ echo test      tout
 echo -n test tout
 echo -n -n -n test tout
 
-echo '"'"$USER"'"' - [to test]
-echo ""'"'"$USER"'"'"" - [to test]
-echo "$PWD" - [to test]
-echo "$PATH" - [to test]
-echo "$" - [to test]
-echo "$HELLO" - [to test]
-echo "$?" - [to test]
-echo "$1TEST" - [to test]
-echo "exit_code ->$? user ->$USER home -> $HOME" - [to test]
-echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<" - [to test]
+echo '"'"$USER"'"' - OK
+echo ""'"'"$USER"'"'"" - OK
+echo "$PWD" - OK
+echo "$PATH" - OK
+echo "$" - OK
+echo "$HELLO" - OK
+echo "$?" - OK
+echo "$1TEST" - OK
+echo "exit_code ->$? user ->$USER home -> $HOME" - OK
+echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<" - OK
 
 
 
@@ -113,7 +113,7 @@ cd '/' - OK
 cd $PWD/testers - OK
 cd $OLDPWD/srcs - OK
 
-cd [need to chdir to $HOME]
+cd - OK
 cd ////// [need to truncate to '\']
 cd '/////' 2>/dev/null [need to truncate to '\']
 cd - [need to cd to OLDPWD]
