@@ -6,7 +6,7 @@
 /*   By: telee <telee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 09:24:55 by telee             #+#    #+#             */
-/*   Updated: 2022/08/25 15:37:57 by telee            ###   ########.fr       */
+/*   Updated: 2022/08/25 21:49:13 by telee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ t_err	add_leaf_node(t_node type, char **data, t_tree *parent);
 t_token	*next_branch(t_token *list);
 t_tree	*get_next_node(t_tree *tree);
 
-//	tree_handle_tree.c - OK
+//	tree_build_tree.c - OK
 int		build_tree(t_env *ms_env, t_tree *tree, t_exec *exec);
 int		wait_child(t_exec *exec, t_env *ms_env);
 int		close_fd(int fd[2]);
@@ -306,6 +306,7 @@ int		copy_paths(char parse_path[512], char *path);
 int		ms_perror(char *perror_str, char *string, char *string2, int rv);
 int		add_str(char *perror_str, char *string2, int rv);
 void	remove_dir(char parse_path[512]);
+void	ms_cd_utils(char **str);
 
 //	builtin_paths.c - OK
 int		get_paths(t_env *ms_env, char **arg);

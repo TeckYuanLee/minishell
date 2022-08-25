@@ -64,7 +64,7 @@ int	unset_key(char *key)
 		return (0);
 	if (ft_isdigit(key[0]) || key[0] == '-')
 		return (0);
-	while (key[i] && allowed_char(key[i], "/\\;.+=-{}*#@!^~"))
+	while (key[i] && allowed_char(key[i], "/\\;.+=-{}*#@!?^~"))
 		i++;
 	if (ft_strlen(key) == i)
 		return (1);
@@ -83,9 +83,7 @@ int	ms_unset(char **argv, t_env *ms_env)
 	i = 1;
 	while (argv[i])
 	{
-		if (!ft_strncmp(argv[i], "PWD", 4))
-			return (0);
-		else if (!unset_key(argv[i]))
+		if (!unset_key(argv[i]))
 			exitcode = unset_error_msg(argv[i]);
 		else
 			rm_ms_env(argv[i], &ms_env->item);

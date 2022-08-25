@@ -110,10 +110,7 @@ t_err	ms_cd(char **argv, t_env *ms_env)
 	else if (!ft_strncmp(argv[1], "-", 2))
 	{
 		get_env_value(ms_env->item, "OLDPWD", &str);
-		if (!str)
-			str = ft_strdup("OLDPWD");
-		else
-			printf("%s\n", str);
+		ms_cd_utils(&str);
 	}
 	else
 		str = ft_strdup(argv[1]);

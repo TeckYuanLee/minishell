@@ -87,7 +87,6 @@ echo "exit_code ->$? user ->$USER home -> $HOME" - OK
 echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<" - OK
 
 
-
 ***** CD *****
 cd .. - OK
 cd . - OK
@@ -157,25 +156,25 @@ cat big_file | echo lol [need to check why is this not grabbing exitcode from la
 
 
 ***** ENV *****
-echo test     \    test
-echo \"test
-echo $TEST
-echo "$TEST"
-echo '$TEST'
-echo "$TEST$TEST$TEST"
-echo "$TEST$TEST=lol$TEST"
-echo "   $TEST lol $TEST"
-echo $TEST$TEST$TEST
-echo $TEST$TEST=lol$TEST""lol
-echo    $TEST lol $TEST
-echo test "" test "" test
-echo "\$TEST"
-echo "$=TEST"
-echo "$"
-echo "$?TEST"
-echo $TEST $TEST
-echo "$1TEST"
-echo "$T1TEST"
+echo test     \    test - OK
+echo \"test - OK
+echo $TEST - OK
+echo "$TEST" - OK
+echo '$TEST' - OK
+echo "$TEST$TEST$TEST" - OK
+echo "$TEST$TEST=lol$TEST" - OK
+echo "   $TEST lol $TEST" - OK
+echo $TEST$TEST$TEST - OK
+echo $TEST$TEST=lol$TEST""lol - OK
+echo    $TEST lol $TEST - OK
+echo test "" test "" test - OK
+echo "\$TEST" - OK [unsupported '\']
+echo "$=TEST" - OK
+echo "$" - OK
+echo "$?TEST" - OK
+echo $TEST $TEST - OK
+echo "$1TEST" - OK
+echo "$T1TEST" - OK
 
 
 ***** EXPORT *****
@@ -229,15 +228,14 @@ export pwd - OK
 export unset - OK
 export TES^T=123 - OK
 export TES\~T=123 - OK
-export TEST+=100 - OK [should append to existing env; didnt handle this]
+export TEST+=100 - OK [should append to existing env; not handling this]
 env | sort | grep -v SHLVL | grep -v _= - OK
 export | sort | grep -v SHLVL | grep -v _= | grep -v OLDPWD - OK
 export = - OK
 export 1TEST= ; env | sort | grep -v SHLVL | grep -v _= - OK
 export TEST=LOL ; echo $TEST$TEST$TEST=lol$TEST - OK
 env | sort | grep -v SHLVL | grep -v _= - OK
-export TEST="ls       -l     - a" ; echo $TEST ; $LS ;  env | sort | grep -v SHLVL | grep -v _= - -OK
-
+export TEST="ls       -l     - a" ; env | grep TEST - -OK
 
 
 ***** UNSET *****
@@ -273,8 +271,7 @@ unset unset - OK
 unset sudo - OK
 unset TES^T - OK
 unset TES\~T - OK
-
-unset PWD [doesnt work]
+unset PWD - OK
 
 
 ***** REDIRECTIONS *****

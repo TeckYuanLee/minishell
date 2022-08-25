@@ -48,7 +48,7 @@ int	export_key(char *key)
 		return (0);
 	if (ft_isdigit(key[0]) || key[0] == '-')
 		return (0);
-	while (key[i] && allowed_char(key[i], "'=\"-#+^~.|&@!;()<>*\\"))
+	while (key[i] && allowed_char(key[i], "'=\"-#+^~.|&@!?;()<>*\\"))
 		i++;
 	if (ft_strlen(key) == i)
 		return (1);
