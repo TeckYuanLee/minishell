@@ -103,18 +103,26 @@ t_err	update_pwds(char *path, t_env *ms_env)
 t_err	ms_cd(char **argv, t_env *ms_env)
 {
 	char	*str;
+	int		i;
 
 	if (!argv[1])
+		get_env_value(ms_env->item, "HOME", &str);
+	else if (!ft_strncmp(argv[1], "-", 2))
 	{
-		if (get_env_value(ms_env->item, "HOME", &str) == MALLOC_FAIL)
-			return (MALLOC_FAIL);
+		get_env_value(ms_env->item, "OLDPWD", &str);
+		if (!str)
+			str = ft_strdup("OLDPWD");
+		else
+			printf("%s\n", str);
 	}
-	// else if (!ft_strncmp(argv[1], "-", 2))
-	// 	str = ft_strdup("-");
 	else
 		str = ft_strdup(argv[1]);
 	if (chdir(str))
-		return (ms_perror("Minishell: cd", str, NULL, 1));
+	{
+		i = ms_perror("Minishell: cd", str, NULL, 1);
+		free (str);
+		return (i);
+	}
 	if (update_pwds(str, ms_env) == MALLOC_FAIL)
 		return (MALLOC_FAIL);
 	if (ms_env_to_envp(ms_env->item, &ms_env->envp) == MALLOC_FAIL)

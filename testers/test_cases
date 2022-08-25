@@ -112,11 +112,11 @@ cd bark bark - OK
 cd '/' - OK
 cd $PWD/testers - OK
 cd $OLDPWD/srcs - OK
-
 cd - OK
+cd - - OK
+
 cd ////// [need to truncate to '\']
 cd '/////' 2>/dev/null [need to truncate to '\']
-cd - [need to cd to OLDPWD]
 
 
 ***** PIPE *****
@@ -152,7 +152,7 @@ ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls
 
 whoami | grep $USER > tmp/file [exitcode in child unable to be retrieved, need to use global]
 whoami | cat -e | cat -e > tmp/file [exitcode in child unable to be retrieved, need to use global]
-cat big_file | ls - OK
+cat big_file | ls - OK [check if got leaks - occasionally will fail with exitcode 1]
 cat big_file | echo lol [need to check why is this not grabbing exitcode from last pipe - look at above is OK]
 
 
@@ -236,8 +236,8 @@ export = - OK
 export 1TEST= ; env | sort | grep -v SHLVL | grep -v _= - OK
 export TEST=LOL ; echo $TEST$TEST$TEST=lol$TEST - OK
 env | sort | grep -v SHLVL | grep -v _= - OK
+export TEST="ls       -l     - a" ; echo $TEST ; $LS ;  env | sort | grep -v SHLVL | grep -v _= - -OK
 
-export TEST="ls       -l     - a" ; echo $TEST ; $LS ;  env | sort | grep -v SHLVL | grep -v _= [didnt remove spaces within dquotes]
 
 
 ***** UNSET *****

@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+void	ms_cd_utils(char **str)
+{
+	if (!*str)
+		*str = ft_strdup("OLDPWD");
+	else
+		printf("%s\n", *str);
+}
+
 void	remove_dir(char parse_path[512])
 {
 	int	i;
