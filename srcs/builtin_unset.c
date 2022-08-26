@@ -83,7 +83,9 @@ int	ms_unset(char **argv, t_env *ms_env)
 	i = 1;
 	while (argv[i])
 	{
-		if (!unset_key(argv[i]))
+		if (!ft_strncmp(argv[i], "PWD", 4))
+			return (0);
+		else if (!unset_key(argv[i]))
 			exitcode = unset_error_msg(argv[i]);
 		else
 			rm_ms_env(argv[i], &ms_env->item);
